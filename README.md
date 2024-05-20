@@ -10,6 +10,7 @@ Supports **Paper** 1.20 - 1.20.4. For 1.20.6 gotta wait for ProtocolLib to updat
 - on join
 - silent join and quit messages
 - invisible in a tab list (also kinda obvious)
+- hidden in server status (player count, sample)
 
 ### Silent chests
 Opened chests (normal, trapped, ender), shulker boxes and barrels work just like vanish. You can see when normal players do it, but they can't see you do it. Accomplished with virgin tears, sweat of a troll and a unicorn horn. Ah and also pinch of ProtocolLib dark magic.

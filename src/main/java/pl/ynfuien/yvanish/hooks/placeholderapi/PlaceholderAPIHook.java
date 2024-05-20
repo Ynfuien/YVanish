@@ -4,8 +4,8 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import pl.ynfuien.yvanish.YVanish;
-import pl.ynfuien.yvanish.hooks.placeholderapi.placeholders.VanishOptionsPlaceholders;
-import pl.ynfuien.yvanish.hooks.placeholderapi.placeholders.VanishPlaceholders;
+import pl.ynfuien.yvanish.hooks.placeholderapi.placeholders.PlayersPlaceholders;
+import pl.ynfuien.yvanish.hooks.placeholderapi.placeholders.PlayerPlaceholders;
 
 public class PlaceholderAPIHook extends PlaceholderExpansion {
     private final YVanish instance;
@@ -16,8 +16,8 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
         this.instance = instance;
 
         placeholders = new Placeholder[] {
-            new VanishPlaceholders(instance),
-            new VanishOptionsPlaceholders(instance)
+            new PlayerPlaceholders(instance),
+            new PlayersPlaceholders(instance)
         };
     }
 
@@ -33,7 +33,7 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
 
     @Override @NotNull
     public String getVersion() {
-        return "1.0.0";
+        return "0.0.1";
     }
 
     @Override
@@ -41,16 +41,23 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
         return true;
     }
 
-    // Vanish
-    // %yvanish_vanished%
+    // Vanished player
+    // %yvanish_player_vanished%
+    // %yvanish_player_option_silent-chests%
+    // %yvanish_player_option_silent-sculk%
+    // %yvanish_player_option_silent-messages%
+    // %yvanish_player_option_no-pickup%
+    // %yvanish_player_option_no-mobs%
+    // %yvanish_player_option_action-bar%
+    // %yvanish_player_option_boss-bar%
 
-    // Vanish options
-    // %yvanish_vanishoption_silent-chests%
-    // %yvanish_vanishoption_silent-sculk%
-    // %yvanish_vanishoption_no-pickup%
-    // %yvanish_vanishoption_no-mobs%
-    // %yvanish_vanishoption_action-bar%
-    // %yvanish_vanishoption_boss-bar%
+    // Vanished players
+    // %yvanish_players_list%
+    // %yvanish_players_count%
+
+    // Online players
+    // %yvanish_onlineplayers_count%
+    // %yvanish_onlineplayers_count_relative%
 
     @Override
     public String onRequest(OfflinePlayer p, @NotNull String params) {
