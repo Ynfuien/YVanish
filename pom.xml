@@ -99,6 +99,11 @@
             <id>placeholderapi</id>
             <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
+
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -143,8 +148,8 @@
 
         <!--        Dev library -->
         <dependency>
-            <groupId>pl.ynfuien</groupId>
-            <artifactId>ydevlib</artifactId>
+            <groupId>com.github.Ynfuien</groupId>
+            <artifactId>YDevLib</artifactId>
             <version>1.0.0</version>
             <scope>compile</scope>
         </dependency>
