@@ -20,7 +20,6 @@ import java.util.UUID;
 public class PlayerJoinListener implements Listener {
     private final YVanish instance;
     private final VanishManager vanishManager;
-//    private final static Set<Player> vanishedOnJoin = new HashSet<>();
     private final static Set<Player> freshlyJoined = new HashSet<>();
 
     public PlayerJoinListener(YVanish instance) {
@@ -38,42 +37,21 @@ public class PlayerJoinListener implements Listener {
             Storage.getUser(uuid);
         });
 
-//        freshlyJoined.add(p);
-//        Bukkit.getScheduler().runTaskLaterAsynchronously(instance, () -> {
-//            freshlyJoined.remove(p);
-//        }, 10);
 
         if (!PluginConfig.onJoinEnabled) return;
-//        if (!PluginConfig.onJoinSilent) return;
-
-//        if (!p.hasPermission(YVanish.Permissions.VANISH_ON_JOIN.get())) return;
 
         if (!p.hasPermission(YVanish.Permissions.VANISH_ON_JOIN.get())) {
-//            YLogger.debug("Before refresh: " + System.currentTimeMillis());
             freshlyJoined.add(p);
             vanishManager.refresh();
             freshlyJoined.remove(p);
-//            YLogger.debug("After refresh: " + System.currentTimeMillis());
             return;
         }
 
         if (PluginConfig.onJoinSilent) event.joinMessage(null);
-//        event.joinMessage(null);
-
-//        vanishedOnJoin.add(p);
-//        vanishManager.vanish(p);
 
         Lang.Message.VANISH_ON_JOIN.send(p);
         ActionAndBossBars.updateForPlayer(p);
-
-//        Bukkit.getScheduler().runTaskLaterAsynchronously(instance, () -> {
-//            vanishedOnJoin.remove(p);
-//        }, 10);
     }
-
-//    public static Set<Player> getVanishedOnJoin() {
-//        return vanishedOnJoin;
-//    }
 
     public static Set<Player> getFreshlyJoined() {
         return freshlyJoined;

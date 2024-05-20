@@ -50,14 +50,6 @@ public class FakeOpenClose {
         sendChestAction(player, block, 1);
     }
 
-//    public static void fakeClose(Block block) {
-//        Location loc = block.getLocation().toCenterLocation();
-//        for (Player p : loc.getNearbyPlayers(BLOCK_ACTION_DISTANCE)) {
-//            if (!ProtocolLibHook.canSeeBlockChange(p, block)) continue;
-//
-//            fakeClose(p, block);
-//        }
-//    }
     public static void fakeClose(Player player, Block block) {
         playCloseSound(player, block);
         if (block.getType().equals(Material.BARREL)) {

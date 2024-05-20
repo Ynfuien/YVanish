@@ -27,19 +27,7 @@ public class PlayerLoginListener implements Listener {
 
         Player p = event.getPlayer();
         if (!p.hasPermission(YVanish.Permissions.VANISH_ON_JOIN.get())) return;
-//        if (!p.hasPermission(YVanish.Permissions.VANISH_ON_JOIN.get())) {
-//            vanishManager.refresh();
-//            return;
-//        }
-//        Files.asByteSource(null).hash(Hashing.sha512())
-        YLogger.debug("Before vanish: " + System.currentTimeMillis());
+
         vanishManager.vanish(p);
-        YLogger.debug("After vanish: " + System.currentTimeMillis());
-//
-//        for (Player player : Bukkit.getOnlinePlayers()) {
-//            player.hidePlayer(instance, p);
-//        }
-//        Lang.Message.VANISH_ON_JOIN.send(p);
-//        ActionAndBossBars.updateForPlayer(p);
     }
 }

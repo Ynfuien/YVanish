@@ -63,7 +63,6 @@ import java.util.Set;
  */
 public class ChestableViewers {
 
-    //#region Chestable blocks viewers
     private static final HashMap<Location, List<HumanEntity>> blocksViewers = new HashMap<>();
 
     public static List<HumanEntity> getBlockViewers(Block block) {
@@ -131,5 +130,4 @@ public class ChestableViewers {
 
         if (viewers.isEmpty()) blocksViewers.remove(loc);
     }
-    //#endregion
 }
