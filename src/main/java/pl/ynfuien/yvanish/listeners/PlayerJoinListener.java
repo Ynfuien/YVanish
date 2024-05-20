@@ -6,7 +6,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import pl.ynfuien.ydevlib.messages.YLogger;
 import pl.ynfuien.yvanish.YVanish;
 import pl.ynfuien.yvanish.config.PluginConfig;
 import pl.ynfuien.yvanish.core.ActionAndBossBars;
@@ -50,11 +49,11 @@ public class PlayerJoinListener implements Listener {
 //        if (!p.hasPermission(YVanish.Permissions.VANISH_ON_JOIN.get())) return;
 
         if (!p.hasPermission(YVanish.Permissions.VANISH_ON_JOIN.get())) {
-//            YLogger.warn("Before refresh: " + System.currentTimeMillis());
+//            YLogger.debug("Before refresh: " + System.currentTimeMillis());
             freshlyJoined.add(p);
             vanishManager.refresh();
             freshlyJoined.remove(p);
-//            YLogger.warn("After refresh: " + System.currentTimeMillis());
+//            YLogger.debug("After refresh: " + System.currentTimeMillis());
             return;
         }
 

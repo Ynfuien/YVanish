@@ -1,7 +1,9 @@
 **Project still is WIP - README is far from finished, it contains not working placeholders (urls, pictures)**
 
 # YVanish
-And at last, a vanish plugin, **the** vanish plugin! You may ask, "Wh**Y** yet another vanish?" (Hence the "Y" in the name ;p). And I come with the answer. It's because every other plugin (*every* meaning 3 that I tested), let through a few packets that revealed vanished players. Also, I wanted silent chests done correctly, not with the spectator "hack".
+And at last, a vanish plugin, **the** vanish plugin! You may ask, "Wh**Y** yet another vanish?" (Hence the "Y" in the name ;p). And I come with the answer. It's because every other plugin (*every* meaning 3 that I tested), let through a few packets that revealed vanished players. Also, I wanted silent chests done correctly, not with the spectator "trick".
+
+Supports **Paper** 1.20 - 1.20.4. For 1.20.6 gotta wait for ProtocolLib to update.
 
 # Features
 ### Vanish (well, duh)

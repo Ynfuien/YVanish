@@ -28,6 +28,7 @@ import java.util.List;
 public class ChestableUtils {
     private static final HashMap<World, Boolean> catDetectionByWorld = new HashMap<>();
     public static void setupCatDetection(YVanish instance) {
+        // I know, future-proof AF
         Bukkit.getScheduler().runTaskAsynchronously(instance, () -> {
             boolean defaultValue = true;
 
@@ -55,7 +56,7 @@ public class ChestableUtils {
 
     private static FileConfiguration getFileConfig(File file) {
         if (!file.exists()) {
-            YLogger.error(file.getPath());
+            YLogger.debug(file.getPath());
             return null;
         }
 

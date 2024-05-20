@@ -9,11 +9,9 @@ import com.comphenix.protocol.reflect.StructureModifier;
 import com.comphenix.protocol.wrappers.PlayerInfoData;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import pl.ynfuien.ydevlib.messages.YLogger;
 import pl.ynfuien.yvanish.YVanish;
 import pl.ynfuien.yvanish.core.VanishManager;
 
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 

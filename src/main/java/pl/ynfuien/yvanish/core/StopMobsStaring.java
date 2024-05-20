@@ -49,14 +49,14 @@ public class StopMobsStaring {
                     Collection<Goal<Mob>> goals = Bukkit.getMobGoals().getGoals(mob, LOOK_AT_PLAYER_GOAL);
                     if (goals.isEmpty()) continue;
 
-                    YLogger.info(String.format("Removed %d goals from a %s", goals.size(), mob.getType()));
+                    YLogger.debug(String.format("Removed %d goals from a %s", goals.size(), mob.getType()));
                     temporaryModified.put(mob, goals.stream().findFirst().get());
 //                    Bukkit.getMobGoals().removeGoal(mob, LOOK_AT_PLAYER_GOAL);
                     Bukkit.getMobGoals().removeAllGoals(mob);
 
                     Goal<Mob> goal2 = Bukkit.getMobGoals().getGoal(mob, LOOK_AT_PLAYER_GOAL);
-                    if (goal2 == null) YLogger.info("Goal 2 is null!");
-                    else YLogger.info("Goal 2 is: " + goal2.getKey().getNamespacedKey());
+                    if (goal2 == null) YLogger.debug("Goal 2 is null!");
+                    else YLogger.debug("Goal 2 is: " + goal2.getKey().getNamespacedKey());
                     mob.setGlowing(true);
                 }
             }
@@ -70,16 +70,16 @@ public class StopMobsStaring {
                 if (mobsInRange.contains(mob)) continue;
 
 //                Goal<Mob> goal = Bukkit.getMobGoals().getGoal(mob, LOOK_AT_PLAYER_GOAL);
-//                if (goal == null) YLogger.info("Goal is null");
+//                if (goal == null) YLogger.debug("Goal is null");
 //
 //                mob.setAI(false);
 //                mob.setAI(true);
 //                Goal<Mob> goal2 = Bukkit.getMobGoals().getGoal(mob, LOOK_AT_PLAYER_GOAL);
-//                if (goal2 == null) YLogger.info("Goal is null again");
+//                if (goal2 == null) YLogger.debug("Goal is null again");
 
                 Bukkit.getMobGoals().addGoal(mob, 1, temporaryModified.get(mob));
 
-                YLogger.info(String.format("Added goal back to %s", mob.getType()));
+                YLogger.debug(String.format("Added goal back to %s", mob.getType()));
                 temporaryModified.remove(mob);
                 mob.setGlowing(false);
             }

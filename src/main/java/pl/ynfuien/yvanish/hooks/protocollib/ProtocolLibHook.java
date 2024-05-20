@@ -7,11 +7,15 @@ import com.comphenix.protocol.events.PacketAdapter;
 import org.bukkit.block.Block;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
+import pl.ynfuien.ydevlib.messages.YLogger;
 import pl.ynfuien.yvanish.YVanish;
 import pl.ynfuien.yvanish.core.ChestableViewers;
 import pl.ynfuien.yvanish.core.VanishManager;
 import pl.ynfuien.yvanish.data.Storage;
-import pl.ynfuien.yvanish.hooks.protocollib.listeners.*;
+import pl.ynfuien.yvanish.hooks.protocollib.listeners.PacketBlockActionListener;
+import pl.ynfuien.yvanish.hooks.protocollib.listeners.PacketBlockChangeListener;
+import pl.ynfuien.yvanish.hooks.protocollib.listeners.PacketNamedSoundEffectListener;
+import pl.ynfuien.yvanish.hooks.protocollib.listeners.PacketPlayerInfoRemoveListener;
 
 import java.util.List;
 
@@ -49,7 +53,7 @@ public class ProtocolLibHook {
         if (player.hasPermission(YVanish.Permissions.VANISH_SEE.get())) return true;
 
         List<HumanEntity> viewers = ChestableViewers.getBlockViewers(block);
-        System.out.println("Viewers: " + viewers.size());
+        YLogger.debug("Viewers: " + viewers.size());
 
         if (viewers.isEmpty()) return true;
         if (viewers.contains(player)) return true;
@@ -65,7 +69,7 @@ public class ProtocolLibHook {
             i--;
         }
 
-        System.out.println("After: " + viewers.size());
+        YLogger.debug("After: " + viewers.size());
         if (viewers.isEmpty()) {
             return false;
         }

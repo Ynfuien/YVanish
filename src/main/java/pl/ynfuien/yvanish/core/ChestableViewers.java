@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
+import pl.ynfuien.ydevlib.messages.YLogger;
 import pl.ynfuien.yvanish.hooks.protocollib.listeners.PacketBlockActionListener;
 import pl.ynfuien.yvanish.hooks.protocollib.listeners.PacketBlockChangeListener;
 import pl.ynfuien.yvanish.hooks.protocollib.listeners.PacketNamedSoundEffectListener;
@@ -40,7 +41,7 @@ import java.util.Set;
  *     </li>
  *     <li>
  *         <p>BlockAction, Change and SoundEffect packets use this class and its list,
- *         to determine whether packet should go to the player or not, based on the players,
+ *         to determine whether packet should go to the player or not, based on the players
  *         that are currently viewing checked block.</p>
  *         <p>For example:</p>
  *         <ol>
@@ -126,7 +127,7 @@ public class ChestableViewers {
         List<HumanEntity> viewers = blocksViewers.get(loc);
         if (viewers == null) return;
         boolean removed = viewers.remove(player);
-        System.out.println("Removed result: " + removed);
+        YLogger.debug("Removed result: " + removed);
 
         if (viewers.isEmpty()) blocksViewers.remove(loc);
     }

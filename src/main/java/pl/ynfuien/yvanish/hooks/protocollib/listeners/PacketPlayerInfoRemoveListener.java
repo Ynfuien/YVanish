@@ -7,7 +7,6 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import pl.ynfuien.ydevlib.messages.YLogger;
 import pl.ynfuien.yvanish.YVanish;
 import pl.ynfuien.yvanish.core.VanishManager;
 import pl.ynfuien.yvanish.listeners.PlayerJoinListener;
@@ -35,7 +34,7 @@ public class PacketPlayerInfoRemoveListener extends PacketAdapter {
         Player receiver = event.getPlayer();
         if (receiver.hasPermission(YVanish.Permissions.VANISH_SEE.get())) return;
 
-//        if (receiver.getName().equalsIgnoreCase("Tsurtnu")) YLogger.warn("Player remove packet: " + System.currentTimeMillis());
+//        if (receiver.getName().equalsIgnoreCase("Tsurtnu")) YLogger.debug("Player remove packet: " + System.currentTimeMillis());
 
         PacketContainer packet = event.getPacket();
         List<UUID> uuidList = packet.getUUIDLists().readSafely(0);

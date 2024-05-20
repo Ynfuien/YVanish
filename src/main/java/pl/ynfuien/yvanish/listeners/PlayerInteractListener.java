@@ -17,7 +17,6 @@ import pl.ynfuien.yvanish.core.VanishManager;
 import pl.ynfuien.yvanish.data.Storage;
 import pl.ynfuien.yvanish.data.User;
 import pl.ynfuien.yvanish.hooks.Hooks;
-import pl.ynfuien.yvanish.hooks.protocollib.ProtocolLibHook;
 
 import java.util.List;
 
@@ -78,8 +77,8 @@ public class PlayerInteractListener implements Listener {
         ChestableViewers.addViewer(p, block);
         InventoryCloseListener.cancelRemoveViewerTask(p);
 
-        System.out.println("===== PlayerInteract =====");
-        YLogger.error("Added " + p.getName() + " as viewer!");
+        YLogger.debug("===== PlayerInteract =====");
+        YLogger.debug("Added " + p.getName() + " as viewer!");
 
         if (ChestableViewers.getBlockViewers(block).size() == 1) return;
 

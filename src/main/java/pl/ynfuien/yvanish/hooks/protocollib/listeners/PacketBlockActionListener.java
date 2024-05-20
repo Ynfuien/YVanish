@@ -10,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import pl.ynfuien.ydevlib.messages.YLogger;
 import pl.ynfuien.yvanish.YVanish;
 import pl.ynfuien.yvanish.core.ChestableUtils;
 import pl.ynfuien.yvanish.core.VanishManager;
@@ -37,10 +38,10 @@ public class PacketBlockActionListener extends PacketAdapter {
         Integer actionID = packet.getIntegers().readSafely(0);
         if (actionID == null || actionID == 0) return;
         if (actionID == 10) {
-            System.out.println("===== BlockAction =====");
-            System.out.println("My own packet");
-            System.out.println("Player: " + receiver.getName());
-            System.out.println("actionParameter: " + packet.getIntegers().readSafely(1));
+            YLogger.debug("===== BlockAction =====");
+            YLogger.debug("My own packet");
+            YLogger.debug("Player: " + receiver.getName());
+            YLogger.debug("actionParameter: " + packet.getIntegers().readSafely(1));
             packet.getIntegers().writeSafely(0, 1);
             return;
         }
@@ -49,11 +50,11 @@ public class PacketBlockActionListener extends PacketAdapter {
         if (actionParameter == null || actionParameter < 0) return;
 
         Material blockType = packet.getBlocks().readSafely(0);
-        System.out.println("===== BlockAction =====");
-        System.out.println("Player: " + receiver.getName());
-//        System.out.println("Timestamp: " + new Date().getTime());
-        System.out.println("Type: " + blockType);
-        System.out.println("actionParameter: " + actionParameter);
+        YLogger.debug("===== BlockAction =====");
+        YLogger.debug("Player: " + receiver.getName());
+//        YLogger.debug("Timestamp: " + new Date().getTime());
+        YLogger.debug("Type: " + blockType);
+        YLogger.debug("actionParameter: " + actionParameter);
 //        if (actionParameter == 0) return;
         if (blockType == null || !ChestableUtils.isMaterialChestable(blockType)) return;
 
@@ -68,11 +69,11 @@ public class PacketBlockActionListener extends PacketAdapter {
         block = ChestableUtils.getDoubleChestBlock(block);
         if (!ProtocolLibHook.canSeeBlockChange(receiver, block)) {
 //            if (actionParameter == 0) return;
-            System.out.println("Cancelled!");
+            YLogger.debug("Cancelled!");
             event.setCancelled(true);
         }
 //        List<HumanEntity> viewers = getBlockViewers(block);
-//        System.out.println("Viewers before: " + viewers.size());
+//        YLogger.debug("Viewers before: " + viewers.size());
 //
 //        if (viewers.isEmpty()) return;
 //        if (viewers.contains(receiver)) return;
@@ -87,7 +88,7 @@ public class PacketBlockActionListener extends PacketAdapter {
 //            i--;
 //        }
 //
-//        System.out.println("Viewers after: " + viewers.size());
+//        YLogger.debug("Viewers after: " + viewers.size());
 //        if (viewers.isEmpty()) event.setCancelled(true);
     }
 

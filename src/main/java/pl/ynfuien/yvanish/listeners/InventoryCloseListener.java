@@ -20,7 +20,6 @@ import pl.ynfuien.yvanish.core.FakeOpenClose;
 import pl.ynfuien.yvanish.core.VanishManager;
 import pl.ynfuien.yvanish.data.Storage;
 import pl.ynfuien.yvanish.hooks.Hooks;
-import pl.ynfuien.yvanish.hooks.protocollib.ProtocolLibHook;
 
 import java.util.HashMap;
 import java.util.List;
@@ -40,7 +39,7 @@ public class InventoryCloseListener implements Listener {
     public void onChestableClose(InventoryCloseEvent event) {
         if (!Hooks.isProtocolLibHookEnabled()) return;
 
-        System.out.println("===== RealCloseInv =====");
+        YLogger.debug("===== RealCloseInv =====");
 
         Player p = (Player) event.getPlayer();
         Inventory inventory = event.getInventory();
@@ -51,16 +50,16 @@ public class InventoryCloseListener implements Listener {
         Location location = inventory.getLocation();
         if (location == null) {
             if (inventoryType.equals(InventoryType.ENDER_CHEST)) {
-                YLogger.error("Ender chest null location!");
+                YLogger.debug("<red>Ender chest null location!");
             }
             return;
         }
 
         Block block = ChestableUtils.getDoubleChestBlock(location.getBlock());
-        System.out.println("Location: " + location);
+        YLogger.debug("Location: " + location);
 
         List<Player> playersSeeingBlockChange = FakeOpenClose.getNearPlayersThatCanSeeBlockChange(block);
-        YLogger.info("playersSeeingBlockChange: " + playersSeeingBlockChange.size());
+        YLogger.debug("playersSeeingBlockChange: " + playersSeeingBlockChange.size());
         removeViewer(p, block);
         playersSeeingBlockChange.removeAll(FakeOpenClose.getNearPlayersThatCanSeeBlockChange(block));
 
@@ -86,25 +85,25 @@ public class InventoryCloseListener implements Listener {
         if (!viewers.isEmpty()) return;
 
 
-        System.out.println("====== AfterCloseEvent =====");
+        YLogger.debug("====== AfterCloseEvent =====");
         if (inventoryType.equals(InventoryType.BARREL)) {
 
             Bukkit.getScheduler().runTask(instance, () -> {
                 sendFakeClose(playersSeeingBlockChange, block);
 
-                YLogger.info("<red>After close BARREL!");
+                YLogger.debug("<red>After close BARREL!");
             });
 
             return;
         }
 
 
-        YLogger.info("<green>Before close " + inventoryType.name() + "!");
+        YLogger.debug("<green>Before close " + inventoryType.name() + "!");
 
         Bukkit.getScheduler().runTask(instance, () -> {
             sendFakeClose(playersSeeingBlockChange, block);
 
-            YLogger.info("<red>After close " + inventoryType.name() + "!");
+            YLogger.debug("<red>After close " + inventoryType.name() + "!");
         });
     }
 

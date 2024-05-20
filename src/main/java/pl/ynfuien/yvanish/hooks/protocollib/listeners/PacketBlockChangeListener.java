@@ -45,7 +45,7 @@ public class PacketBlockChangeListener extends PacketAdapter {
         BlockPosition position = packet.getBlockPositionModifier().readSafely(0);
         if (position == null) return;
 
-        YLogger.info("===== BlockChange =====");
+        YLogger.debug("===== BlockChange =====");
 
         Location loc = position.toLocation(receiver.getWorld());
         Block block = loc.getBlock();

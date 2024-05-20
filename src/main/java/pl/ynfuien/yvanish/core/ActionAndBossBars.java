@@ -5,7 +5,6 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
-import pl.ynfuien.ydevlib.messages.YLogger;
 import pl.ynfuien.ydevlib.messages.colors.ColorFormatter;
 import pl.ynfuien.yvanish.YVanish;
 import pl.ynfuien.yvanish.config.PluginConfig;

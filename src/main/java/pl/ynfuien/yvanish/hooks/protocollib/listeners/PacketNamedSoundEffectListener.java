@@ -54,19 +54,19 @@ public class PacketNamedSoundEffectListener extends PacketAdapter {
         EnumWrappers.SoundCategory soundCategory = packet.getSoundCategories().readSafely(0);
         if (soundCategory == null) return;
 
-        System.out.println("===== NAMED_SOUND_EFFECT =====");
-        System.out.println(receiver.getName());
-        System.out.println("Sound category: " + soundCategory.name());
+        YLogger.debug("===== NAMED_SOUND_EFFECT =====");
+        YLogger.debug(receiver.getName());
+        YLogger.debug("Sound category: " + soundCategory.name());
 
         if (!soundCategory.equals(EnumWrappers.SoundCategory.BLOCKS)) return;
 
         Sound sound = packet.getSoundEffects().readSafely(0);
         if (sound == null || !EXPECTED_SOUND_EFFECTS.contains(sound)) return;
-        System.out.println("Sound: " + sound.name());
+        YLogger.debug("Sound: " + sound.name());
 
         Float volume = packet.getFloat().readSafely(0);
         if (volume == null) return;
-        System.out.println("Volume: " + volume);
+        YLogger.debug("Volume: " + volume);
 
         // My own packet
         if (volume == 10) {
@@ -83,19 +83,19 @@ public class PacketNamedSoundEffectListener extends PacketAdapter {
 
 
         Location loc = new Location(receiver.getWorld(), (double) x / 8, (double) y / 8, (double) z / 8);
-        YLogger.info("OG Location: " + formatLocation(loc));
+        YLogger.debug("OG Location: " + formatLocation(loc));
         if (sound.name().contains("BARREL")) loc = getBarrelLocation(loc);
-        YLogger.info("Corrected: " + formatLocation(loc));
+        YLogger.debug("Corrected: " + formatLocation(loc));
 //        if (sound.name().contains("BARREL")) loc.setY(loc.y() - 0.5);
         Block block = loc.getBlock();
 
-        System.out.println("Found block: " + block.getType().name());
-//        System.out.println("Location: " + loc);
+        YLogger.debug("Found block: " + block.getType().name());
+//        YLogger.debug("Location: " + loc);
         block = ChestableUtils.getDoubleChestBlock(block);
-//        System.out.println("A Loc Change: " + block);
+//        YLogger.debug("A Loc Change: " + block);
 
         if (!ProtocolLibHook.canSeeBlockChange(receiver, block)) {
-            System.out.println("Can't see this!");
+            YLogger.debug("Can't see this!");
             event.setCancelled(true);
         }
     }
@@ -108,10 +108,10 @@ public class PacketNamedSoundEffectListener extends PacketAdapter {
     private Location getBarrelLocation(Location ogLocation) {
         Location attempt = null;
 
-        YLogger.info(String.format("Get barrel location:"));
+        YLogger.debug(String.format("Get barrel location:"));
         CorrectionType correctionType = CorrectionType.PLUS;
         for (int i = 0; i < 6; i++) {
-            YLogger.info(String.format("%d. attempt - %s", i + 1, correctionType.name()));
+            YLogger.debug(String.format("%d. attempt - %s", i + 1, correctionType.name()));
             attempt = ogLocation.clone();
             correctBarrelLocation(attempt, correctionType);
 
