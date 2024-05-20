@@ -1,4 +1,4 @@
-package pl.ynfuien.yvanish.listeners;
+package pl.ynfuien.yvanish.listeners.joinquit;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

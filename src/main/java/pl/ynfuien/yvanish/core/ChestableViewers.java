@@ -9,8 +9,8 @@ import pl.ynfuien.ydevlib.messages.YLogger;
 import pl.ynfuien.yvanish.hooks.protocollib.listeners.PacketBlockActionListener;
 import pl.ynfuien.yvanish.hooks.protocollib.listeners.PacketBlockChangeListener;
 import pl.ynfuien.yvanish.hooks.protocollib.listeners.PacketNamedSoundEffectListener;
-import pl.ynfuien.yvanish.listeners.InventoryCloseListener;
-import pl.ynfuien.yvanish.listeners.PlayerInteractListener;
+import pl.ynfuien.yvanish.listeners.silentchests.InventoryCloseListener;
+import pl.ynfuien.yvanish.listeners.silentchests.PlayerInteractChestableListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +19,7 @@ import java.util.Set;
 
 /**
  * <b>Description of this class;
- * {@link PlayerInteractListener PlayerInteract} and {@link InventoryCloseListener InventoryClose} listeners;
+ * {@link PlayerInteractChestableListener PlayerInteract} and {@link InventoryCloseListener InventoryClose} listeners;
  * {@link PacketBlockActionListener BlockAction}, {@link PacketBlockChangeListener BlockChange} and {@link PacketNamedSoundEffectListener NamedSoundEffect} packet listeners.</b>
  * <br/><br/>
  * <p><b>TL;DR: Silent chest system.</b></p>

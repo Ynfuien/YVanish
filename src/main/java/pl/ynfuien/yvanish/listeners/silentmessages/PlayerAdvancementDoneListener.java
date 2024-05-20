@@ -1,34 +1,33 @@
-package pl.ynfuien.yvanish.listeners;
+package pl.ynfuien.yvanish.listeners.silentmessages;
 
-import com.destroystokyo.paper.event.player.PlayerPickupExperienceEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 import pl.ynfuien.yvanish.YVanish;
 import pl.ynfuien.yvanish.core.VanishManager;
 import pl.ynfuien.yvanish.data.Storage;
 import pl.ynfuien.yvanish.data.User;
 
-public class PlayerPickupExperienceListener implements Listener {
+public class PlayerAdvancementDoneListener implements Listener {
     private final YVanish instance;
     private final VanishManager vanishManager;
 
-    public PlayerPickupExperienceListener(YVanish instance) {
+    public PlayerAdvancementDoneListener(YVanish instance) {
         this.instance = instance;
         this.vanishManager = instance.getVanishManager();
     }
 
-    // Prevent exp pickup
+    // Prevent advancement message
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-    public void onPlayerPickupExperience(PlayerPickupExperienceEvent event) {
+    public void onAdvancementDone(PlayerAdvancementDoneEvent event) {
         Player p = event.getPlayer();
-
         if (!vanishManager.isVanished(p)) return;
 
         User user = Storage.getUser(p.getUniqueId());
-        if (!user.getNoPickup()) return;
+        if (!user.getSilentMessages()) return;
 
-        event.setCancelled(true);
+        event.message(null);
     }
 }

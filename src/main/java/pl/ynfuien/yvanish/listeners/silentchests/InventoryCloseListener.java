@@ -1,4 +1,4 @@
-package pl.ynfuien.yvanish.listeners;
+package pl.ynfuien.yvanish.listeners.silentchests;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

@@ -24,7 +24,21 @@ import pl.ynfuien.yvanish.data.MysqlDatabase;
 import pl.ynfuien.yvanish.data.SqliteDatabase;
 import pl.ynfuien.yvanish.data.Storage;
 import pl.ynfuien.yvanish.hooks.Hooks;
-import pl.ynfuien.yvanish.listeners.*;
+import pl.ynfuien.yvanish.listeners.joinquit.PlayerJoinListener;
+import pl.ynfuien.yvanish.listeners.joinquit.PlayerLoginListener;
+import pl.ynfuien.yvanish.listeners.joinquit.PlayerQuitListener;
+import pl.ynfuien.yvanish.listeners.nomobs.EntityTargetLivingEntityListener;
+import pl.ynfuien.yvanish.listeners.nopickup.EntityPickupItemListener;
+import pl.ynfuien.yvanish.listeners.nopickup.PlayerPickupExperienceListener;
+import pl.ynfuien.yvanish.listeners.pvp.EntityDamageByEntityListener;
+import pl.ynfuien.yvanish.listeners.serverlist.PaperServerListPingListener;
+import pl.ynfuien.yvanish.listeners.silentchests.InventoryCloseListener;
+import pl.ynfuien.yvanish.listeners.silentchests.PlayerChunkLoadListener;
+import pl.ynfuien.yvanish.listeners.silentchests.PlayerInteractChestableListener;
+import pl.ynfuien.yvanish.listeners.silentmessages.PlayerAdvancementDoneListener;
+import pl.ynfuien.yvanish.listeners.silentmessages.PlayerDeathListener;
+import pl.ynfuien.yvanish.listeners.silentsculk.BlockReceiveGameListener;
+import pl.ynfuien.yvanish.listeners.silentsculk.PlayerInteractSculkListener;
 import pl.ynfuien.yvanish.utils.Lang;
 
 import java.util.HashMap;
@@ -101,19 +115,29 @@ public final class YVanish extends JavaPlugin {
 
     private void registerListeners() {
         Listener[] listeners = new Listener[] {
+                // Join/quit
                 new PlayerJoinListener(this),
                 new PlayerLoginListener(this),
                 new PlayerQuitListener(this),
+                // Silent chests
                 new InventoryCloseListener(this),
-                new PlayerInteractListener(this),
+                new PlayerInteractChestableListener(this),
                 new PlayerChunkLoadListener(this),
+                // Silent sculk
                 new BlockReceiveGameListener(this),
-                new EntityPickupItemListener(this),
-                new PlayerPickupExperienceListener(this),
-                new EntityTargetLivingEntityListener(this),
+                new PlayerInteractSculkListener(this),
+                // Silent messages
                 new PlayerAdvancementDoneListener(this),
                 new PlayerDeathListener(this),
-                new EntityDamageByEntityListener(this)
+                // No pickup
+                new EntityPickupItemListener(this),
+                new PlayerPickupExperienceListener(this),
+                // No mobs
+                new EntityTargetLivingEntityListener(this),
+                // Vanish pvp
+                new EntityDamageByEntityListener(this),
+                // Server list ping
+                new PaperServerListPingListener(this)
         };
 
         for (Listener listener : listeners) {

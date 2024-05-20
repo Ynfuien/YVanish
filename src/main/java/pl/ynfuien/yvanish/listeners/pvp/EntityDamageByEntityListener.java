@@ -1,33 +1,30 @@
-package pl.ynfuien.yvanish.listeners;
+package pl.ynfuien.yvanish.listeners.pvp;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import pl.ynfuien.yvanish.YVanish;
 import pl.ynfuien.yvanish.core.VanishManager;
-import pl.ynfuien.yvanish.data.Storage;
-import pl.ynfuien.yvanish.data.User;
 
-public class EntityPickupItemListener implements Listener {
+public class EntityDamageByEntityListener implements Listener {
     private final YVanish instance;
     private final VanishManager vanishManager;
 
-    public EntityPickupItemListener(YVanish instance) {
+    public EntityDamageByEntityListener(YVanish instance) {
         this.instance = instance;
         this.vanishManager = instance.getVanishManager();
     }
 
-    // Prevent item pickup
+    // Prevent PVP
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-    public void onItemPickup(EntityPickupItemEvent event) {
-        if (!(event.getEntity() instanceof Player p)) return;
+    public void onPlayerDamagePlayer(EntityDamageByEntityEvent event) {
+        if (!(event.getDamager() instanceof Player p)) return;
 
         if (!vanishManager.isVanished(p)) return;
-
-        User user = Storage.getUser(p.getUniqueId());
-        if (!user.getNoPickup()) return;
+        if (!(event.getEntity() instanceof Player)) return;
+        if (p.hasPermission(YVanish.Permissions.VANISH_PVP.get())) return;
 
         event.setCancelled(true);
     }

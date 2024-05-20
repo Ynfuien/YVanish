@@ -122,3 +122,7 @@ vanish:
 #        - CREATE_WORLD_FOG
 #        - DARKEN_SCREEN
 #        - PLAY_BOSS_MUSIC
+
+# Whether to change server list ping data to hide vanished players.
+# It will remove them from online players count and from the sample players list.
+change-server-status: true

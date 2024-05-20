@@ -1,33 +1,34 @@
-package pl.ynfuien.yvanish.listeners;
+package pl.ynfuien.yvanish.listeners.nomobs;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerAdvancementDoneEvent;
+import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import pl.ynfuien.yvanish.YVanish;
 import pl.ynfuien.yvanish.core.VanishManager;
 import pl.ynfuien.yvanish.data.Storage;
 import pl.ynfuien.yvanish.data.User;
 
-public class PlayerAdvancementDoneListener implements Listener {
+public class EntityTargetLivingEntityListener implements Listener {
     private final YVanish instance;
     private final VanishManager vanishManager;
 
-    public PlayerAdvancementDoneListener(YVanish instance) {
+    public EntityTargetLivingEntityListener(YVanish instance) {
         this.instance = instance;
         this.vanishManager = instance.getVanishManager();
     }
 
-    // Prevent advancement message
+    // Prevent monsters targeting a player
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-    public void onAdvancementDone(PlayerAdvancementDoneEvent event) {
-        Player p = event.getPlayer();
+    public void onMonsterTargetPlayer(EntityTargetLivingEntityEvent event) {
+        if (!(event.getTarget() instanceof Player p)) return;
+
         if (!vanishManager.isVanished(p)) return;
 
         User user = Storage.getUser(p.getUniqueId());
-        if (!user.getSilentMessages()) return;
+        if (!user.getNoMobs()) return;
 
-        event.message(null);
+        event.setCancelled(true);
     }
 }

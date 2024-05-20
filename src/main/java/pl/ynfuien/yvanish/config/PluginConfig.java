@@ -32,6 +32,7 @@ public class PluginConfig {
     public static BossBar.Overlay bossBarOverlay = BossBar.Overlay.PROGRESS;
     public static float bossBarProgress = 1;
     public static Set<BossBar.Flag> bossBarFlags = new HashSet<>();
+    public static boolean changeServerStatus = true;
 
     public static void load(ConfigurationSection config) {
         database = config.getConfigurationSection("database");
@@ -106,5 +107,7 @@ public class PluginConfig {
                 YLogger.warn("[Config] Provided flag '%s' in boss-bar.flags is incorrect! It won't be used.");
             }
         }
+
+        changeServerStatus = config.getBoolean("change-server-status");
     }
 }

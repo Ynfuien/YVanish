@@ -1,4 +1,4 @@
-package pl.ynfuien.yvanish.listeners;
+package pl.ynfuien.yvanish.listeners.silentchests;
 
 import io.papermc.paper.event.packet.PlayerChunkLoadEvent;
 import org.bukkit.Chunk;

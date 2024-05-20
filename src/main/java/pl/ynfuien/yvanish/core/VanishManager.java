@@ -28,6 +28,7 @@ public class VanishManager {
         if (vanishedPlayers.contains(player)) return false;
 
         vanishedPlayers.add(player);
+//        player.isListed()
         refresh();
 
         return true;

@@ -1,7 +1,9 @@
 package pl.ynfuien.yvanish.commands.main;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pl.ynfuien.yvanish.YVanish;
@@ -26,6 +28,11 @@ public class MainCommand extends YCommand {
 
     @Override
     protected void run(@NotNull CommandSender sender, @NotNull String[] args, @NotNull HashMap<String, Object> placeholders) {
+//        Player tsurtnu = Bukkit.getPlayer("Tsurtnu");
+//        Player ynfuien = Bukkit.getPlayer("Ynfuien");
+//
+//        ynfuien.unlistPlayer(tsurtnu);
+
         // Run help subcommand if none is provided
         if (args.length == 0) {
             Lang.Message.COMMAND_MAIN_USAGE.send(sender, placeholders);

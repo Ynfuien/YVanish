@@ -9,7 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.ynfuien.yvanish.YVanish;
 import pl.ynfuien.yvanish.core.VanishManager;
-import pl.ynfuien.yvanish.listeners.PlayerJoinListener;
+import pl.ynfuien.yvanish.listeners.joinquit.PlayerJoinListener;
 
 import java.util.List;
 import java.util.Set;
