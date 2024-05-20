@@ -23,7 +23,6 @@ public class ProtocolLibHook {
     private final YVanish instance;
     private static VanishManager vanishManager;
     private static ProtocolManager protocolManager = null;
-//    private static boolean enabled = false;
 
     public ProtocolLibHook(YVanish instance) {
         this.instance = instance;
@@ -31,7 +30,6 @@ public class ProtocolLibHook {
         protocolManager = ProtocolLibrary.getProtocolManager();
 
         registerListeners(ListenerPriority.NORMAL);
-//        enabled = true;
     }
 
     private void registerListeners(ListenerPriority priority) {
@@ -76,12 +74,7 @@ public class ProtocolLibHook {
         return true;
     }
 
-
     public static ProtocolManager getProtocolManager() {
         return protocolManager;
     }
-
-//    public static boolean isEnabled() {
-//        return enabled;
-//    }
 }
