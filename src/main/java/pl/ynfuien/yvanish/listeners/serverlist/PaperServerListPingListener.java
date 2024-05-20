@@ -25,10 +25,7 @@ public class PaperServerListPingListener implements Listener {
     public void onServerListPing(PaperServerListPingEvent event) {
         if (!PluginConfig.changeServerStatus) return;
         if (vanishManager.isNoOneVanished()) return;
-//        int vanishedCount = vanishManager.getVanishedPlayers().size();
-//        if (vanishedCount == 0) return;
 
-//        event.setNumPlayers(event.getNumPlayers() - vanishedCount);
         Iterator<Player> i = event.iterator();
         while (i.hasNext()) {
             Player p = i.next();
@@ -36,6 +33,5 @@ public class PaperServerListPingListener implements Listener {
 
             i.remove();
         }
-//        List<PlayerProfile> players = event.getPlayerSample();
     }
 }
