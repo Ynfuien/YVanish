@@ -1,0 +1,79 @@
+################################
+#                              #
+#     Lang file by Ynfuien     #
+#                              #
+################################
+
+
+#### Quick info:
+# 1. If you don't want a message to be sent, just set it empty - ''
+
+# 2. You can use MiniMessage formatting for custom colors and formats!
+# If you don't know how, then here is documentation:
+# https://docs.advntr.dev/minimessage/format.html
+
+# 3. PlaceholderAPI is supported
+
+# 4. Plugin placeholders are within curly brackets - {placeholder}
+# And can have additional flags:
+# ! - no formatting
+# @ - no papi
+# # - escaped double quotes (")
+# To use a flag for placeholder, append it before the name - {!placeholder}
+# You can also combine flags, so for example {@#placeholder}, will not parse PAPI placeholders,
+# and will escape double quotes (" will become \").
+# ! - is useful for player input, that is not supposed to be formatted
+# @ - for input that's supposed to be formatted, but not with papi
+# # - for things that can contain double quotes, and you want them in hover/click event
+
+
+# Prefix that will be used for {prefix} placeholder
+prefix: '<dark_aqua>[<bold><aqua>Y<gradient:white:#ADE1FF>Vanish</gradient></bold><dark_aqua>]<reset>'
+
+plugin-is-reloading: '{prefix} <red>Plugin is reloading, wait a second..'
+
+# Main
+command-main-usage: '{prefix} <gray>Command''s usage: /{command} <reload | version>'
+command-main-fail-no-permission: '{prefix} <red>You don''t have permission for this command!'
+command-main-reload-fail: '{prefix} <red>An error occurred while reloading plugin. Take a look in the console for more information!'
+command-main-reload-success: '{prefix} <aqua>Plugin was <green>successfully <aqua>reloaded!'
+command-main-version:
+  - '{prefix} <dark_aqua>Plugin info:'
+  - '{prefix} <aqua>Name: <white>{name}'
+  - '{prefix} <aqua>Version: <green>{version}'
+  - '{prefix} <aqua>Author: <click:open_url:"{website}"><hover:show_text:"{website}"><white>{author}</click>'
+
+
+# Vanish
+command-vanish-usage-others: '{prefix} <gray>Command''s usage: /{command} <player> [enable | disable]'
+command-vanish-fail-player-doesnt-exist: '{prefix} <red>Provided player doesn''t exist!'
+command-vanish-success: '{prefix} <aqua>Vanish {action}<aqua>!'
+command-vanish-success-other: '{prefix} <aqua>Successfully {action} <aqua>vanish for <dark_aqua>{player-username}<aqua>!'
+command-vanish-success-receive: '{prefix} <aqua>Your vanish has been {action}<aqua>!'
+command-vanish-enabled: '<green>enabled'
+command-vanish-disabled: '<red>disabled'
+
+vanish-on-join: '{prefix} <gold>Vanished from the start!'
+
+
+# Vanish options
+command-vanishoptions-usage-others: '{prefix} <gray>Command''s usage: /{command} <option> <player>'
+command-vanishoptions-list-header: '{prefix} <yellow>Your available options (<gray>{options-count}<yellow>):'
+command-vanishoptions-list-entry: '{option-state} <aqua><click:run_command:"/{command} {option-name}"><hover:show_text:"<#90eefc>Click to toggle!">{option-name}</hover></click> (<hover:show_text:"<#90eefc>You can use this alias instead of typing the whole name!"><dark_aqua>{option-alias}</hover><aqua>) <white>- <gray>{option-description}'
+command-vanishoptions-list-entry-state-enabled: '<green><bold>✅</bold>'
+command-vanishoptions-list-entry-state-disabled: '<red><bold>❌</bold>'
+command-vanishoptions-list-empty: '{prefix} <red>You don''t have a permission for any of the options!'
+command-vanishoptions-list-console-header: '{prefix} <yellow>Option list (<gray>{options-count}<yellow>):'
+command-vanishoptions-list-console-entry: '<aqua>{option-name} (<dark_aqua>{option-alias}<aqua>) <white>- <gray>{option-description}'
+command-vanishoptions-description-silent-chests: 'Silences any opened chest'
+command-vanishoptions-description-silent-sculk: 'Silences sculk sensors'
+command-vanishoptions-description-silent-messages: 'Hides advancement and death messages'
+command-vanishoptions-description-no-pickup: 'Disables item and exp pickup'
+command-vanishoptions-description-no-mobs: 'Hides you from monsters'
+command-vanishoptions-description-action-bar: 'Shows action bar while vanished'
+command-vanishoptions-description-boss-bar: 'Shows boss bar while vanished'
+command-vanishoptions-fail-player-isnt-online: '{prefix} <red>Provided player isn''t online!'
+command-vanishoptions-success-enable: '{prefix} <aqua><green>Enabled</green> option <dark_aqua>{option-name}</dark_aqua>!</aqua>'
+command-vanishoptions-success-disable: '{prefix} <aqua><red>Disabled</red> option <dark_aqua>{option-name}</dark_aqua>!</aqua>'
+command-vanishoptions-success-enable-other: '{prefix} <aqua><green>Enabled</green> option <dark_aqua>{option-name}</dark_aqua> for <dark_aqua>{player-username}</dark_aqua>!</aqua>'
+command-vanishoptions-success-disable-other: '{prefix} <aqua><red>Disabled</red> option <dark_aqua>{option-name}</dark_aqua> for <dark_aqua>{player-username}</dark_aqua>!</aqua>'

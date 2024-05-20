@@ -1,0 +1,24 @@
+name: '${project.name}'
+version: '${project.version}'
+main: pl.ynfuien.yvanish.YVanish
+api-version: '1.20'
+softdepend: [ ProtocolLib, PlaceholderAPI, LuckPerms ]
+author: Ynfuien
+description: '${project.description}'
+website: '${project.url}'
+
+commands:
+  yvanish:
+    aliases: [yv]
+    description: Plugin's reload command
+    permission: yvanish.reload
+
+  vanish:
+    aliases: [v]
+    description: Makes players *disappear*
+    permission: yvanish.vanish
+
+  vanishoptions:
+    aliases: [vo]
+    description: Manages vanish options
+    permission: yvanish.options

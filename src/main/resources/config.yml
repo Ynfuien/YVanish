@@ -1,0 +1,124 @@
+# Database configuration.
+# It's used for saving player enabled/disabled options.
+database:
+  # Available types: mysql, sqlite
+  type: 'sqlite'
+  # Table name used both in mysql or sqlite
+  table: 'yv_users'
+
+  # Path for SQLite database file
+  path: 'database.db'
+
+  # Connection info for MySQL database type
+  # Host of your db
+  host: 'localhost'
+  # Default is 3306, don't touch it if you didn't change it in your db configuration
+  port: '3306'
+  # Default: 6
+  max-connections: 6
+  # Name of database
+  name: 'dbname'
+  # Login to db account
+  login: 'user'
+  # Password to db account
+  password: 'password'
+
+
+vanish:
+
+  on-join:
+    # Whether to vanish players on join.
+    # Requires permission yvanish.vanish.on-join
+    enabled: true
+    # Whether to remove join message, if player
+    # was vanished on join.
+    silent: true
+
+  # If you want to remove quit message for vanished players.
+  silent-quit: true
+
+  # Priority used in ProtocolLib listeners.
+  # Available options:
+  # LOWEST, LOW, NORMAL, HIGH, HIGHEST
+  # Default is HIGH.
+  # Don't change it, if you don't know what you are doing.
+  packet-listeners-priority: HIGH
+
+  # Options that will be enabled by default for vanished players,
+  # until they turn them on/off for themselves using /vanishoptions.
+  default-options:
+    # Chests (normal, trapped, ender), shulker boxes
+    # and barrels will be dead quiet for normal players
+    # when a vanished player opens them. No sound, no open
+    # animation, no nothing. It's accomplished with ProtocolLib.
+    # Cancelling, changing and sending appropriate packets, so
+    # the chest stays silent.
+    # ! Opened shulker boxes will still have their opened size, !
+    # ! but it will be invisible for normal players, causing    !
+    # ! 'invisible block collision'.                            !
+    silent-chests: true
+
+    # Sculk sensors won't get any vibrations from vanished players.
+    # This doesn't account for unclicked buttons, unpressed pressure
+    # plates, shot arrows/snow balls (when they hit something) etc.
+    silent-sculk: true
+
+    # silent-messages which is really silent-advancements-and-death-messages,
+    # but it would be too long to call it that. Does exactly what you think.
+    # Silences advancement and death messages of a vanished player.
+    silent-messages: true
+
+    # This will prevent any items and exp from being picked up
+    # by a vanished player. Useful when using /vanishoptions, to
+    # turn it on/off when needed.
+    # ! Experience orbs will still move towards a vanished player,         !
+    # ! and they will appear to be teleporting from POV of normal players  !
+    no-pickup: false
+
+    # This will prevent monsters from targeting a vanished player.
+    # ! Won't prevent mobs from staring at the player !
+    no-mobs: true
+
+    # Action bar message that does nothing except being there.
+    action-bar:
+      enabled: true
+      # Refresh rate in ticks (1s = 20t).
+      # It's how often message should be sent.
+      # Sent action bar message will be visible on
+      # a vanilla client for 2 seconds (40t), and after that
+      # it will fade out. So 44 ticks should make for a
+      # *slight* fade in-out effect.
+      # ! If you want to use PAPI placeholders in here, that should !
+      # ! update often, then set this to an appropriate lower value !
+      refresh-rate: 44
+      # Message that will be sent. MiniMessage and PAPI supported.
+      message: '<#78ffb9>You are <gradient:white:#ADE1FF>vanished</gradient>!</#78ffb9>'
+
+    # Same with boss bar, just an additional info place, to put there
+    # anything you want.
+    boss-bar:
+      enabled: false
+      # Refresh rate in ticks (1s = 20t).
+      # It's how often boss bar name should be updated.
+      # If you don't use here any PAPI placeholders,
+      # then it can be set to -1, to not update it at all.
+      # However, like with action bar, set it to some other value,
+      # if you want placeholders updated.
+      refresh-rate: -1
+      # Title of a boss bar, that will be shown. MiniMessage and PAPI supported.
+      title: '<#78ffb9>You are <gradient:white:#ADE1FF>vanished</gradient>!</#78ffb9>'
+      # Color of a boss bar. List of available colors can be found here:
+      # https://jd.advntr.dev/api/4.14.0/net/kyori/adventure/bossbar/BossBar.Color.html
+      color: 'BLUE'
+      # Overlay of a boss bar. List of available options can be found here:
+      # https://jd.advntr.dev/api/4.14.0/net/kyori/adventure/bossbar/BossBar.Overlay.html
+      overlay: 'NOTCHED_10'
+      # Progress of a boss bar. In decimal number, from 0.0 to 1.0
+      # 1.0 is full, 0 empty and 0.5 a half. (If it wasn't obvious \o/)
+      progress: 1
+      # Additional flags, probably useless in this use case. List:
+      # https://jd.advntr.dev/api/4.14.0/net/kyori/adventure/bossbar/BossBar.Flag.html
+      flags:
+#        - CREATE_WORLD_FOG
+#        - DARKEN_SCREEN
+#        - PLAY_BOSS_MUSIC

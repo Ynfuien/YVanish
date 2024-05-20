@@ -1,0 +1,200 @@
+package pl.ynfuien.yvanish;
+
+import org.bstats.bukkit.Metrics;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.TabCompleter;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.java.JavaPlugin;
+import pl.ynfuien.ydevlib.messages.YLogger;
+import pl.ynfuien.yvanish.commands.main.MainCommand;
+import pl.ynfuien.yvanish.commands.vanish.VanishCommand;
+import pl.ynfuien.yvanish.commands.vanishoptions.VanishOptionsCommand;
+import pl.ynfuien.yvanish.config.ConfigHandler;
+import pl.ynfuien.yvanish.config.ConfigName;
+import pl.ynfuien.yvanish.config.ConfigObject;
+import pl.ynfuien.yvanish.config.PluginConfig;
+import pl.ynfuien.yvanish.core.ActionAndBossBars;
+import pl.ynfuien.yvanish.core.ChestableUtils;
+import pl.ynfuien.yvanish.core.VanishManager;
+import pl.ynfuien.yvanish.data.Database;
+import pl.ynfuien.yvanish.data.MysqlDatabase;
+import pl.ynfuien.yvanish.data.SqliteDatabase;
+import pl.ynfuien.yvanish.data.Storage;
+import pl.ynfuien.yvanish.hooks.Hooks;
+import pl.ynfuien.yvanish.listeners.*;
+import pl.ynfuien.yvanish.utils.Lang;
+
+import java.util.HashMap;
+
+public final class YVanish extends JavaPlugin {
+    private static YVanish instance;
+    private final VanishManager vanishManager = new VanishManager(this);
+    private final ConfigHandler configHandler = new ConfigHandler(this);
+    private Database database = null;
+    private ConfigObject config;
+
+    private boolean reloading = false;
+
+    @Override
+    public void onEnable() {
+        instance = this;
+        YLogger.setup("<dark_aqua>[<aqua>Y<gradient:white:#ADE1FF>Vanish</gradient><dark_aqua>] <white>", getComponentLogger());
+
+        loadConfigs();
+        loadLang();
+
+        config = configHandler.get(ConfigName.CONFIG);
+        PluginConfig.load(config.getConfig());
+
+
+        database = getDatabase(PluginConfig.database);
+        if (database == null || !database.setup(PluginConfig.database)) {
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
+        database.createUsersTable();
+        Storage.setup(this);
+
+        setupCommands();
+        registerListeners();
+
+        Hooks.load(this);
+
+        ChestableUtils.setupCatDetection(this);
+
+        ActionAndBossBars.setup(this);
+        ActionAndBossBars.startIntervals();
+
+//        StopMobsStaring.setup(this);
+//        StopMobsStaring.startInterval();
+
+        new Metrics(this, 21793);
+
+        YLogger.info("Plugin successfully <green>enabled<white>!");
+    }
+
+
+    @Override
+    public void onDisable() {
+        if (database != null) database.close();
+
+        YLogger.info("Plugin successfully <red>disabled<white>!");
+    }
+
+    private void setupCommands() {
+        HashMap<String, CommandExecutor> commands = new HashMap<>() {{
+            put("yvanish", new MainCommand(instance, "reload"));
+            put("vanish", new VanishCommand(instance, "vanish"));
+            put("vanishoptions", new VanishOptionsCommand(instance, "options"));
+        }};
+
+        for (String name : commands.keySet()) {
+            CommandExecutor cmd = commands.get(name);
+
+            getCommand(name).setExecutor(cmd);
+            getCommand(name).setTabCompleter((TabCompleter) cmd);
+        }
+    }
+
+    private void registerListeners() {
+        Listener[] listeners = new Listener[] {
+                new PlayerJoinListener(this),
+                new PlayerLoginListener(this),
+                new PlayerQuitListener(this),
+                new InventoryCloseListener(this),
+                new PlayerInteractListener(this),
+                new PlayerChunkLoadListener(this),
+                new BlockReceiveGameListener(this),
+                new EntityPickupItemListener(this),
+                new PlayerPickupExperienceListener(this),
+                new EntityTargetLivingEntityListener(this),
+                new PlayerAdvancementDoneListener(this),
+                new PlayerDeathListener(this)
+        };
+
+        for (Listener listener : listeners) {
+            getServer().getPluginManager().registerEvents(listener, this);
+        }
+    }
+
+
+    private Database getDatabase(ConfigurationSection config) {
+        String type = config.getString("type");
+        if (type.equalsIgnoreCase("sqlite")) return new SqliteDatabase();
+        else if (type.equalsIgnoreCase("mysql")) return new MysqlDatabase();
+
+        YLogger.error("Database type is incorrect! Available database types: sqlite, mysql");
+        return null;
+    }
+
+    private void loadLang() {
+        // Get lang config
+        FileConfiguration config = configHandler.getConfig(ConfigName.LANG);
+
+        // Reload lang
+        Lang.loadLang(config);
+    }
+
+    private void loadConfigs() {
+        configHandler.load(ConfigName.CONFIG);
+        configHandler.load(ConfigName.LANG, true, true);
+    }
+
+    public boolean reloadPlugin() {
+        reloading = true;
+
+        // Reload all configs
+        configHandler.reloadAll();
+
+        PluginConfig.load(config.getConfig());
+
+        // Reload lang
+        instance.loadLang();
+
+        ActionAndBossBars.stopIntervals();
+        ActionAndBossBars.startIntervals();
+
+//        StopMobsStaring.stopInterval();
+//        StopMobsStaring.startInterval();
+
+        reloading = false;
+        return true;
+    }
+
+    public boolean isReloading() {
+        return reloading;
+    }
+
+
+    public static YVanish getInstance() {
+        return instance;
+    }
+
+    public VanishManager getVanishManager() {
+        return vanishManager;
+    }
+
+
+    public Database getDatabase() {
+        return database;
+    }
+
+    public enum Permissions {
+        VANISH_OTHERS("yvanish.vanish.others"),
+        VANISH_ON_JOIN("yvanish.vanish.on-join"),
+        VANISH_SEE("yvanish.vanish.see");
+
+        private final String permission;
+
+        Permissions(String permission) {
+            this.permission = permission;
+        }
+
+        public String get() {
+            return permission;
+        }
+    }
+}
