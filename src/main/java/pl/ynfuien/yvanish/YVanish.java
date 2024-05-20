@@ -112,7 +112,8 @@ public final class YVanish extends JavaPlugin {
                 new PlayerPickupExperienceListener(this),
                 new EntityTargetLivingEntityListener(this),
                 new PlayerAdvancementDoneListener(this),
-                new PlayerDeathListener(this)
+                new PlayerDeathListener(this),
+                new EntityDamageByEntityListener(this)
         };
 
         for (Listener listener : listeners) {
@@ -185,7 +186,8 @@ public final class YVanish extends JavaPlugin {
     public enum Permissions {
         VANISH_OTHERS("yvanish.vanish.others"),
         VANISH_ON_JOIN("yvanish.vanish.on-join"),
-        VANISH_SEE("yvanish.vanish.see");
+        VANISH_SEE("yvanish.vanish.see"),
+        VANISH_PVP("yvanish.vanish.pvp");
 
         private final String permission;
 
