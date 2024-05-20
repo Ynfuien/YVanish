@@ -46,15 +46,13 @@ public class Lang {
     public static void sendMessage(CommandSender sender, String path, HashMap<String, Object> placeholders) {
         List<String> messages;
 
-        if (langConfig.isList(path)) {
-            messages = langConfig.getStringList(path);
-        } else {
-            messages = List.of(langConfig.getString(path));
-            if (messages.get(0) == null) {
-                YLogger.error(String.format("There is no message '%s'!", path));
-                return;
-            }
+        if (!langConfig.isSet(path)) {
+            YLogger.error(String.format("There is no message '%s'!", path));
+            return;
         }
+
+        if (langConfig.isList(path)) messages = langConfig.getStringList(path);
+        else messages = List.of(langConfig.getString(path));
 
         for (String message : messages) {
             // Return if message is empty
@@ -62,7 +60,6 @@ public class Lang {
 
             // Get message with used placeholders
             placeholders.put("prefix", prefix);
-//            message = Messenger.replacePlaceholders(message, placeholders);
 
             Messenger.send(sender, message, placeholders);
         }
@@ -91,8 +88,8 @@ public class Lang {
         VANISH_ON_JOIN,
 
         // Vanish options
-        COMMAND_VANISHOPTIONS_USAGE,
         COMMAND_VANISHOPTIONS_USAGE_OTHERS,
+        COMMAND_VANISHOPTIONS_WRONG_OPTION,
         COMMAND_VANISHOPTIONS_LIST_HEADER,
         COMMAND_VANISHOPTIONS_LIST_ENTRY,
         COMMAND_VANISHOPTIONS_LIST_ENTRY_STATE_ENABLED,

@@ -59,11 +59,13 @@ public class VanishOptionsCommand extends YCommand {
             return;
         }
 
-        // Usage messages
+        // Wrong option
         if (sender instanceof Player) {
-            Lang.Message.COMMAND_VANISHOPTIONS_USAGE.send(sender, placeholders);
+            Lang.Message.COMMAND_VANISHOPTIONS_WRONG_OPTION.send(sender, placeholders);
+            return;
         }
 
+        // Usage for console
         if (sender.hasPermission(PERMISSION_OTHERS)) {
             Lang.Message.COMMAND_VANISHOPTIONS_USAGE_OTHERS.send(sender, placeholders);
         }

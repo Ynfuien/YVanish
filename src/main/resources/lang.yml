@@ -58,11 +58,12 @@ vanish-on-join: '{prefix} <gold>Vanished from the start!'
 
 # Vanish options
 command-vanishoptions-usage-others: '{prefix} <gray>Command''s usage: /{command} <option> <player>'
+command-vanishoptions-wrong-option: '{prefix} <red>Provided option doesn''t exist!'
 command-vanishoptions-list-header: '{prefix} <yellow>Your available options (<gray>{options-count}<yellow>):'
 command-vanishoptions-list-entry: '{option-state} <aqua><click:run_command:"/{command} {option-name}"><hover:show_text:"<#90eefc>Click to toggle!">{option-name}</hover></click> (<hover:show_text:"<#90eefc>You can use this alias instead of typing the whole name!"><dark_aqua>{option-alias}</hover><aqua>) <white>- <gray>{option-description}'
 command-vanishoptions-list-entry-state-enabled: '<green><bold>✅</bold>'
 command-vanishoptions-list-entry-state-disabled: '<red><bold>❌</bold>'
-command-vanishoptions-list-empty: '{prefix} <red>You don''t have a permission for any of the options!'
+command-vanishoptions-list-empty: '{prefix} <red>You don''t have permission for any of the options!'
 command-vanishoptions-list-console-header: '{prefix} <yellow>Option list (<gray>{options-count}<yellow>):'
 command-vanishoptions-list-console-entry: '<aqua>{option-name} (<dark_aqua>{option-alias}<aqua>) <white>- <gray>{option-description}'
 command-vanishoptions-description-silent-chests: 'Silences any opened chest'
