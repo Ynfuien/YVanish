@@ -37,6 +37,9 @@ vanish:
   # If you want to remove quit message for vanished players.
   silent-quit: true
 
+  # Vanished players are ignored when others go to bed.
+  ignore-sleep: true
+
   # Priority used in ProtocolLib listeners.
   # Available options:
   # LOWEST, LOW, NORMAL, HIGH, HIGHEST

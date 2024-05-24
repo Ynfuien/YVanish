@@ -3,6 +3,7 @@ package pl.ynfuien.yvanish.core;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.ynfuien.yvanish.YVanish;
+import pl.ynfuien.yvanish.config.PluginConfig;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,6 +28,7 @@ public class VanishManager {
     public boolean vanish(Player player) {
         if (vanishedPlayers.contains(player)) return false;
 
+        if (PluginConfig.ignoreSleep) player.setSleepingIgnored(true);
         vanishedPlayers.add(player);
         refresh();
 
@@ -40,6 +42,7 @@ public class VanishManager {
     public boolean unvanish(Player player) {
         if (!vanishedPlayers.contains(player)) return false;
 
+        if (PluginConfig.ignoreSleep) player.setSleepingIgnored(false);
         vanishedPlayers.remove(player);
         for (Player p : Bukkit.getOnlinePlayers()) {
             p.showPlayer(instance, player);

@@ -15,6 +15,7 @@ public class PluginConfig {
     public static boolean onJoinEnabled = false;
     public static boolean onJoinSilent = true;
     public static boolean silentQuit = true;
+    public static boolean ignoreSleep = true;
     public static ListenerPriority packetListenersPriority = null;
     public static boolean silentChests = true;
     public static boolean silentSculk = true;
@@ -41,6 +42,7 @@ public class PluginConfig {
         onJoinEnabled = vanish.getBoolean("on-join.enabled");
         onJoinSilent = vanish.getBoolean("on-join.silent");
         silentQuit = vanish.getBoolean("silent-quit");
+        ignoreSleep = vanish.getBoolean("ignore-sleep");
 
         if (Hooks.isPluginEnabled(Hooks.Plugin.PROTOCOLLIB)) {
             String priority = vanish.getString("packet-listeners-priority");
