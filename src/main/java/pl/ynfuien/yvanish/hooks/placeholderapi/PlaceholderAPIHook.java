@@ -4,8 +4,8 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import pl.ynfuien.yvanish.YVanish;
-import pl.ynfuien.yvanish.hooks.placeholderapi.placeholders.PlayersPlaceholders;
 import pl.ynfuien.yvanish.hooks.placeholderapi.placeholders.PlayerPlaceholders;
+import pl.ynfuien.yvanish.hooks.placeholderapi.placeholders.PlayersPlaceholders;
 
 public class PlaceholderAPIHook extends PlaceholderExpansion {
     private final YVanish instance;
