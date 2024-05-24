@@ -116,7 +116,10 @@ public class VanishOptionsCommand extends YCommand {
 
         Player p = Bukkit.getPlayer(args[0]);
         placeholders.put("player", args[0]);
-        if (p == null) {
+        // Offline player or hidden
+        boolean playerOffline = p == null || (sender instanceof Player player && !player.canSee(p));
+
+        if (playerOffline) {
             Lang.Message.COMMAND_VANISHOPTIONS_FAIL_PLAYER_ISNT_ONLINE.send(sender, placeholders);
             return;
         }

@@ -44,8 +44,10 @@ public class VanishCommand extends YCommand {
 
         Player player = Bukkit.getPlayer(args[0]);
         placeholders.put("player", args[0]);
+        // Offline player or hidden
+        boolean playerOffline = player == null || (sender instanceof Player p && !p.canSee(player));
 
-        if (player == null) {
+        if (playerOffline) {
             Lang.Message.COMMAND_VANISH_FAIL_PLAYER_DOESNT_EXIST.send(sender, placeholders);
             return;
         }
