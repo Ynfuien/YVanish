@@ -97,6 +97,7 @@ public class VanishCommand extends YCommand {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         List<String> completions = new ArrayList<>();
+        if (!sender.hasPermission(YVanish.Permissions.VANISH_OTHERS.get())) return completions;
         if (args.length > 2) return completions;
 
         // Player list
