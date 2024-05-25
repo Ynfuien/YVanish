@@ -5,7 +5,9 @@
 # YVanish
 And at last, a vanish plugin, **the** vanish plugin! You may ask, "Wh**Y** yet another vanish?" (Hence the "Y" in the name ;p). And I come with the answer. It's because every other plugin (*every* meaning [3 that I tested](https://github.com/Ynfuien/YVanish/wiki/6.-Plugin-comparison)), let through a few packets that revealed vanished players. Also, I wanted silent chests done correctly, not with the spectator "trick".
 
-Supports **Paper** 1.20 - 1.20.4. For 1.20.6 gotta wait for ProtocolLib to update.
+Supports **Paper** 1.20 - 1.20.4.<br/>
+For full functionality, depends on [ProtocolLib](https://github.com/dmulloy2/ProtocolLib/) and its [dev builds](https://ci.dmulloy2.net/job/ProtocolLib/).<br/>
+1.20.6 support when ProtocolLib updates.
 
 # Features
 ### Vanish (well, duh)
