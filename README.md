@@ -37,7 +37,11 @@ You can download the plugin only on [Modrinth](https://modrinth.com/plugin/yvani
 You can read about plugin's [permissions](https://github.com/Ynfuien/YVanish/wiki/2.-Permissions), [placeholders](https://github.com/Ynfuien/YVanish/wiki/3.-Placeholders) etc. on the [wiki](https://github.com/Ynfuien/YVanish/wiki) page.
 
 # Media
-![item name](https://i.imgur.com/WhpHY5b.gif)
+Vanish options<br/>
+![vanish options](https://i.imgur.com/5NfhYlv.gif)
+
+Silent chests<br/>
+![silent chests](https://i.imgur.com/UcsLPJX.gif)
 
 # License
 This project uses [GNU GPLv3](https://github.com/Ynfuien/YVanish/main/blob/LICENSE) license.
