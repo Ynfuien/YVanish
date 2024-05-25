@@ -10,7 +10,7 @@
     <packaging>jar</packaging>
 
     <name>YVanish</name>
-    <url>https://github.com/Ynfuien/YVanish</url>
+    <url>https://modrinth.com/project/yvanish</url>
 
     <properties>
         <java.version>17</java.version>
