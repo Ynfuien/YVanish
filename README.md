@@ -1,4 +1,4 @@
-**Project still is WIP - README is far from finished, it contains not working placeholders (urls, pictures)**
+**Project is still WIP, though everything should work fine.**
 
 [![Discord](https://img.shields.io/discord/1236019317208776786?style=flat&logo=discord&label=Discord&color=%235d6af2
 )](https://discord.gg/kZJhKZ48j8)
@@ -31,7 +31,7 @@ Opened chests (normal, trapped, ender), shulker boxes and barrels work just like
 Almost every option can be changed per player with a `/vanishoptions` (`/vo`) command. Allowing for use of appropriate features in appropriate situations. Command and subcommands have associated permissions so customizability shouldn't be a problem.
 
 # Download
-You can download the plugin only on [Modrinth](https://modrinth.com/plugin/yvanish), or compile it yourself.
+You can download the plugin only on [Modrinth](https://modrinth.com/plugin/yvanish) or compile it yourself.
 
 # Documentation
 You can read about plugin's [permissions](https://github.com/Ynfuien/YVanish/wiki/2.-Permissions), [placeholders](https://github.com/Ynfuien/YVanish/wiki/3.-Placeholders) etc. on the [wiki](https://github.com/Ynfuien/YVanish/wiki) page.
