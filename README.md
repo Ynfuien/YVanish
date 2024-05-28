@@ -19,6 +19,10 @@ For full functionality, depends on [ProtocolLib](https://github.com/dmulloy2/Pro
 ### Silent chests
 Opened chests (normal, trapped, ender), shulker boxes and barrels work just like vanish. You can see when normal players do it, but they can't see you do it. Accomplished with virgin tears, sweat of a troll and a unicorn horn. Ah and also pinch of ProtocolLib dark magic.
 
+### Cultural mobs
+An option to stop mobs from randomly staring at a player. What's good of being invisible if all mobs coincidentally look all in one direction? Exactly, not much.<br/>
+*Doesn't work with mobs using a different AI system like villagers, piglins, hoglins and some more.
+
 ### Other
 - silent sculk sensors
 - silent advancement and death messages

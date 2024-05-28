@@ -17,6 +17,7 @@ public class PluginConfig {
     public static boolean silentQuit = true;
     public static boolean ignoreSleep = true;
     public static ListenerPriority packetListenersPriority = null;
+    public static boolean mobsNoStaring = true;
     public static boolean silentChests = true;
     public static boolean silentSculk = true;
     public static boolean silentMessages = true;
@@ -53,6 +54,8 @@ public class PluginConfig {
                 YLogger.warn("[Config] Provided priority '%s' for packet-listeners-priority is incorrect! Will be used priority HIGH.");
             }
         }
+
+        mobsNoStaring = vanish.getBoolean("mobs-no-staring");
 
         ConfigurationSection defaultOptions = vanish.getConfigurationSection("default-options");
         silentChests = defaultOptions.getBoolean("silent-chests");

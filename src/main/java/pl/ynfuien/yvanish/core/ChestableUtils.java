@@ -29,6 +29,10 @@ public class ChestableUtils {
     private static final HashMap<World, Boolean> catDetectionByWorld = new HashMap<>();
     public static void setupCatDetection(YVanish instance) {
         // I know, future-proof AF
+
+        // LOL, I didn't see Bukkit.getServer().spigot().getPaperConfig() before.
+        // Will have to change this... someday
+
         Bukkit.getScheduler().runTaskAsynchronously(instance, () -> {
             boolean defaultValue = true;
 

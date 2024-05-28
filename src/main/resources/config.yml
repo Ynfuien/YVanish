@@ -47,6 +47,14 @@ vanish:
   # Don't change it, if you don't know what you are doing.
   packet-listeners-priority: HIGH
 
+  # Whether no-mobs option should also prevent mobs from staring
+  # at a vanished player. Uses Paper's Goal API to remove and
+  # add custom goals. It *might* cause compatibility issues
+  # with other plugins also relaying on this API.
+  # ! Changing this option on <1.20.6 requires server restart !
+  # ! to take a full effect. !
+  mobs-no-staring: true
+
   # Options that will be enabled by default for vanished players,
   # until they turn them on/off for themselves using /vanishoptions.
   default-options:
@@ -79,7 +87,6 @@ vanish:
     no-pickup: false
 
     # This will prevent monsters from targeting a vanished player.
-    # ! Won't prevent mobs from staring at the player !
     no-mobs: true
 
     # Action bar message that does nothing except being there.

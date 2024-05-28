@@ -19,6 +19,7 @@ import pl.ynfuien.yvanish.config.PluginConfig;
 import pl.ynfuien.yvanish.core.ActionAndBossBars;
 import pl.ynfuien.yvanish.core.ChestableUtils;
 import pl.ynfuien.yvanish.core.VanishManager;
+import pl.ynfuien.yvanish.core.mobsstaring.StopMobsStaring;
 import pl.ynfuien.yvanish.data.Database;
 import pl.ynfuien.yvanish.data.MysqlDatabase;
 import pl.ynfuien.yvanish.data.SqliteDatabase;
@@ -82,8 +83,8 @@ public final class YVanish extends JavaPlugin {
         ActionAndBossBars.setup(this);
         ActionAndBossBars.startIntervals();
 
-//        StopMobsStaring.setup(this);
-//        StopMobsStaring.startInterval();
+        StopMobsStaring.setup(this);
+        StopMobsStaring.startInterval();
 
         new Metrics(this, 21793);
 
@@ -182,8 +183,8 @@ public final class YVanish extends JavaPlugin {
         ActionAndBossBars.stopIntervals();
         ActionAndBossBars.startIntervals();
 
-//        StopMobsStaring.stopInterval();
-//        StopMobsStaring.startInterval();
+        StopMobsStaring.stopInterval();
+        StopMobsStaring.startInterval();
 
         reloading = false;
         return true;
