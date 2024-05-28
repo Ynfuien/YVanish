@@ -6,10 +6,11 @@
 
     <groupId>pl.ynfuien</groupId>
     <artifactId>YVanish</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <packaging>jar</packaging>
 
     <name>YVanish</name>
+    <description>Plugin that vanishes players, but this time for real.</description>
     <url>https://modrinth.com/project/yvanish</url>
 
     <properties>
