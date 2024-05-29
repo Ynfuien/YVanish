@@ -33,12 +33,12 @@ public class MysqlDatabase extends Database {
         }
 
         usersTableName = config.getString("table");
-        return true;
+        return createUsersTable();
     }
 
     @Override
     public boolean createUsersTable() {
-        String query = String.format("CREATE TABLE `%s` (`id` INT NOT NULL AUTO_INCREMENT, `uuid` VARCHAR(36) NOT NULL, `silent_chests` BIT DEFAULT -1, `silent_sculk` BIT DEFAULT -1, `silent_messages` BIT DEFAULT -1, `no_pickup` BIT DEFAULT -1, `no_mobs` BIT DEFAULT -1, `action_bar` BIT DEFAULT -1, `boss_bar` BIT DEFAULT -1, PRIMARY KEY (`id`)) ENGINE = InnoDB;", usersTableName);
+        String query = String.format("CREATE TABLE `%s` (`id` INT NOT NULL AUTO_INCREMENT, `uuid` VARCHAR(36) NOT NULL, `silent_chests` TINYINT DEFAULT -1, `silent_sculk` TINYINT DEFAULT -1, `silent_messages` TINYINT DEFAULT -1, `no_pickup` TINYINT DEFAULT -1, `no_mobs` TINYINT DEFAULT -1, `action_bar` TINYINT DEFAULT -1, `boss_bar` TINYINT DEFAULT -1, PRIMARY KEY (`id`)) ENGINE = InnoDB;", usersTableName);
 
         try (Connection conn = dbSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.execute();

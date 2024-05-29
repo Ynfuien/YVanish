@@ -29,7 +29,7 @@ public class SqliteDatabase extends Database {
         }
 
         usersTableName = config.getString("table");
-        return true;
+        return createUsersTable();
     }
 
     @Override

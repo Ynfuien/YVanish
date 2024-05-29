@@ -58,24 +58,26 @@ public final class YVanish extends JavaPlugin {
         instance = this;
         YLogger.setup("<dark_aqua>[<aqua>Y<gradient:white:#ADE1FF>Vanish</gradient><dark_aqua>] <white>", getComponentLogger());
 
+        // Configs
         loadConfigs();
         loadLang();
 
         config = configHandler.get(ConfigName.CONFIG);
         PluginConfig.load(config.getConfig());
 
-
+        // Database
         database = getDatabase(PluginConfig.database);
         if (database == null || !database.setup(PluginConfig.database)) {
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
-        database.createUsersTable();
         Storage.setup(this);
 
+        // Commands, listeners
         setupCommands();
         registerListeners();
 
+        // Vanish functionalities
         Hooks.load(this);
 
         ChestableUtils.setupCatDetection(this);
@@ -86,6 +88,7 @@ public final class YVanish extends JavaPlugin {
         StopMobsStaring.setup(this);
         StopMobsStaring.startInterval();
 
+        // BStats
         new Metrics(this, 21793);
 
         YLogger.info("Plugin successfully <green>enabled<white>!");
@@ -95,6 +98,9 @@ public final class YVanish extends JavaPlugin {
     @Override
     public void onDisable() {
         if (database != null) database.close();
+
+        ActionAndBossBars.stopIntervals();
+        StopMobsStaring.stopInterval();
 
         YLogger.info("Plugin successfully <red>disabled<white>!");
     }
