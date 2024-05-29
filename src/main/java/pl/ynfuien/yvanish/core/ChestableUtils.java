@@ -6,9 +6,8 @@ import org.bukkit.World;
 import org.bukkit.block.*;
 import org.bukkit.block.data.Directional;
 import org.bukkit.block.data.type.Chest;
-import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Cat;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -16,11 +15,8 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.BlockInventoryHolder;
 import org.bukkit.inventory.DoubleChestInventory;
 import org.bukkit.util.BoundingBox;
-import pl.ynfuien.ydevlib.messages.YLogger;
 import pl.ynfuien.yvanish.YVanish;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -29,48 +25,32 @@ public class ChestableUtils {
     private static final HashMap<World, Boolean> catDetectionByWorld = new HashMap<>();
     public static void setupCatDetection(YVanish instance) {
         // I know, future-proof AF
-
-        // LOL, I didn't see Bukkit.getServer().spigot().getPaperConfig() before.
-        // Will have to change this... someday
-
         Bukkit.getScheduler().runTaskAsynchronously(instance, () -> {
-            boolean defaultValue = true;
+            final String SETTING_PATH = "entities.behavior.disable-chest-cat-detection";
 
-            File worldDefaultFile = new File("./config/paper-world-defaults.yml");
-            if (!worldDefaultFile.exists()) return;
+            FileConfiguration config = Bukkit.getServer().spigot().getPaperConfig();
+            ConfigurationSection worlds = config.getConfigurationSection("__________WORLDS__________");
 
-            FileConfiguration defaultConfig = getFileConfig(worldDefaultFile);
-            if (defaultConfig == null) return;
+            // Default value
+            boolean defaultValue = false;
+            if (worlds != null) {
+                ConfigurationSection defaultSection = worlds.getConfigurationSection("__defaults__");
+                if (defaultSection != null && defaultSection.isSet(SETTING_PATH)) {
+                    defaultValue = defaultSection.getBoolean(SETTING_PATH);
+                }
+            }
 
-            String path = "entities.behavior.disable-chest-cat-detection";
-            if (defaultConfig.isSet(path)) defaultValue = !defaultConfig.getBoolean(path);
-
+            // Worlds
             for (World world : Bukkit.getWorlds()) {
-                File worldFile = new File(world.getWorldFolder(), "paper-world.yml");
-                FileConfiguration worldConfig = getFileConfig(worldFile);
-                if (worldConfig == null) continue;
-
                 boolean value = defaultValue;
-                if (worldConfig.isSet(path)) value = !worldConfig.getBoolean(path);
+                ConfigurationSection worldConfig = worlds.getConfigurationSection(world.getName());
+                if (worldConfig != null && worldConfig.isSet(SETTING_PATH)) {
+                    value = worldConfig.getBoolean(SETTING_PATH);
+                }
 
-                catDetectionByWorld.put(world, value);
+                catDetectionByWorld.put(world, !value);
             }
         });
-    }
-
-    private static FileConfiguration getFileConfig(File file) {
-        if (!file.exists()) {
-            YLogger.debug(file.getPath());
-            return null;
-        }
-
-        FileConfiguration config = new YamlConfiguration();
-        try {
-            config.load(file);
-            return config;
-        } catch (IOException | InvalidConfigurationException e) {
-            return null;
-        }
     }
 
     private static final List<InventoryType> CHESTABLE_INVENTORY_TYPES = List.of(
@@ -151,22 +131,19 @@ public class ChestableUtils {
             if (doubleChest == null) return true;
 
             BlockInventoryHolder leftSide = (BlockInventoryHolder) doubleChest.getLeftSide();
-            Block blockAbove = leftSide.getBlock().getRelative(BlockFace.UP);
-            if (isBlockBlocked(blockAbove)) return false;
+            if (leftSide != null && isBlockBlocked(leftSide.getBlock())) return false;
 
-            BlockInventoryHolder rightSide = (BlockInventoryHolder) doubleChest.getLeftSide();
-            blockAbove = rightSide.getBlock().getRelative(BlockFace.UP);
-            return !isBlockBlocked(blockAbove);
+            BlockInventoryHolder rightSide = (BlockInventoryHolder) doubleChest.getRightSide();
+            return !(rightSide != null && isBlockBlocked(rightSide.getBlock()));
         }
 
         // Single chests (normal, trapped, ender)
-        Block blockAbove = block.getRelative(BlockFace.UP);
-        return !isBlockBlocked(blockAbove);
+        return !isBlockBlocked(block);
     }
 
     // Just a shorthand function
     private static boolean isBlockBlocked(Block block) {
-        if (block.getType().isOccluding()) return true;
+        if (block.getRelative(BlockFace.UP).getType().isOccluding()) return true;
         if (isCatBlockingChest(block)) return true;
 
         return false;
@@ -178,6 +155,8 @@ public class ChestableUtils {
      * @return Whether cat is sitting on the chest
      */
     private static boolean isCatBlockingChest(Block block) {
+        if (block.getType().equals(Material.ENDER_CHEST)) return false;
+
         // Check for Paper's 'disable-chest-cat-detection' config option
         World world = block.getLocation().getWorld();
         if (catDetectionByWorld.containsKey(world) && !catDetectionByWorld.get(world)) return false;
