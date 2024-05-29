@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pl.ynfuien.yvanish.YVanish;
-import pl.ynfuien.yvanish.utils.Lang;
 
 import java.util.ArrayList;
 import java.util.Arrays;
