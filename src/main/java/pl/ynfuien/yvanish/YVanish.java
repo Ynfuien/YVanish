@@ -51,8 +51,6 @@ public final class YVanish extends JavaPlugin {
     private Database database = null;
     private ConfigObject config;
 
-    private boolean reloading = false;
-
     @Override
     public void onEnable() {
         instance = this;
@@ -176,8 +174,6 @@ public final class YVanish extends JavaPlugin {
     }
 
     public boolean reloadPlugin() {
-        reloading = true;
-
         // Reload all configs
         configHandler.reloadAll();
 
@@ -192,14 +188,8 @@ public final class YVanish extends JavaPlugin {
         StopMobsStaring.stopInterval();
         StopMobsStaring.startInterval();
 
-        reloading = false;
         return true;
     }
-
-    public boolean isReloading() {
-        return reloading;
-    }
-
 
     public static YVanish getInstance() {
         return instance;

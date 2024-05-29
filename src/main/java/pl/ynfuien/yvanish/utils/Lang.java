@@ -68,7 +68,6 @@ public class Lang {
     // Messages enum
     public enum Message {
         PREFIX,
-        PLUGIN_IS_RELOADING,
 
         // Main command
         COMMAND_MAIN_USAGE,

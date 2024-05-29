@@ -30,8 +30,6 @@
 # Prefix that will be used for {prefix} placeholder
 prefix: '<dark_aqua>[<bold><aqua>Y<gradient:white:#ADE1FF>Vanish</gradient></bold><dark_aqua>]<reset>'
 
-plugin-is-reloading: '{prefix} <red>Plugin is reloading, wait a second..'
-
 # Main
 command-main-usage: '{prefix} <gray>Command''s usage: /{command} <reload | version>'
 command-main-fail-no-permission: '{prefix} <red>You don''t have permission for this command!'

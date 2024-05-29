@@ -32,12 +32,6 @@ public abstract class YCommand implements CommandExecutor, TabCompleter {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         HashMap<String, Object> placeholders = new HashMap<>() {{put("command", label);}};
 
-        // Return if plugin is reloading
-        if (YVanish.getInstance().isReloading()) {
-            Lang.Message.PLUGIN_IS_RELOADING.send(sender, placeholders);
-            return true;
-        }
-
         run(sender, args, placeholders);
         return true;
     }
