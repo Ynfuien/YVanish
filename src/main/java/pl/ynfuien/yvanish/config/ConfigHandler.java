@@ -53,22 +53,26 @@ public class ConfigHandler {
         }
     }
 
-    public void reloadAll() {
+    public boolean reloadAll() {
+        boolean noProblems = true;
+
         for (ConfigObject configObject : configs.values()) {
             String name = configObject.getName().getFileName();
 
             logInfo(String.format("Reloading config '%s'...", name));
             String oldConfig = configObject.getConfig().saveToString();
-            if (configObject.load() == null) {
-                logError(String.format("Config '%s' couldn't be reloaded!", name));
-                try {
-                    configObject.getConfig().loadFromString(oldConfig);
-                } catch (InvalidConfigurationException e) {
-                    throw new RuntimeException(e);
-                }
-                continue;
+            if (configObject.load() != null) continue;
+
+            noProblems = false;
+            logError(String.format("Config '%s' couldn't be reloaded!", name));
+            try {
+                configObject.getConfig().loadFromString(oldConfig);
+            } catch (InvalidConfigurationException e) {
+                throw new RuntimeException(e);
             }
         }
+
+        return noProblems;
     }
 
     public ConfigObject get(ConfigName name) {
@@ -88,6 +92,7 @@ public class ConfigHandler {
     private void logError(String message) {
         YLogger.warn("[Configs] " + message);
     }
+
     private void logInfo(String message) {
         YLogger.info("[Configs] " + message);
     }

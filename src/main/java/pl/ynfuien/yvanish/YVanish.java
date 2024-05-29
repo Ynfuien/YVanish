@@ -175,7 +175,7 @@ public final class YVanish extends JavaPlugin {
 
     public boolean reloadPlugin() {
         // Reload all configs
-        configHandler.reloadAll();
+        boolean fullSuccess = configHandler.reloadAll();
 
         PluginConfig.load(config.getConfig());
 
@@ -188,7 +188,7 @@ public final class YVanish extends JavaPlugin {
         StopMobsStaring.stopInterval();
         StopMobsStaring.startInterval();
 
-        return true;
+        return fullSuccess;
     }
 
     public static YVanish getInstance() {
