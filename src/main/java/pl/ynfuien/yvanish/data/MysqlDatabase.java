@@ -38,7 +38,7 @@ public class MysqlDatabase extends Database {
 
     @Override
     public boolean createUsersTable() {
-        String query = String.format("CREATE TABLE `%s` (`id` INT NOT NULL AUTO_INCREMENT, `uuid` VARCHAR(36) NOT NULL, `silent_chests` TINYINT DEFAULT -1, `silent_sculk` TINYINT DEFAULT -1, `silent_messages` TINYINT DEFAULT -1, `no_pickup` TINYINT DEFAULT -1, `no_mobs` TINYINT DEFAULT -1, `action_bar` TINYINT DEFAULT -1, `boss_bar` TINYINT DEFAULT -1, PRIMARY KEY (`id`)) ENGINE = InnoDB;", usersTableName);
+        String query = String.format("CREATE TABLE IF NOT EXISTS `%s` (`id` INT NOT NULL AUTO_INCREMENT, `uuid` VARCHAR(36) NOT NULL, `silent_chests` TINYINT DEFAULT -1, `silent_sculk` TINYINT DEFAULT -1, `silent_messages` TINYINT DEFAULT -1, `no_pickup` TINYINT DEFAULT -1, `no_mobs` TINYINT DEFAULT -1, `action_bar` TINYINT DEFAULT -1, `boss_bar` TINYINT DEFAULT -1, PRIMARY KEY (`id`)) ENGINE = InnoDB;", usersTableName);
 
         try (Connection conn = dbSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.execute();
