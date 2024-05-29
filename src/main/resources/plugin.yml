@@ -1,7 +1,7 @@
 name: '${project.name}'
 version: '${project.version}'
 main: pl.ynfuien.yvanish.YVanish
-api-version: '1.20'
+api-version: '1.13'
 softdepend: [ ProtocolLib, PlaceholderAPI, LuckPerms ]
 author: Ynfuien
 description: '${project.description}'
