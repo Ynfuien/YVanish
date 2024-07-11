@@ -4,6 +4,7 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import pl.ynfuien.yvanish.YVanish;
+import pl.ynfuien.yvanish.hooks.placeholderapi.placeholders.OnlinePlayersPlaceholders;
 import pl.ynfuien.yvanish.hooks.placeholderapi.placeholders.PlayerPlaceholders;
 import pl.ynfuien.yvanish.hooks.placeholderapi.placeholders.PlayersPlaceholders;
 
@@ -17,7 +18,8 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
 
         placeholders = new Placeholder[] {
             new PlayerPlaceholders(instance),
-            new PlayersPlaceholders(instance)
+            new PlayersPlaceholders(instance),
+            new OnlinePlayersPlaceholders(instance)
         };
     }
 
@@ -33,7 +35,7 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
 
     @Override @NotNull
     public String getVersion() {
-        return "0.0.1";
+        return instance.getPluginMeta().getVersion();
     }
 
     @Override
