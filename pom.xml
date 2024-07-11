@@ -40,6 +40,15 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <!--    Disable paper remapping-->
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <manifestEntries>
+                                        <paperweight-mappings-namespace>mojang</paperweight-mappings-namespace>
+                                    </manifestEntries>
+                                </transformer>
+                            </transformers>
+
                             <filters>
                                 <filter>
                                     <artifact>*.*</artifact>
