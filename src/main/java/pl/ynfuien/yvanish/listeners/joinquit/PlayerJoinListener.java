@@ -28,7 +28,7 @@ public class PlayerJoinListener implements Listener {
     }
 
     // Hide on join
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player p = event.getPlayer();
 

@@ -23,7 +23,7 @@ public class PlayerQuitListener implements Listener {
     }
 
     // Remove player from cache and hide quit message
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player p = event.getPlayer();
 

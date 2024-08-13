@@ -19,7 +19,7 @@ public class PlayerLoginListener implements Listener {
     }
 
     // Hide on join
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerLogin(PlayerLoginEvent event) {
         if (!PluginConfig.onJoinEnabled) return;
         if (!event.getResult().equals(PlayerLoginEvent.Result.ALLOWED)) return;
