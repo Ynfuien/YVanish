@@ -3,12 +3,12 @@ package pl.ynfuien.yvanish.hooks;
 import org.bukkit.Bukkit;
 import pl.ynfuien.ydevlib.messages.YLogger;
 import pl.ynfuien.yvanish.YVanish;
+import pl.ynfuien.yvanish.hooks.essentials.EssentialsHook;
 import pl.ynfuien.yvanish.hooks.luckperms.LuckPermsHook;
 import pl.ynfuien.yvanish.hooks.placeholderapi.PlaceholderAPIHook;
 import pl.ynfuien.yvanish.hooks.protocollib.ProtocolLibHook;
 
 public class Hooks {
-//    private static PlaceholderAPIHook papiHook = null;
     private static ProtocolLibHook protocolLibHook = null;
 
     public static void load(YVanish instance) {
@@ -16,7 +16,6 @@ public class Hooks {
         if (isPluginEnabled(Plugin.PAPI)) {
             PlaceholderAPIHook papiHook = new PlaceholderAPIHook(instance);
             if (!papiHook.register()) {
-                papiHook = null;
                 YLogger.error("[Hooks] Something went wrong while registering PlaceholderAPI hook!");
             }
             else {
@@ -38,6 +37,13 @@ public class Hooks {
             new LuckPermsHook(instance);
             YLogger.info("[Hooks] Successfully registered hook for LuckPerms!");
         }
+
+
+        // Register EssentialsX hook
+        if (isPluginEnabled(Plugin.ESSENTIALS)) {
+            new EssentialsHook(instance);
+            YLogger.info("[Hooks] Successfully registered hook for EssentialsX!");
+        }
     }
 
     public static boolean isProtocolLibHookEnabled() {
@@ -51,7 +57,8 @@ public class Hooks {
     public enum Plugin {
         PAPI("PlaceholderAPI"),
         PROTOCOLLIB("ProtocolLib"),
-        LUCKPERMS("LuckPerms");
+        LUCKPERMS("LuckPerms"),
+        ESSENTIALS("Essentials");
 
         private final String name;
         Plugin(String name) {

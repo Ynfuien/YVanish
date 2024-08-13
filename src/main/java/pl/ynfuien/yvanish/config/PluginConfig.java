@@ -18,6 +18,7 @@ public class PluginConfig {
     public static boolean ignoreSleep = true;
     public static ListenerPriority packetListenersPriority = null;
     public static boolean mobsNoStaring = true;
+    public static boolean hooksEssentialsX = true;
     public static boolean silentChests = true;
     public static boolean silentSculk = true;
     public static boolean silentMessages = true;
@@ -56,6 +57,9 @@ public class PluginConfig {
         }
 
         mobsNoStaring = vanish.getBoolean("mobs-no-staring");
+
+        ConfigurationSection hooks = vanish.getConfigurationSection("hooks");
+        hooksEssentialsX = hooks.getBoolean("essentials-x");
 
         ConfigurationSection defaultOptions = vanish.getConfigurationSection("default-options");
         silentChests = defaultOptions.getBoolean("silent-chests");

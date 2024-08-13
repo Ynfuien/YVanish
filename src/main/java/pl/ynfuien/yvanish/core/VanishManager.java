@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.ynfuien.yvanish.YVanish;
 import pl.ynfuien.yvanish.config.PluginConfig;
+import pl.ynfuien.yvanish.hooks.essentials.EssentialsHook;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -32,6 +33,7 @@ public class VanishManager {
         vanishedPlayers.add(player);
         refresh();
 
+        EssentialsHook.vanishPlayer(player);
         return true;
     }
 
@@ -48,6 +50,8 @@ public class VanishManager {
             p.showPlayer(instance, player);
         }
         refresh();
+
+        EssentialsHook.unvanishPlayer(player);
         return true;
     }
 

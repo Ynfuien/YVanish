@@ -55,6 +55,15 @@ vanish:
   # ! to take a full effect. !
   mobs-no-staring: true
 
+  hooks:
+    # Whether to sync vanish status with EssentialsX (sync only one-way).
+    # This should provide more compatibility with Essentials commands,
+    # placeholders and general functionality. But it also has it's
+    # downfalls, like.. for example... using Essentials. You probably
+    # would be better off finding alternatives for the functionality
+    # that you actually need.
+    essentials-x: false
+
   # Options that will be enabled by default for vanished players,
   # until they turn them on/off for themselves using /vanishoptions.
   default-options:
