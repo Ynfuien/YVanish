@@ -2,73 +2,15 @@ package pl.ynfuien.yvanish.utils;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.jetbrains.annotations.Nullable;
+import pl.ynfuien.ydevlib.messages.LangBase;
 import pl.ynfuien.ydevlib.messages.Messenger;
-import pl.ynfuien.ydevlib.messages.YLogger;
+import pl.ynfuien.ydevlib.messages.colors.ColorFormatter;
 
 import java.util.HashMap;
-import java.util.List;
 
-public class Lang {
-    private static String prefix;
-    private static FileConfiguration langConfig;
-
-    public static void loadLang(FileConfiguration langConfig) {
-        Lang.langConfig = langConfig;
-        prefix = Message.PREFIX.get();
-    }
-
-    // Gets message by message enum
-    @Nullable
-    public static String get(Message message) {
-        return get(message.getName());
-    }
-    // Gets message by path
-    @Nullable
-    public static String get(String path) {
-        return langConfig.getString(path);
-    }
-    // Gets message by path and replaces placeholders
-    @Nullable
-    public static String get(String path, HashMap<String, Object> placeholders) {
-        placeholders.put("prefix", prefix);
-        // Return message with used placeholders
-        return Messenger.parsePluginPlaceholders(langConfig.getString(path), placeholders);
-    }
-
-    public static void sendMessage(CommandSender sender, Message message) {
-        sendMessage(sender, message.getName());
-    }
-    public static void sendMessage(CommandSender sender, String path) {
-        sendMessage(sender, path, new HashMap<>());
-    }
-    public static void sendMessage(CommandSender sender, String path, HashMap<String, Object> placeholders) {
-        List<String> messages;
-
-        if (!langConfig.isSet(path)) {
-            YLogger.error(String.format("There is no message '%s'!", path));
-            return;
-        }
-
-        if (langConfig.isList(path)) messages = langConfig.getStringList(path);
-        else messages = List.of(langConfig.getString(path));
-
-        for (String message : messages) {
-            // Return if message is empty
-            if (message.isEmpty()) continue;
-
-            // Get message with used placeholders
-            placeholders.put("prefix", prefix);
-
-            Messenger.send(sender, message, placeholders);
-        }
-    }
-
-    // Messages enum
-    public enum Message {
+public class Lang extends LangBase {
+    public enum Message implements LangBase.Message {
         PREFIX,
-
         // Main command
         COMMAND_MAIN_USAGE,
         COMMAND_MAIN_RELOAD_FAIL,
@@ -110,32 +52,72 @@ public class Lang {
         COMMAND_VANISHOPTIONS_SUCCESS_DISABLE_OTHER,
         ;
 
-
-        // Gets message name
+        /**
+         * Gets name/path of this message.
+         */
+        @Override
         public String getName() {
             return name().toLowerCase().replace('_', '-');
         }
 
-        // Gets message
+        /**
+         * Gets original unformatted message.
+         */
         public String get() {
             return Lang.get(getName());
         }
-        // Gets message with replaced normal placeholders
+
+        /**
+         * Gets message with parsed:
+         * - {prefix} placeholder
+         * - additional provided placeholders
+         */
         public String get(HashMap<String, Object> placeholders) {
             return Lang.get(getName(), placeholders);
         }
-        // Gets component message with replaced all placeholders
-        public Component get(CommandSender sender, HashMap<String, Object> placeholders) {
+
+        /**
+         * Gets message with parsed:
+         * - PlaceholderAPI
+         * - {prefix} placeholder
+         * - additional provided placeholders
+         */
+        public String get(CommandSender sender, HashMap<String, Object> placeholders) {
+            return ColorFormatter.parsePAPI(sender, Lang.get(getName(), placeholders));
+        }
+
+        /**
+         * Gets message as component with parsed:
+         * - MiniMessage
+         * - PlaceholderAPI
+         * - {prefix} placeholder
+         * - additional provided placeholders
+         */
+        public Component getComponent(CommandSender sender, HashMap<String, Object> placeholders) {
             return Messenger.parseMessage(sender, Lang.get(getName()), placeholders);
         }
 
-        // Sends message
+        /**
+         * Sends this message to provided sender.<br/>
+         * Parses:<br/>
+         * - MiniMessage<br/>
+         * - PlaceholderAPI<br/>
+         * - {prefix} placeholder
+         */
         public void send(CommandSender sender) {
-            Lang.sendMessage(sender, getName());
+            this.send(sender, new HashMap<>());
         }
-        // Sends message with replaced placeholders
+
+        /**
+         * Sends this message to provided sender.<br/>
+         * Parses:<br/>
+         * - MiniMessage<br/>
+         * - PlaceholderAPI<br/>
+         * - {prefix} placeholder<br/>
+         * - additional provided placeholders
+         */
         public void send(CommandSender sender, HashMap<String, Object> placeholders) {
-            Lang.sendMessage(sender, getName(), placeholders);
+            Lang.sendMessage(sender, this, placeholders);
         }
     }
 }
