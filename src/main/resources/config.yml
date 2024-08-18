@@ -137,10 +137,7 @@ vanish:
       progress: 1
       # Additional flags, probably useless in this use case. List:
       # https://jd.advntr.dev/api/4.14.0/net/kyori/adventure/bossbar/BossBar.Flag.html
-      flags:
-#        - CREATE_WORLD_FOG
-#        - DARKEN_SCREEN
-#        - PLAY_BOSS_MUSIC
+      flags: []
 
     # Sends fake join/quit message when you toggle vanish.
     # You can change messages in the lang file.
