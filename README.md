@@ -3,7 +3,6 @@
 # YVanish
 And at last, a vanish plugin, **the** vanish plugin! You may ask, "Wh**Y** yet another vanish?" (Hence the "Y" in the name ;p). And I come with the answer. It's because every other plugin (*every* meaning [3 that I tested](https://github.com/Ynfuien/YVanish/wiki/6.-Plugin-comparison)), let through a few packets that revealed vanished players. Also, I wanted silent chests done correctly, not with the spectator "trick".
 
-Supports **Paper** 1.20 - 1.21<br/>
 For full functionality, depends on [ProtocolLib](https://github.com/dmulloy2/ProtocolLib/) and its [dev builds](https://ci.dmulloy2.net/job/ProtocolLib/).<br/>
 
 # Features
@@ -26,6 +25,7 @@ An option to stop mobs from randomly staring at a player. What's good of being i
 - disabled item and exp pickup
 - hidden from monsters targeting
 - action and boss bar for custom messages
+- option for fake join/quit messages
 - Fully customizable messages with a lang file, supporting [PlaceholderAPI](https://github.com/PlaceholderAPI/PlaceholderAPI) and [MiniMessage](https://docs.advntr.dev/minimessage/index.html)
 - Commands with tab completions
 - [API](https://github.com/Ynfuien/YVanish/wiki/4.-Developer-API) for developers

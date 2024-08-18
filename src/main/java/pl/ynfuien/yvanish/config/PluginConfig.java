@@ -35,6 +35,8 @@ public class PluginConfig {
     public static BossBar.Overlay bossBarOverlay = BossBar.Overlay.PROGRESS;
     public static float bossBarProgress = 1;
     public static Set<BossBar.Flag> bossBarFlags = new HashSet<>();
+
+    public static boolean fakeJoin = false;
     public static boolean changeServerStatus = true;
 
     public static void load(ConfigurationSection config) {
@@ -79,6 +81,8 @@ public class PluginConfig {
         bossBarEnabled = bossBar.getBoolean("enabled");
         bossBarRefreshRate = bossBar.getInt("refresh-rate");
         bossBarTitle = bossBar.getString("title");
+
+        fakeJoin = defaultOptions.getBoolean("fake-join");
 
         String color = bossBar.getString("color");
         try {

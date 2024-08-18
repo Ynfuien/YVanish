@@ -31,6 +31,8 @@ public class User {
     public Boolean actionBar = null;
     @Nullable
     public Boolean bossBar = null;
+    @Nullable
+    public Boolean fakeJoin = null;
 
     /**
      * <b>Constructor for internal use only!</b>
@@ -43,7 +45,7 @@ public class User {
      * <p>It's used in database get user methods,
      * to convert from byte values, to Boolean objects.</p>
      */
-    public User(byte silentChests, byte silentSculk, byte silentMessages, byte noPickup, byte noMobs, byte actionBar, byte bossBar) {
+    public User(byte silentChests, byte silentSculk, byte silentMessages, byte noPickup, byte noMobs, byte actionBar, byte bossBar, byte fakeJoin) {
         this.silentChests = sqlToBool(silentChests);
         this.silentSculk = sqlToBool(silentSculk);
         this.silentMessages = sqlToBool(silentMessages);
@@ -51,6 +53,7 @@ public class User {
         this.noMobs = sqlToBool(noMobs);
         this.actionBar = sqlToBool(actionBar);
         this.bossBar = sqlToBool(bossBar);
+        this.fakeJoin = sqlToBool(fakeJoin);
     }
 
     /**
@@ -102,6 +105,11 @@ public class User {
     @NotNull
     public Boolean getBossBar() {
         return bossBar != null ? bossBar : PluginConfig.bossBarEnabled;
+    }
+
+    @NotNull
+    public Boolean getFakeJoin() {
+        return fakeJoin != null ? fakeJoin : PluginConfig.fakeJoin;
     }
 
 
@@ -159,5 +167,13 @@ public class User {
      */
     public void setBossBar(@Nullable Boolean bossBar) {
         this.bossBar = bossBar;
+    }
+
+    /**
+     * <p>Sets fake-join option for this user.</p>
+     * <p>Set null to make the player use default value from the config.</p>
+     */
+    public void setFakeJoin(@Nullable Boolean fakeJoin) {
+        this.fakeJoin = fakeJoin;
     }
 }

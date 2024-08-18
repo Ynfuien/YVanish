@@ -25,6 +25,7 @@ import pl.ynfuien.yvanish.data.MysqlDatabase;
 import pl.ynfuien.yvanish.data.SqliteDatabase;
 import pl.ynfuien.yvanish.data.Storage;
 import pl.ynfuien.yvanish.hooks.Hooks;
+import pl.ynfuien.yvanish.listeners.fakejoin.VanishToggleListener;
 import pl.ynfuien.yvanish.listeners.joinquit.PlayerJoinListener;
 import pl.ynfuien.yvanish.listeners.joinquit.PlayerLoginListener;
 import pl.ynfuien.yvanish.listeners.joinquit.PlayerQuitListener;
@@ -142,7 +143,9 @@ public final class YVanish extends JavaPlugin {
                 // Vanish pvp
                 new EntityDamageByEntityListener(this),
                 // Server list ping
-                new PaperServerListPingListener(this)
+                new PaperServerListPingListener(this),
+                // Fake join/quit
+                new VanishToggleListener(this)
         };
 
         for (Listener listener : listeners) {

@@ -31,7 +31,8 @@ public class VanishOptionsCommand extends YCommand {
             new NoPickupOption(permissionBase),
             new NoMobsOption(permissionBase),
             new ActionBarOption(permissionBase),
-            new BossBarOption(permissionBase)
+            new BossBarOption(permissionBase),
+            new FakeJoinOption(permissionBase)
     };
 
     public VanishOptionsCommand(YVanish instance, String permission) {

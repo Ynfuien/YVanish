@@ -142,6 +142,11 @@ vanish:
 #        - DARKEN_SCREEN
 #        - PLAY_BOSS_MUSIC
 
+    # Sends fake join/quit message when you toggle vanish.
+    # You can change messages in the lang file.
+    fake-join: false
+
+
 # Whether to change server list ping data to hide vanished players.
 # It will remove them from online players count and from the sample players list.
 change-server-status: true

@@ -71,8 +71,16 @@ command-vanishoptions-description-no-pickup: 'Disables item and exp pickup'
 command-vanishoptions-description-no-mobs: 'Hides you from mobs'
 command-vanishoptions-description-action-bar: 'Shows action bar while vanished'
 command-vanishoptions-description-boss-bar: 'Shows boss bar while vanished'
+command-vanishoptions-description-fake-join: 'Fakes join/quit message on vanish toggle'
 command-vanishoptions-fail-player-isnt-online: '{prefix} <red>Provided player isn''t online!'
 command-vanishoptions-success-enable: '{prefix} <aqua><green>Enabled</green> option <dark_aqua>{option-name}</dark_aqua>!</aqua>'
 command-vanishoptions-success-disable: '{prefix} <aqua><red>Disabled</red> option <dark_aqua>{option-name}</dark_aqua>!</aqua>'
 command-vanishoptions-success-enable-other: '{prefix} <aqua><green>Enabled</green> option <dark_aqua>{option-name}</dark_aqua> for <dark_aqua>{player-username}</dark_aqua>!</aqua>'
 command-vanishoptions-success-disable-other: '{prefix} <aqua><red>Disabled</red> option <dark_aqua>{option-name}</dark_aqua> for <dark_aqua>{player-username}</dark_aqua>!</aqua>'
+
+
+## Fake join/quit
+# Available placeholders:
+# {username}, {display-name}, {uuid}
+fake-join: '<yellow><lang:multiplayer.player.joined:{username}></yellow>'
+fake-quit: '<yellow><lang:multiplayer.player.left:{username}></yellow>'

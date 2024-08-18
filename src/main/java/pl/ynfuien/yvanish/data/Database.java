@@ -38,7 +38,7 @@ public abstract class Database {
     }
 
     public User getUser(UUID uuid) {
-        String query = String.format("SELECT silent_chests, silent_sculk, silent_messages, no_pickup, no_mobs, action_bar, boss_bar FROM `%s` WHERE uuid=? LIMIT 1", usersTableName);
+        String query = String.format("SELECT silent_chests, silent_sculk, silent_messages, no_pickup, no_mobs, action_bar, boss_bar, fake_join FROM `%s` WHERE uuid=? LIMIT 1", usersTableName);
 
         try (Connection conn = dbSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, uuid.toString());
@@ -51,7 +51,8 @@ public abstract class Database {
                     resultSet.getByte("no_pickup"),
                     resultSet.getByte("no_mobs"),
                     resultSet.getByte("action_bar"),
-                    resultSet.getByte("boss_bar"));
+                    resultSet.getByte("boss_bar"),
+                    resultSet.getByte("fake_join"));
             return null;
         } catch (SQLException e) {
             YLogger.warn(String.format("Couldn't retrieve data from table '%s'.", usersTableName));
@@ -61,10 +62,10 @@ public abstract class Database {
     }
 
     public boolean setUser(UUID uuid, User user) {
-        String query = String.format("UPDATE `%s` SET silent_chests=?, silent_sculk=?, silent_messages=?, no_pickup=?, no_mobs=?, action_bar=?, boss_bar=? WHERE uuid=?", usersTableName);
+        String query = String.format("UPDATE `%s` SET silent_chests=?, silent_sculk=?, silent_messages=?, no_pickup=?, no_mobs=?, action_bar=?, boss_bar=?, fake_join=? WHERE uuid=?", usersTableName);
 
         if (!userExists(uuid)) {
-            query = String.format("INSERT INTO `%s`(silent_chests, silent_sculk, silent_messages, no_pickup, no_mobs, action_bar, boss_bar, uuid) VALUES(?, ?, ?, ?, ?, ?, ?, ?)", usersTableName);
+            query = String.format("INSERT INTO `%s`(silent_chests, silent_sculk, silent_messages, no_pickup, no_mobs, action_bar, boss_bar, fake_join, uuid) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", usersTableName);
         }
 
         try (Connection conn = dbSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -75,13 +76,14 @@ public abstract class Database {
             stmt.setByte(5, boolToSqlValue(user.noMobs));
             stmt.setByte(6, boolToSqlValue(user.actionBar));
             stmt.setByte(7, boolToSqlValue(user.bossBar));
+            stmt.setByte(8, boolToSqlValue(user.fakeJoin));
 
-            stmt.setString(8, uuid.toString());
+            stmt.setString(9, uuid.toString());
 
             stmt.execute();
 
         } catch (SQLException e) {
-            YLogger.warn(String.format("Couldn't save data to table '%s'.", usersTableName));
+            YLogger.error(String.format("Couldn't save data to table '%s'.", usersTableName));
             e.printStackTrace();
             return false;
         }
@@ -97,6 +99,8 @@ public abstract class Database {
 
 
     public abstract boolean createUsersTable();
+
+    public abstract boolean updateUsersTable();
 
     public boolean isSetup() {
         return dbSource != null;
