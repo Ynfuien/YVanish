@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pl.ynfuien.yvanish.YVanish;
+import pl.ynfuien.yvanish.api.event.VanishToggleEvent;
 import pl.ynfuien.yvanish.commands.YCommand;
 import pl.ynfuien.yvanish.core.ActionAndBossBars;
 import pl.ynfuien.yvanish.core.VanishManager;
@@ -65,25 +66,15 @@ public class VanishCommand extends YCommand {
     }
 
     private boolean toggleVanish(Player p, HashMap<String, Object> ph, String arg) {
-        boolean enable = false;
-        boolean disable = false;
+        boolean vanish = arg.equals("enable");
+        if (!vanish && !arg.equals("disable")) vanish = !vanishManager.isVanished(p);
 
-        if (arg.equals("enable")) enable = true;
-        else if (arg.equals("disable")) disable = true;
+        VanishToggleEvent event = new VanishToggleEvent(p, vanish);
+        Bukkit.getPluginManager().callEvent(event);
 
-        if (!enable && !disable) {
-            if (vanishManager.isVanished(p)) {
-                vanishManager.unvanish(p);
-                ph.put("action", DISABLED_MSG.get(ph));
-                return false;
-            }
+        vanish = event.getVanish();
 
-            vanishManager.vanish(p);
-            ph.put("action", ENABLED_MSG.get(ph));
-            return true;
-        }
-
-        if (enable) {
+        if (vanish) {
             vanishManager.vanish(p);
             ph.put("action", ENABLED_MSG.get(ph));
             return true;
