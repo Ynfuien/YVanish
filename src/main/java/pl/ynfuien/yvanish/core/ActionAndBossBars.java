@@ -74,6 +74,7 @@ public class ActionAndBossBars {
 
     public static void sendActionBar(Player player) {
         if (!player.isOnline()) return;
+        if (!player.isConnected()) return;
 
         User user = Storage.getUser(player.getUniqueId());
         if (!user.getActionBar()) return;
