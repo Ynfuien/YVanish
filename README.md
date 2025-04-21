@@ -46,5 +46,10 @@ Vanish options<br/>
 Silent chests<br/>
 ![silent chests](https://i.imgur.com/UcsLPJX.gif)
 
+# Integrity with other plugins
+I make these plugins for me, according to my needs, meaning, I don't search for every possible plugin that I don't care about, that could be somehow better integrated with mine. But, if you care about better integration between this plugin and some other, then just let me know through [Discord](https://discord.gg/kZJhKZ48j8) or GitHub and I will see what I can do.
+
+Same goes for any features that you think may be missing. If something isn't outside the scope of the plugin, then I'll probably do it.
+
 # License
 This project uses [GNU GPLv3](https://github.com/Ynfuien/YVanish/main/blob/LICENSE) license.
