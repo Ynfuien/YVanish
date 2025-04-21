@@ -32,11 +32,9 @@ public class PacketPlayerInfoListener extends PacketAdapter {
         Player receiver = event.getPlayer();
         if (receiver.hasPermission(YVanish.Permissions.VANISH_SEE.get())) return;
 
-//        if (receiver.getName().equalsIgnoreCase("Tsurtnu")) YLogger.warn("Player info packet: " + new Date().getTime());
-
         PacketContainer packet = event.getPacket();
         // First list is an array of actions,
-        // and second list an array of players with their action values
+        // and the second list an array of players with their action values
         StructureModifier<List<PlayerInfoData>> dataLists = packet.getPlayerInfoDataLists();
         List<PlayerInfoData> playerList = dataLists.read(1);
 

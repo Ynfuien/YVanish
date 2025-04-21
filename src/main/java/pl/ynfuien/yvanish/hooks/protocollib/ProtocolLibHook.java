@@ -12,10 +12,7 @@ import pl.ynfuien.yvanish.YVanish;
 import pl.ynfuien.yvanish.core.ChestableViewers;
 import pl.ynfuien.yvanish.core.VanishManager;
 import pl.ynfuien.yvanish.data.Storage;
-import pl.ynfuien.yvanish.hooks.protocollib.listeners.PacketBlockActionListener;
-import pl.ynfuien.yvanish.hooks.protocollib.listeners.PacketBlockChangeListener;
-import pl.ynfuien.yvanish.hooks.protocollib.listeners.PacketNamedSoundEffectListener;
-import pl.ynfuien.yvanish.hooks.protocollib.listeners.PacketPlayerInfoRemoveListener;
+import pl.ynfuien.yvanish.hooks.protocollib.listeners.*;
 
 import java.util.List;
 
@@ -34,7 +31,7 @@ public class ProtocolLibHook {
 
     private void registerListeners(ListenerPriority priority) {
         PacketAdapter[] listeners = new PacketAdapter[] {
-//                new PacketPlayerInfoListener(instance, priority),
+                new PacketPlayerInfoListener(instance, priority),
                 new PacketPlayerInfoRemoveListener(instance, priority),
                 new PacketBlockActionListener(instance, priority),
                 new PacketBlockChangeListener(instance, priority),
