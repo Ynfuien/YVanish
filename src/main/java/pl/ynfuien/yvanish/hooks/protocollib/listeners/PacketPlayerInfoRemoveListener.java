@@ -34,8 +34,6 @@ public class PacketPlayerInfoRemoveListener extends PacketAdapter {
         Player receiver = event.getPlayer();
         if (receiver.hasPermission(YVanish.Permissions.VANISH_SEE.get())) return;
 
-//        if (receiver.getName().equalsIgnoreCase("Tsurtnu")) YLogger.debug("Player remove packet: " + System.currentTimeMillis());
-
         PacketContainer packet = event.getPacket();
         List<UUID> uuidList = packet.getUUIDLists().readSafely(0);
         if (uuidList == null) return;
