@@ -3,6 +3,7 @@ package pl.ynfuien.yvanish.core;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.ynfuien.yvanish.YVanish;
+import pl.ynfuien.yvanish.commands.vanishoptions.NoMobsOption;
 import pl.ynfuien.yvanish.config.PluginConfig;
 import pl.ynfuien.yvanish.hooks.essentials.EssentialsHook;
 
@@ -33,6 +34,7 @@ public class VanishManager {
         vanishedPlayers.add(player);
         refresh();
 
+        NoMobsOption.clearMobsTarget(player);
         EssentialsHook.vanishPlayer(player);
         return true;
     }
