@@ -3,7 +3,7 @@
 # YVanish
 And at last, a vanish plugin, **the** vanish plugin! You may ask, "Wh**Y** yet another vanish?" (Hence the "Y" in the name ;p). And I come with the answer. It's because every other plugin (*every* meaning [3 that I tested](https://github.com/Ynfuien/YVanish/wiki/6.-Plugin-comparison)), let through a few packets that revealed vanished players. Also, I wanted silent chests done correctly, not with the spectator "trick".
 
-For full functionality, depends on [ProtocolLib](https://github.com/dmulloy2/ProtocolLib/) and its [dev builds](https://ci.dmulloy2.net/job/ProtocolLib/).<br/>
+**For full functionality depends on [PacketEvents](https://modrinth.com/plugin/packetevents).**<br/>
 
 # Features
 ### Vanish (well, duh)
@@ -13,7 +13,7 @@ For full functionality, depends on [ProtocolLib](https://github.com/dmulloy2/Pro
 - hidden in server status (player count, player sample)
 
 ### Silent chests
-Opened chests (normal, trapped, ender), shulker boxes and barrels work just like vanish. You can see when normal players do it, but they can't see you do it. Accomplished with virgin tears, sweat of a troll and a unicorn horn. Ah and also pinch of ProtocolLib dark magic.
+Opened chests (normal, trapped, ender), shulker boxes and barrels work just like vanish. You can see when normal players do it, but they can't see you do it. Accomplished with virgin tears, sweat of a troll and a unicorn horn. Ah and also pinch of protocol dark magic.
 
 ### Cultural mobs
 An option to stop mobs from randomly staring at a player. What's good of being invisible if all mobs coincidentally look all in one direction? Exactly, not much.<br/>
