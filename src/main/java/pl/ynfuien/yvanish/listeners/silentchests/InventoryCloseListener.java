@@ -19,7 +19,7 @@ import pl.ynfuien.yvanish.core.ChestableViewers;
 import pl.ynfuien.yvanish.core.FakeOpenClose;
 import pl.ynfuien.yvanish.core.VanishManager;
 import pl.ynfuien.yvanish.data.Storage;
-import pl.ynfuien.yvanish.hooks.Hooks;
+import pl.ynfuien.yvanish.hooks.packetevents.PacketEventsHook;
 
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +37,7 @@ public class InventoryCloseListener implements Listener {
     // Part of the hidden chest animations logic
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onChestableClose(InventoryCloseEvent event) {
-        if (!Hooks.isProtocolLibHookEnabled()) return;
+        if (!PacketEventsHook.isEnabled()) return;
 
         YLogger.debug("===== RealCloseInv =====");
 
@@ -108,9 +108,7 @@ public class InventoryCloseListener implements Listener {
     }
 
     private void sendFakeClose(List<Player> players, Block block) {
-        for (Player p : players) {
-            FakeOpenClose.fakeClose(p, block);
-        }
+        for (Player p : players) FakeOpenClose.fakeClose(p, block);
     }
 
     private void removeViewer(Player player, Block block) {
@@ -122,14 +120,14 @@ public class InventoryCloseListener implements Listener {
         }
 
         if (blockViewers.size() > 1) {
-            removeNow(player, block);
+            removeViewerNow(player, block);
             return;
         }
 
-        removeLater(player, block);
+        removeViewerLater(player, block);
     }
 
-    private void removeNow(Player player, Block block) {
+    private void removeViewerNow(Player player, Block block) {
         if (block == null) {
             ChestableViewers.removeViewer(player);
             return;
@@ -139,9 +137,9 @@ public class InventoryCloseListener implements Listener {
         ChestableViewers.removeViewer(loc.getBlock(), player);
     }
 
-    private void removeLater(Player player, Block block) {
+    private void removeViewerLater(Player player, Block block) {
         BukkitTask bukkitTask = Bukkit.getScheduler().runTaskLater(instance, () -> {
-            removeNow(player, block);
+            removeViewerNow(player, block);
 
             removeViewerTasks.remove(player);
         }, 10);

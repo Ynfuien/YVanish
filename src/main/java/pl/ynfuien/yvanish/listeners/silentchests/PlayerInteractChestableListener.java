@@ -14,7 +14,7 @@ import pl.ynfuien.yvanish.core.ChestableUtils;
 import pl.ynfuien.yvanish.core.ChestableViewers;
 import pl.ynfuien.yvanish.core.FakeOpenClose;
 import pl.ynfuien.yvanish.core.VanishManager;
-import pl.ynfuien.yvanish.hooks.Hooks;
+import pl.ynfuien.yvanish.hooks.packetevents.PacketEventsHook;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ public class PlayerInteractChestableListener implements Listener {
     // Hidden chest animations logic (at least part of it)
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onOpenChestable(PlayerInteractEvent event) {
-        if (!Hooks.isProtocolLibHookEnabled()) return;
+        if (!PacketEventsHook.isEnabled()) return;
 
         if (!event.hasBlock()) return;
 

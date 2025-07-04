@@ -5,12 +5,10 @@ import pl.ynfuien.ydevlib.messages.YLogger;
 import pl.ynfuien.yvanish.YVanish;
 import pl.ynfuien.yvanish.hooks.essentials.EssentialsHook;
 import pl.ynfuien.yvanish.hooks.luckperms.LuckPermsHook;
+import pl.ynfuien.yvanish.hooks.packetevents.PacketEventsHook;
 import pl.ynfuien.yvanish.hooks.placeholderapi.PlaceholderAPIHook;
-import pl.ynfuien.yvanish.hooks.protocollib.ProtocolLibHook;
 
 public class Hooks {
-    private static ProtocolLibHook protocolLibHook = null;
-
     public static void load(YVanish instance) {
         // Register PlaceholderAPI hook
         if (isPluginEnabled(Plugin.PAPI)) {
@@ -23,12 +21,13 @@ public class Hooks {
             }
         }
 
-        // Register ProtocolLib hook
-        if (isPluginEnabled(Plugin.PROTOCOLLIB)) {
-            protocolLibHook = new ProtocolLibHook(instance);
-            YLogger.info("[Hooks] Successfully registered hook for ProtocolLib!");
-        } else {
-            YLogger.error("[Hooks] ProtocolLib hasn't been found. Plugin won't have it's full functionality - silent chests will NOT work.");
+        // Register PacketEvents hook
+        if (isPluginEnabled(Plugin.PACKETEVENTS)) {
+            new PacketEventsHook(instance);
+            YLogger.info("[Hooks] Successfully registered hook for PacketEvents!");
+        }
+        else {
+            YLogger.error("[Hooks] PacketEvents hasn't been found. Plugin won't have it's full functionality - silent chests will NOT work.");
         }
 
 
@@ -46,19 +45,15 @@ public class Hooks {
         }
     }
 
-    public static boolean isProtocolLibHookEnabled() {
-        return protocolLibHook != null;
-    }
-
     public static boolean isPluginEnabled(Plugin plugin) {
         return Bukkit.getPluginManager().isPluginEnabled(plugin.getName());
     }
 
     public enum Plugin {
         PAPI("PlaceholderAPI"),
-        PROTOCOLLIB("ProtocolLib"),
         LUCKPERMS("LuckPerms"),
-        ESSENTIALS("Essentials");
+        ESSENTIALS("Essentials"),
+        PACKETEVENTS("packetevents");
 
         private final String name;
         Plugin(String name) {

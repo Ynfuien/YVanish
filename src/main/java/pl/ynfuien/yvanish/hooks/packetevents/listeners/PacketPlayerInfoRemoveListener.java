@@ -1,12 +1,12 @@
-package pl.ynfuien.yvanish.hooks.protocollib.listeners;
+package pl.ynfuien.yvanish.hooks.packetevents.listeners;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.events.ListenerPriority;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketContainer;
-import com.comphenix.protocol.events.PacketEvent;
+import com.github.retrooper.packetevents.event.PacketListener;
+import com.github.retrooper.packetevents.event.PacketSendEvent;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerInfoRemove;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import pl.ynfuien.ydevlib.messages.YLogger;
 import pl.ynfuien.yvanish.YVanish;
 import pl.ynfuien.yvanish.core.VanishManager;
 import pl.ynfuien.yvanish.listeners.joinquit.PlayerJoinListener;
@@ -15,28 +15,33 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-public class PacketPlayerInfoRemoveListener extends PacketAdapter {
+// Player info remove packet - Removing from the packet players that should be invisible
+public class PacketPlayerInfoRemoveListener implements PacketListener {
     private final YVanish instance;
     private final VanishManager vanishManager;
 //    private final Set<Player> vanishedOnJoin = PlayerJoinListener.getVanishedOnJoin();
     private final Set<Player> freshlyJoined = PlayerJoinListener.getFreshlyJoined();
 
-    public PacketPlayerInfoRemoveListener(YVanish instance, ListenerPriority priority) {
-        super(instance, priority, PacketType.Play.Server.PLAYER_INFO_REMOVE);
+    public PacketPlayerInfoRemoveListener(YVanish instance) {
         this.instance = instance;
         this.vanishManager = instance.getVanishManager();
     }
 
     @Override
-    public void onPacketSending(PacketEvent event) {
+    public void onPacketSend(PacketSendEvent event) {
+        if (!event.getPacketType().equals(PacketType.Play.Server.PLAYER_INFO_REMOVE)) return;
         if (vanishManager.isNoOneVanished()) return;
 
         Player receiver = event.getPlayer();
         if (receiver.hasPermission(YVanish.Permissions.VANISH_SEE.get())) return;
 
-        PacketContainer packet = event.getPacket();
-        List<UUID> uuidList = packet.getUUIDLists().readSafely(0);
-        if (uuidList == null) return;
+        YLogger.debug("===== PLAYER_INFO_REMOVE =====");
+        YLogger.debug("Primary thread: " + Bukkit.isPrimaryThread());
+        WrapperPlayServerPlayerInfoRemove packet = new WrapperPlayServerPlayerInfoRemove(event);
+
+        List<UUID> uuidList = packet.getProfileIds();
+        YLogger.debug("Size: " + uuidList.size());
+        if (uuidList.isEmpty()) return;
 
         boolean changed = false;
         for (int i = 0; i < uuidList.size(); i++) {
@@ -58,13 +63,9 @@ public class PacketPlayerInfoRemoveListener extends PacketAdapter {
         }
 
 
+        YLogger.debug("Changed: " + changed);
         if (!changed) return;
 
-        if (uuidList.isEmpty()) {
-            event.setCancelled(true);
-            return;
-        }
-
-        packet.getUUIDLists().write(0, uuidList);
+        if (uuidList.isEmpty()) event.setCancelled(true);
     }
 }

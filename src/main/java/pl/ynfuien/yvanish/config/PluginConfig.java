@@ -1,6 +1,6 @@
 package pl.ynfuien.yvanish.config;
 
-import com.comphenix.protocol.events.ListenerPriority;
+import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import net.kyori.adventure.bossbar.BossBar;
 import org.bukkit.configuration.ConfigurationSection;
 import pl.ynfuien.ydevlib.messages.YLogger;
@@ -16,7 +16,7 @@ public class PluginConfig {
     public static boolean onJoinSilent = true;
     public static boolean silentQuit = true;
     public static boolean ignoreSleep = true;
-    public static ListenerPriority packetListenersPriority = null;
+    public static PacketListenerPriority packetListenersPriority = null;
     public static boolean mobsNoStaring = true;
     public static boolean hooksEssentialsX = true;
     public static boolean silentChests = true;
@@ -48,12 +48,12 @@ public class PluginConfig {
         silentQuit = vanish.getBoolean("silent-quit");
         ignoreSleep = vanish.getBoolean("ignore-sleep");
 
-        if (Hooks.isPluginEnabled(Hooks.Plugin.PROTOCOLLIB)) {
+        if (Hooks.isPluginEnabled(Hooks.Plugin.PACKETEVENTS)) {
             String priority = vanish.getString("packet-listeners-priority");
             try {
-                packetListenersPriority = ListenerPriority.valueOf(priority.toUpperCase());
+                packetListenersPriority = PacketListenerPriority.valueOf(priority.toUpperCase());
             } catch (IllegalArgumentException e) {
-                packetListenersPriority = ListenerPriority.HIGH;
+                packetListenersPriority = PacketListenerPriority.HIGH;
                 YLogger.warn("[Config] Provided priority '%s' for packet-listeners-priority is incorrect! Will be used priority HIGH.");
             }
         }

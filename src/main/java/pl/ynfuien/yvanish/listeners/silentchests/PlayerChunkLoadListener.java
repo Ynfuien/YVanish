@@ -12,8 +12,7 @@ import org.bukkit.event.Listener;
 import pl.ynfuien.yvanish.YVanish;
 import pl.ynfuien.yvanish.core.ChestableViewers;
 import pl.ynfuien.yvanish.core.VanishManager;
-import pl.ynfuien.yvanish.hooks.Hooks;
-import pl.ynfuien.yvanish.hooks.protocollib.ProtocolLibHook;
+import pl.ynfuien.yvanish.hooks.packetevents.PacketEventsHook;
 
 import java.util.List;
 
@@ -29,7 +28,7 @@ public class PlayerChunkLoadListener implements Listener {
     // Part of the hidden chest animations logic - Barrel time!
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onPlayerChunkLoad(PlayerChunkLoadEvent event) {
-        if (!Hooks.isProtocolLibHookEnabled()) return;
+        if (!PacketEventsHook.isEnabled()) return;
 
         if (vanishManager.isNoOneVanished()) return;
         Player p = event.getPlayer();
@@ -41,7 +40,7 @@ public class PlayerChunkLoadListener implements Listener {
         for (Block block : openedBarrels) {
             if (!chunk.equals(block.getChunk())) continue;
 
-            if (ProtocolLibHook.canSeeBlockChange(p, block)) continue;
+            if (PacketEventsHook.canSeeBlockChange(p, block)) continue;
 
 
             Barrel barrel = (Barrel) block.getBlockData();

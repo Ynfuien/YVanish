@@ -6,9 +6,9 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import pl.ynfuien.ydevlib.messages.YLogger;
-import pl.ynfuien.yvanish.hooks.protocollib.listeners.PacketBlockActionListener;
-import pl.ynfuien.yvanish.hooks.protocollib.listeners.PacketBlockChangeListener;
-import pl.ynfuien.yvanish.hooks.protocollib.listeners.PacketNamedSoundEffectListener;
+import pl.ynfuien.yvanish.hooks.packetevents.listeners.PacketBlockActionListener;
+import pl.ynfuien.yvanish.hooks.packetevents.listeners.PacketBlockChangeListener;
+import pl.ynfuien.yvanish.hooks.packetevents.listeners.PacketSoundEffectListener;
 import pl.ynfuien.yvanish.listeners.silentchests.InventoryCloseListener;
 import pl.ynfuien.yvanish.listeners.silentchests.PlayerInteractChestableListener;
 
@@ -20,7 +20,7 @@ import java.util.Set;
 /**
  * <b>Description of this class;
  * {@link PlayerInteractChestableListener PlayerInteract} and {@link InventoryCloseListener InventoryClose} listeners;
- * {@link PacketBlockActionListener BlockAction}, {@link PacketBlockChangeListener BlockChange} and {@link PacketNamedSoundEffectListener NamedSoundEffect} packet listeners.</b>
+ * {@link PacketBlockActionListener BlockAction}, {@link PacketBlockChangeListener BlockChange} and {@link PacketSoundEffectListener NamedSoundEffect} packet listeners.</b>
  * <br/><br/>
  * <p><b>TL;DR: Silent chest system.</b></p>
  * <ul>
@@ -99,9 +99,6 @@ public class ChestableViewers {
 
         if (!blocksViewers.containsKey(loc)) blocksViewers.put(loc, new ArrayList<>());
         List<HumanEntity> blockViewers = blocksViewers.get(loc);
-
-//        blockViewers.add(player);
-//        return true;
 
         if (!blockViewers.contains(player)) {
             blockViewers.add(player);

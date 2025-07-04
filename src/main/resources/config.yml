@@ -40,7 +40,7 @@ vanish:
   # Vanished players are ignored when others go to bed.
   ignore-sleep: true
 
-  # Priority used in ProtocolLib listeners.
+  # Priority used in PacketEvents listeners.
   # Available options:
   # LOWEST, LOW, NORMAL, HIGH, HIGHEST
   # Default is HIGH.

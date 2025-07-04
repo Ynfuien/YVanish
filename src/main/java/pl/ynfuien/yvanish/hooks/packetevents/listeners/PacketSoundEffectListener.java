@@ -1,14 +1,18 @@
-package pl.ynfuien.yvanish.hooks.protocollib.listeners;
+package pl.ynfuien.yvanish.hooks.packetevents.listeners;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.events.ListenerPriority;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketContainer;
-import com.comphenix.protocol.events.PacketEvent;
-import com.comphenix.protocol.wrappers.EnumWrappers;
+
+import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.event.PacketListener;
+import com.github.retrooper.packetevents.event.PacketSendEvent;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.protocol.sound.Sound;
+import com.github.retrooper.packetevents.protocol.sound.SoundCategory;
+import com.github.retrooper.packetevents.protocol.sound.Sounds;
+import com.github.retrooper.packetevents.util.Vector3i;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSoundEffect;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.type.Barrel;
@@ -18,86 +22,82 @@ import pl.ynfuien.ydevlib.utils.DoubleFormatter;
 import pl.ynfuien.yvanish.YVanish;
 import pl.ynfuien.yvanish.core.ChestableUtils;
 import pl.ynfuien.yvanish.core.VanishManager;
-import pl.ynfuien.yvanish.hooks.protocollib.ProtocolLibHook;
+import pl.ynfuien.yvanish.hooks.packetevents.PacketEventsHook;
 
 import java.util.List;
+import java.util.Set;
 
-public class PacketNamedSoundEffectListener extends PacketAdapter {
+// Chest, barrel and shulker box open / close sounds - Cancelling if necessary
+public class PacketSoundEffectListener implements PacketListener {
     private final YVanish instance;
     private final VanishManager vanishManager;
-    private static final List<Sound> EXPECTED_SOUND_EFFECTS = List.of(
-            Sound.BLOCK_CHEST_OPEN,
-            Sound.BLOCK_CHEST_CLOSE,
-            Sound.BLOCK_ENDER_CHEST_OPEN,
-            Sound.BLOCK_ENDER_CHEST_CLOSE,
-            Sound.BLOCK_BARREL_OPEN,
-            Sound.BLOCK_BARREL_CLOSE,
-            Sound.BLOCK_SHULKER_BOX_OPEN,
-            Sound.BLOCK_SHULKER_BOX_CLOSE
+    private static final Set<Sound> EXPECTED_SOUND_EFFECTS = Set.of(
+            Sounds.BLOCK_CHEST_OPEN,
+            Sounds.BLOCK_CHEST_CLOSE,
+            Sounds.BLOCK_ENDER_CHEST_OPEN,
+            Sounds.BLOCK_ENDER_CHEST_CLOSE,
+            Sounds.BLOCK_BARREL_OPEN,
+            Sounds.BLOCK_BARREL_CLOSE,
+            Sounds.BLOCK_SHULKER_BOX_OPEN,
+            Sounds.BLOCK_SHULKER_BOX_CLOSE
     );
 
-    public PacketNamedSoundEffectListener(YVanish instance, ListenerPriority priority) {
-        super(instance, priority, PacketType.Play.Server.NAMED_SOUND_EFFECT);
+    public PacketSoundEffectListener(YVanish instance) {
         this.instance = instance;
         this.vanishManager = instance.getVanishManager();
     }
 
     @Override
-    public void onPacketSending(PacketEvent event) {
+    public void onPacketSend(PacketSendEvent event) {
+        if (!event.getPacketType().equals(PacketType.Play.Server.SOUND_EFFECT)) return;
         if (vanishManager.isNoOneVanished()) return;
 
         Player receiver = event.getPlayer();
         if (receiver.hasPermission(YVanish.Permissions.VANISH_SEE.get())) return;
 
 
-        PacketContainer packet = event.getPacket();
-        EnumWrappers.SoundCategory soundCategory = packet.getSoundCategories().readSafely(0);
+        YLogger.debug("===== SOUND_EFFECT =====");
+        YLogger.debug("Primary thread: " + Bukkit.isPrimaryThread());
+        WrapperPlayServerSoundEffect packet = new WrapperPlayServerSoundEffect(event);
+        SoundCategory soundCategory = packet.getSoundCategory();
         if (soundCategory == null) return;
 
-        YLogger.debug("===== NAMED_SOUND_EFFECT =====");
         YLogger.debug(receiver.getName());
         YLogger.debug("Sound category: " + soundCategory.name());
 
-        if (!soundCategory.equals(EnumWrappers.SoundCategory.BLOCKS)) return;
+        if (!soundCategory.equals(SoundCategory.BLOCK) && !soundCategory.equals(SoundCategory.NEUTRAL)) return;
 
-        Sound sound = packet.getSoundEffects().readSafely(0);
-        if (sound == null || !EXPECTED_SOUND_EFFECTS.contains(sound)) return;
-        YLogger.debug("Sound: " + sound.name());
+        Sound sound = packet.getSound();
+        if (!EXPECTED_SOUND_EFFECTS.contains(sound)) return;
+        YLogger.debug("Sound: " + sound.getName());
 
-        Float volume = packet.getFloat().readSafely(0);
-        if (volume == null) return;
+        float volume = packet.getVolume();
         YLogger.debug("Volume: " + volume);
 
-        // My own packet
-        if (volume == 10) {
-            packet.getFloat().writeSafely(0, 0.5f);
-            return;
-        }
 
-        Integer x = packet.getIntegers().readSafely(0);
-        if (x == null) return;
-        Integer y = packet.getIntegers().readSafely(1);
-        if (y == null) return;
-        Integer z = packet.getIntegers().readSafely(2);
-        if (z == null) return;
+        Vector3i pos = packet.getEffectPosition();
+
+        event.setCancelled(true);
+
+        float pitch = packet.getPitch();
+        long seed = packet.getSeed();
+        Bukkit.getGlobalRegionScheduler().run(instance, (task) -> {
+            Location loc = new Location(receiver.getWorld(), (double) pos.x / 8, (double) pos.y / 8, (double) pos.z / 8);
+            YLogger.debug("OG Location: " + formatLocation(loc));
+            if (sound.equals(Sounds.BLOCK_BARREL_CLOSE) || sound.equals(Sounds.BLOCK_BARREL_OPEN)) loc = getBarrelLocation(loc);
+            YLogger.debug("Corrected: " + formatLocation(loc));
+            Block block = loc.getBlock();
+
+            YLogger.debug("Found block: " + block.getType().name());
+            block = ChestableUtils.getDoubleChestBlock(block);
+            if (!PacketEventsHook.canSeeBlockChange(receiver, block)) return;
+
+            YLogger.debug("Send packet duplicate");
+            WrapperPlayServerSoundEffect packetDuplicate = new WrapperPlayServerSoundEffect(sound, soundCategory, pos, volume, pitch, seed);
+            PacketEvents.getAPI().getPlayerManager().sendPacketSilently(receiver, packetDuplicate);
+        });
 
 
-        Location loc = new Location(receiver.getWorld(), (double) x / 8, (double) y / 8, (double) z / 8);
-        YLogger.debug("OG Location: " + formatLocation(loc));
-        if (sound.name().contains("BARREL")) loc = getBarrelLocation(loc);
-        YLogger.debug("Corrected: " + formatLocation(loc));
-//        if (sound.name().contains("BARREL")) loc.setY(loc.y() - 0.5);
-        Block block = loc.getBlock();
-
-        YLogger.debug("Found block: " + block.getType().name());
-//        YLogger.debug("Location: " + loc);
-        block = ChestableUtils.getDoubleChestBlock(block);
-//        YLogger.debug("A Loc Change: " + block);
-
-        if (!ProtocolLibHook.canSeeBlockChange(receiver, block)) {
-            YLogger.debug("Can't see this!");
-            event.setCancelled(true);
-        }
     }
 
     private static final DoubleFormatter df = new DoubleFormatter();
@@ -108,7 +108,7 @@ public class PacketNamedSoundEffectListener extends PacketAdapter {
     private Location getBarrelLocation(Location ogLocation) {
         Location attempt = null;
 
-        YLogger.debug(String.format("Get barrel location:"));
+        YLogger.debug("Get barrel location:");
         CorrectionType correctionType = CorrectionType.PLUS;
         for (int i = 0; i < 6; i++) {
             YLogger.debug(String.format("%d. attempt - %s", i + 1, correctionType.name()));

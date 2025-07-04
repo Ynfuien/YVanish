@@ -1,5 +1,7 @@
 package pl.ynfuien.yvanish;
 
+import com.github.retrooper.packetevents.PacketEvents;
+import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
@@ -25,6 +27,7 @@ import pl.ynfuien.yvanish.data.MysqlDatabase;
 import pl.ynfuien.yvanish.data.SqliteDatabase;
 import pl.ynfuien.yvanish.data.Storage;
 import pl.ynfuien.yvanish.hooks.Hooks;
+import pl.ynfuien.yvanish.hooks.packetevents.PacketEventsHook;
 import pl.ynfuien.yvanish.listeners.fakejoin.VanishToggleListener;
 import pl.ynfuien.yvanish.listeners.joinquit.PlayerJoinListener;
 import pl.ynfuien.yvanish.listeners.joinquit.PlayerLoginListener;
@@ -51,6 +54,14 @@ public final class YVanish extends JavaPlugin {
     private final ConfigHandler configHandler = new ConfigHandler(this);
     private Database database = null;
     private ConfigObject config;
+
+    @Override
+    public void onLoad() {
+        if (Bukkit.getPluginManager().getPlugin("packetevents") == null) return;
+
+        PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
+        PacketEvents.getAPI().load();
+    }
 
     @Override
     public void onEnable() {
@@ -96,6 +107,8 @@ public final class YVanish extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        if (PacketEventsHook.isEnabled()) PacketEvents.getAPI().terminate();
+
         if (database != null) database.close();
 
         ActionAndBossBars.stopIntervals();

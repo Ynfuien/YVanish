@@ -43,7 +43,9 @@ public class PlayerJoinListener implements Listener {
         if (!p.hasPermission(YVanish.Permissions.VANISH_ON_JOIN.get())) {
             freshlyJoined.add(p);
             vanishManager.refresh();
-            freshlyJoined.remove(p);
+            Bukkit.getGlobalRegionScheduler().runDelayed(instance, (task) -> {
+                freshlyJoined.remove(p);
+            }, 1);
             return;
         }
 
