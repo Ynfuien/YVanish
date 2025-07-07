@@ -10,13 +10,13 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import pl.ynfuien.ydevlib.config.ConfigHandler;
+import pl.ynfuien.ydevlib.config.ConfigObject;
 import pl.ynfuien.ydevlib.messages.YLogger;
 import pl.ynfuien.yvanish.commands.main.MainCommand;
 import pl.ynfuien.yvanish.commands.vanish.VanishCommand;
 import pl.ynfuien.yvanish.commands.vanishoptions.VanishOptionsCommand;
-import pl.ynfuien.yvanish.config.ConfigHandler;
 import pl.ynfuien.yvanish.config.ConfigName;
-import pl.ynfuien.yvanish.config.ConfigObject;
 import pl.ynfuien.yvanish.config.PluginConfig;
 import pl.ynfuien.yvanish.core.ActionAndBossBars;
 import pl.ynfuien.yvanish.core.ChestableUtils;
@@ -72,7 +72,7 @@ public final class YVanish extends JavaPlugin {
         loadConfigs();
         loadLang();
 
-        config = configHandler.get(ConfigName.CONFIG);
+        config = configHandler.getConfigObject(ConfigName.CONFIG);
         PluginConfig.load(config.getConfig());
 
         // Database
