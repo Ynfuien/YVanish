@@ -17,7 +17,6 @@ import org.bukkit.block.data.type.Barrel;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.BlockInventoryHolder;
 import org.bukkit.inventory.DoubleChestInventory;
-import pl.ynfuien.ydevlib.messages.YLogger;
 import pl.ynfuien.yvanish.hooks.packetevents.PacketEventsHook;
 
 import java.util.ArrayList;
