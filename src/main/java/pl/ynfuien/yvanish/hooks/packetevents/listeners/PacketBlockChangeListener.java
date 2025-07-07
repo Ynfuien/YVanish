@@ -47,23 +47,28 @@ public class PacketBlockChangeListener implements PacketListener {
 
         Vector3i position = packet.getBlockPosition();
 
-        YLogger.debug("===== BlockChange =====");
-        YLogger.debug("Primary thread: " + Bukkit.isPrimaryThread());
+        YLogger.debug("<yellow>===== BlockChange =====");
+        YLogger.debug("<yellow>Primary thread: " + Bukkit.isPrimaryThread());
+        YLogger.debug("<yellow>Block state: " + blockState);
+        YLogger.debug("<yellow>Is open: " + blockState.isOpen());
 
 
         event.setCancelled(true);
 
         int blockId = packet.getBlockId();
         Bukkit.getGlobalRegionScheduler().run(instance, (task) -> {
+            YLogger.debug("<yellow>== BlockChange task ==");
             Block block = receiver.getWorld().getBlockAt(position.x, position.y, position.z);
             Barrel barrel = (Barrel) block.getBlockData();
             boolean isReallyClosed = !barrel.isOpen();
 
-            boolean isOpenPacket = blockState.isOpen();
-            if (isOpenPacket || isReallyClosed) return;
+            boolean isClosePacket = !blockState.isOpen();
+            YLogger.debug("<yellow>isReallyClosed: " + isReallyClosed);
+            YLogger.debug("<yellow>isClosePacket: " + isClosePacket);
 
-            if (!PacketEventsHook.canSeeBlockChange(receiver, block)) return;
+            if (!(isClosePacket && !isReallyClosed) && !PacketEventsHook.canSeeBlockChange(receiver, block)) return;
 
+            YLogger.debug("<yellow>Send duplicate");
             WrapperPlayServerBlockChange packetDuplicate = new WrapperPlayServerBlockChange(position, blockId);
             PacketEvents.getAPI().getPlayerManager().sendPacketSilently(receiver, packetDuplicate);
         });
