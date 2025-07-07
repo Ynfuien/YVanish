@@ -6,7 +6,6 @@ import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerInfoRemove;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import pl.ynfuien.ydevlib.messages.YLogger;
 import pl.ynfuien.yvanish.YVanish;
 import pl.ynfuien.yvanish.core.VanishManager;
 import pl.ynfuien.yvanish.listeners.joinquit.PlayerJoinListener;
@@ -19,7 +18,6 @@ import java.util.UUID;
 public class PacketPlayerInfoRemoveListener implements PacketListener {
     private final YVanish instance;
     private final VanishManager vanishManager;
-//    private final Set<Player> vanishedOnJoin = PlayerJoinListener.getVanishedOnJoin();
     private final Set<Player> freshlyJoined = PlayerJoinListener.getFreshlyJoined();
 
     public PacketPlayerInfoRemoveListener(YVanish instance) {
@@ -35,12 +33,11 @@ public class PacketPlayerInfoRemoveListener implements PacketListener {
         Player receiver = event.getPlayer();
         if (receiver.hasPermission(YVanish.Permissions.VANISH_SEE.get())) return;
 
-        YLogger.debug("===== PLAYER_INFO_REMOVE =====");
-        YLogger.debug("Primary thread: " + Bukkit.isPrimaryThread());
+//        YLogger.debug("===== PLAYER_INFO_REMOVE =====");
         WrapperPlayServerPlayerInfoRemove packet = new WrapperPlayServerPlayerInfoRemove(event);
 
         List<UUID> uuidList = packet.getProfileIds();
-        YLogger.debug("Size: " + uuidList.size());
+//        YLogger.debug("Size: " + uuidList.size());
         if (uuidList.isEmpty()) return;
 
         boolean changed = false;
@@ -54,7 +51,6 @@ public class PacketPlayerInfoRemoveListener implements PacketListener {
             if (p.equals(receiver)) continue;
 
             if (!vanishManager.isVanished(p)) continue;
-//            if (!vanishedOnJoin.contains(p) && !freshlyJoined.contains(receiver)) continue;
             if (!freshlyJoined.contains(receiver)) continue;
 
             uuidList.remove(i);
@@ -63,7 +59,7 @@ public class PacketPlayerInfoRemoveListener implements PacketListener {
         }
 
 
-        YLogger.debug("Changed: " + changed);
+//        YLogger.debug("Changed: " + changed);
         if (!changed) return;
 
         if (uuidList.isEmpty()) event.setCancelled(true);

@@ -8,7 +8,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import pl.ynfuien.ydevlib.messages.YLogger;
 import pl.ynfuien.yvanish.YVanish;
 import pl.ynfuien.yvanish.core.ChestableUtils;
 import pl.ynfuien.yvanish.core.ChestableViewers;
@@ -47,20 +46,16 @@ public class PlayerInteractChestableListener implements Listener {
         block = ChestableUtils.getDoubleChestBlock(block);
 
 
-        List<Player> canSeeBefore = FakeOpenClose.getNearPlayersThatCanSeeBlockChange(block);
+        List<Player> canSeeBefore = ChestableViewers.getBlockViewers(block).isEmpty() ? List.of() : FakeOpenClose.getNearPlayersThatCanSeeBlockChange(block);
+
         ChestableViewers.addViewer(p, block);
-        InventoryCloseListener.cancelRemoveViewerTask(p);
+        PacketEventsHook.addLocationToBlock(block);
 
-        YLogger.debug("===== PlayerInteract =====");
-        YLogger.debug("Added " + p.getName() + " as viewer!");
+        List<Player> playersToFakeOpen = FakeOpenClose.getNearPlayersThatCanSeeBlockChange(block);
+        playersToFakeOpen.removeAll(canSeeBefore);
 
-        if (ChestableViewers.getBlockViewers(block).size() == 1) return;
-
-        List<Player> playersToPlaySound = FakeOpenClose.getNearPlayersThatCanSeeBlockChange(block);
-        playersToPlaySound.removeAll(canSeeBefore);
-
-        for (Player player : playersToPlaySound) {
-            FakeOpenClose.playOpenSound(player, block);
+        for (Player player : playersToFakeOpen) {
+            FakeOpenClose.fakeOpen(player, block);
         }
     }
 }

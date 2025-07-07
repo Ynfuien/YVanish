@@ -1,6 +1,5 @@
 package pl.ynfuien.yvanish.hooks.packetevents.listeners;
 
-import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListener;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
@@ -9,11 +8,8 @@ import com.github.retrooper.packetevents.protocol.world.states.type.StateType;
 import com.github.retrooper.packetevents.protocol.world.states.type.StateTypes;
 import com.github.retrooper.packetevents.util.Vector3i;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerBlockChange;
-import org.bukkit.Bukkit;
-import org.bukkit.block.Block;
-import org.bukkit.block.data.type.Barrel;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import pl.ynfuien.ydevlib.messages.YLogger;
 import pl.ynfuien.yvanish.YVanish;
 import pl.ynfuien.yvanish.core.VanishManager;
 import pl.ynfuien.yvanish.hooks.packetevents.PacketEventsHook;
@@ -38,39 +34,37 @@ public class PacketBlockChangeListener implements PacketListener {
 
         WrapperPlayServerBlockChange packet = new WrapperPlayServerBlockChange(event);
 
-
         WrappedBlockState blockState = packet.getBlockState();
-
-
         StateType blockType = blockState.getType();
         if (!blockType.equals(StateTypes.BARREL)) return;
 
-        Vector3i position = packet.getBlockPosition();
 
-        YLogger.debug("<yellow>===== BlockChange =====");
-        YLogger.debug("<yellow>Primary thread: " + Bukkit.isPrimaryThread());
-        YLogger.debug("<yellow>Block state: " + blockState);
-        YLogger.debug("<yellow>Is open: " + blockState.isOpen());
+//        YLogger.debug("<yellow>===== BlockChange =====");
+//        YLogger.debug("<yellow>Primary thread: " + Bukkit.isPrimaryThread());
+//        YLogger.debug("<yellow>Block state: " + blockState);
+//        YLogger.debug("<yellow>Is open: " + blockState.isOpen());
 
-
+        Vector3i pos = packet.getBlockPosition();
+        Location loc = new Location(receiver.getWorld(), pos.x, pos.y, pos.z);
+        if (!PacketEventsHook.isLocationBlocked(loc)) return;
         event.setCancelled(true);
 
-        int blockId = packet.getBlockId();
-        Bukkit.getGlobalRegionScheduler().run(instance, (task) -> {
-            YLogger.debug("<yellow>== BlockChange task ==");
-            Block block = receiver.getWorld().getBlockAt(position.x, position.y, position.z);
-            Barrel barrel = (Barrel) block.getBlockData();
-            boolean isReallyClosed = !barrel.isOpen();
-
-            boolean isClosePacket = !blockState.isOpen();
-            YLogger.debug("<yellow>isReallyClosed: " + isReallyClosed);
-            YLogger.debug("<yellow>isClosePacket: " + isClosePacket);
-
-            if (!(isClosePacket && !isReallyClosed) && !PacketEventsHook.canSeeBlockChange(receiver, block)) return;
-
-            YLogger.debug("<yellow>Send duplicate");
-            WrapperPlayServerBlockChange packetDuplicate = new WrapperPlayServerBlockChange(position, blockId);
-            PacketEvents.getAPI().getPlayerManager().sendPacketSilently(receiver, packetDuplicate);
-        });
+//        int blockId = packet.getBlockId();
+//        Bukkit.getGlobalRegionScheduler().run(instance, (task) -> {
+//            YLogger.debug("<yellow>== BlockChange task ==");
+//            Block block = receiver.getWorld().getBlockAt(position.x, position.y, position.z);
+//            Barrel barrel = (Barrel) block.getBlockData();
+//            boolean isReallyClosed = !barrel.isOpen();
+//
+//            boolean isClosePacket = !blockState.isOpen();
+//            YLogger.debug("<yellow>isReallyClosed: " + isReallyClosed);
+//            YLogger.debug("<yellow>isClosePacket: " + isClosePacket);
+//
+//            if (!(isClosePacket && !isReallyClosed) && !PacketEventsHook.canSeeBlockChange(receiver, block)) return;
+//
+//            YLogger.debug("<yellow>Send duplicate");
+//            WrapperPlayServerBlockChange packetDuplicate = new WrapperPlayServerBlockChange(position, blockId);
+//            PacketEvents.getAPI().getPlayerManager().sendPacketSilently(receiver, packetDuplicate);
+//        });
     }
 }

@@ -3,7 +3,6 @@ package pl.ynfuien.yvanish.core;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import pl.ynfuien.ydevlib.messages.YLogger;
 import pl.ynfuien.yvanish.hooks.packetevents.listeners.PacketBlockActionListener;
@@ -12,9 +11,8 @@ import pl.ynfuien.yvanish.hooks.packetevents.listeners.PacketSoundEffectListener
 import pl.ynfuien.yvanish.listeners.silentchests.InventoryCloseListener;
 import pl.ynfuien.yvanish.listeners.silentchests.PlayerInteractChestableListener;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -63,27 +61,31 @@ import java.util.Set;
  */
 public class ChestableViewers {
 
-    private static final HashMap<Location, List<HumanEntity>> blocksViewers = new HashMap<>();
+    private static final Set<Location> blockSet = new HashSet<>();
+    private static final HashMap<Location, Set<Player>> blocksViewers = new HashMap<>();
 
-    public static List<HumanEntity> getBlockViewers(Block block) {
-        Location loc = block.getLocation();
-        if (!blocksViewers.containsKey(loc)) return new ArrayList<>();
-
-        return new ArrayList<>(blocksViewers.get(loc));
+    public static Set<Player> getBlockViewers(Block block) {
+        return getBlockViewers(block.getLocation());
     }
 
-    public static List<HumanEntity> getBlockViewersOfPlayerCurrentBlock(Player player) {
-        for (Location loc : blocksViewers.keySet()) {
-            List<HumanEntity> blockViewers = blocksViewers.get(loc);
+    public static Set<Player> getBlockViewers(Location blockLocation) {
+        if (!blocksViewers.containsKey(blockLocation)) return Set.of();
 
-            if (blockViewers.contains(player)) return new ArrayList<>(blockViewers);
-        }
-
-        return new ArrayList<>();
+        return blocksViewers.get(blockLocation);
     }
 
-    public static List<Block> getAllViewedBlocksOfType(Material type) {
-        List<Block> blocks = new ArrayList<>();
+//    public static Set<Player> getBlockViewersOfPlayerCurrentBlock(Player player) {
+//        for (Location loc : blocksViewers.keySet()) {
+//            Set<Player> blockViewers = blocksViewers.get(loc);
+//
+//            if (blockViewers.contains(player)) return blockViewers;
+//        }
+//
+//        return Set.of();
+//    }
+
+    public static Set<Block> getAllViewedBlocksOfType(Material type) {
+        Set<Block> blocks = new HashSet<>();
         for (Location loc : blocksViewers.keySet()) {
             Block block = loc.getBlock();
             if (!block.getType().equals(type)) continue;
@@ -97,33 +99,31 @@ public class ChestableViewers {
     public static boolean addViewer(Player player, Block block) {
         Location loc = block.getLocation();
 
-        if (!blocksViewers.containsKey(loc)) blocksViewers.put(loc, new ArrayList<>());
-        List<HumanEntity> blockViewers = blocksViewers.get(loc);
+        blockSet.add(loc);
+        if (!blocksViewers.containsKey(loc)) blocksViewers.put(loc, new HashSet<>());
+        Set<Player> blockViewers = blocksViewers.get(loc);
 
-        if (!blockViewers.contains(player)) {
-            blockViewers.add(player);
-            return true;
-        }
-
-        return false;
+        return blockViewers.add(player);
     }
 
-    public static void removeViewer(Player player) {
-        Set<Location> keySet = blocksViewers.keySet();
-        for (Location loc : keySet) {
-            List<HumanEntity> viewers = blocksViewers.get(loc);
-            viewers.remove(player);
-
-            if (viewers.isEmpty()) blocksViewers.remove(loc);
-        }
-    }
+//    public static void removeViewer(Player player) {
+//        Set<Location> keySet = blocksViewers.keySet();
+//        for (Location loc : keySet) {
+//            Set<Player> viewers = blocksViewers.get(loc);
+//            viewers.remove(player);
+//
+//            if (viewers.isEmpty()) blocksViewers.remove(loc);
+//        }
+//    }
 
     public static void removeViewer(Block block, Player player) {
         Location loc = block.getLocation();
-        List<HumanEntity> viewers = blocksViewers.get(loc);
+        Set<Player> viewers = blocksViewers.get(loc);
         if (viewers == null) return;
-        boolean removed = viewers.remove(player);
-        YLogger.debug("Removed result: " + removed);
+
+        viewers.remove(player);
+//        boolean removed = viewers.remove(player);
+//        YLogger.debug("Removed result: " + removed);
 
         if (viewers.isEmpty()) blocksViewers.remove(loc);
     }
