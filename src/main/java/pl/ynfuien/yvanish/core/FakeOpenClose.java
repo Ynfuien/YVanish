@@ -70,6 +70,9 @@ public class FakeOpenClose {
     }
 
     public static void sendBarrelState(Player player, Block block, boolean open) {
+        // Check for fake players
+        if (player.getAddress() == null) return;
+
         if (!block.getType().equals(Material.BARREL)) return;
 
         Barrel barrel = (Barrel) block.getBlockData();
@@ -84,6 +87,9 @@ public class FakeOpenClose {
     }
 
     public static void sendChestAction(Player player, Block block, int parameter) {
+        // Check for fake players
+        if (player.getAddress() == null) return;
+
         Vector3i position = new Vector3i(block.getX(), block.getY(), block.getZ());
 
         ClientVersion version = PacketEvents.getAPI().getServerManager().getVersion().toClientVersion();
@@ -130,8 +136,12 @@ public class FakeOpenClose {
     }
 
     private static void playSound(Player player, Block block, Sound sound) {
+        // Check for fake players
+        if (player.getAddress() == null) return;
+
         Location loc = block.getLocation().toCenterLocation();
         Vector3i position = new Vector3i((int) (loc.getX() * 8), (int) (loc.getY() * 8), (int) (loc.getZ() * 8));
+
         WrapperPlayServerSoundEffect packet = new WrapperPlayServerSoundEffect(sound, SoundCategory.BLOCK, position, 0.5f, 1);
         PacketEvents.getAPI().getPlayerManager().sendPacketSilently(player, packet);
     }
