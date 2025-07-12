@@ -74,6 +74,11 @@ public class PacketBlockActionListener implements PacketListener {
 //        YLogger.debug("<gold>actionData: " + actionData);
         if (!CHESTABLE.contains(blockType)) return;
 
+        if (packet.getActionData() > 1) {
+            packet.setActionData(1);
+            event.markForReEncode(true);
+        }
+
         Vector3i pos = packet.getBlockPosition();
         Location loc = new Location(receiver.getWorld(), pos.x, pos.y, pos.z);
 

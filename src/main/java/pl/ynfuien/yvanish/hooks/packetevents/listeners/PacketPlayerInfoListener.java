@@ -53,6 +53,11 @@ public class PacketPlayerInfoListener implements PacketListener {
 
         if (!changes) return;
 
-        if (playerInfoList.isEmpty()) event.setCancelled(true);
+        if (playerInfoList.isEmpty()) {
+            event.setCancelled(true);
+            return;
+        }
+
+        event.markForReEncode(true);
     }
 }

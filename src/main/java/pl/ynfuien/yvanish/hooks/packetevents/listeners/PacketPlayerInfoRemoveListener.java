@@ -33,11 +33,9 @@ public class PacketPlayerInfoRemoveListener implements PacketListener {
         Player receiver = event.getPlayer();
         if (receiver.hasPermission(YVanish.Permissions.VANISH_SEE.get())) return;
 
-//        YLogger.debug("===== PLAYER_INFO_REMOVE =====");
         WrapperPlayServerPlayerInfoRemove packet = new WrapperPlayServerPlayerInfoRemove(event);
 
         List<UUID> uuidList = packet.getProfileIds();
-//        YLogger.debug("Size: " + uuidList.size());
         if (uuidList.isEmpty()) return;
 
         boolean changed = false;
@@ -59,9 +57,13 @@ public class PacketPlayerInfoRemoveListener implements PacketListener {
         }
 
 
-//        YLogger.debug("Changed: " + changed);
         if (!changed) return;
 
-        if (uuidList.isEmpty()) event.setCancelled(true);
+        if (uuidList.isEmpty()) {
+            event.setCancelled(true);
+            return;
+        }
+
+        event.markForReEncode(true);
     }
 }
