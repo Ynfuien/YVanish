@@ -76,19 +76,7 @@ public class PacketBlockActionListener implements PacketListener {
 
         Vector3i pos = packet.getBlockPosition();
         Location loc = new Location(receiver.getWorld(), pos.x, pos.y, pos.z);
-        if (!PacketEventsHook.isLocationBlocked(loc)) return;
 
-        event.setCancelled(true);
-
-//        Bukkit.getGlobalRegionScheduler().run(instance, (task) -> {
-//            Block block = receiver.getWorld().getBlockAt(position.x, position.y, position.z);
-//            block = ChestableUtils.getDoubleChestBlock(block);
-//
-//            if (!PacketEventsHook.canSeeBlockChange(receiver, block)) return;
-//
-//            YLogger.debug("<gold>Send duplicate");
-//            WrapperPlayServerBlockAction packetDuplicate = new WrapperPlayServerBlockAction(position, actionId, Math.min(actionData, 1), blockTypeId);
-//            PacketEvents.getAPI().getPlayerManager().sendPacketSilently(receiver, packetDuplicate);
-//        });
+        if (!PacketEventsHook.canSeeBlockChange(receiver, loc)) event.setCancelled(true);
     }
 }

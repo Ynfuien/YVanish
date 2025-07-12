@@ -17,6 +17,7 @@ import pl.ynfuien.yvanish.core.FakeOpenClose;
 import pl.ynfuien.yvanish.core.VanishManager;
 import pl.ynfuien.yvanish.hooks.packetevents.PacketEventsHook;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -43,28 +44,19 @@ public class InventoryCloseListener implements Listener {
         Location location = inventory.getLocation();
         if (location == null) return;
 
-        Block block = ChestableUtils.getDoubleChestBlock(location.getBlock());
+        Block block = location.getBlock();
 
         List<Player> playersSeeingBlockChange = FakeOpenClose.getNearPlayersThatCanSeeBlockChange(block);
 
         ChestableViewers.removeViewer(block, p);
-        Bukkit.getGlobalRegionScheduler().runDelayed(instance, (task) -> {
-            if (!ChestableViewers.getBlockViewers(block).isEmpty()) return;
 
-            PacketEventsHook.removeLocationFromBlocked(block);
-        }, 10);
-
-        Set<Player> viewers = ChestableViewers.getBlockViewers(block);
-        if (viewers.isEmpty()) {
-            for (Player player : playersSeeingBlockChange) {
-                FakeOpenClose.fakeClose(player, block);
-            }
-
-            return;
-        }
+        Set<Player> viewers = new HashSet<>(ChestableViewers.getBlockViewers(block));
+        viewers.remove(p);
+        if (viewers.isEmpty()) return;
 
         for (Player player : playersSeeingBlockChange) {
-            if (PacketEventsHook.canSeeBlockChange(player, block)) continue;
+            if (player.hasPermission(YVanish.Permissions.VANISH_SEE.get())) continue;
+            if (PacketEventsHook.canSeeBlockChange(viewers, player)) continue;
 
             FakeOpenClose.fakeClose(player, block);
         }

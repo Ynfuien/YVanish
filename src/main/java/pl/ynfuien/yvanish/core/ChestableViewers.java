@@ -1,9 +1,13 @@
 package pl.ynfuien.yvanish.core;
 
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
+import org.apache.commons.lang3.tuple.Pair;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import pl.ynfuien.yvanish.YVanish;
 import pl.ynfuien.yvanish.hooks.packetevents.listeners.PacketBlockActionListener;
 import pl.ynfuien.yvanish.hooks.packetevents.listeners.PacketBlockChangeListener;
 import pl.ynfuien.yvanish.hooks.packetevents.listeners.PacketSoundEffectListener;
@@ -12,6 +16,7 @@ import pl.ynfuien.yvanish.listeners.silentchests.PlayerInteractChestableListener
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -32,7 +37,7 @@ import java.util.Set;
  *         of the same player's ender chest, and not the same ender chest block,
  *         which is what I need)</p>
  *         <p>Also Bukkit viewers are removed too fast (for my needs), since
- *         NamedSoundEffect packets fire (speaking of closing sounds) when
+ *         SoundEffect packets fire (speaking of closing sounds) when
  *         they are long gone (in millisecond scale), hence making the decision
  *         whether to cancel this packet impossible.</p>
  *     </li>
@@ -59,9 +64,8 @@ import java.util.Set;
  * </ul>
  */
 public class ChestableViewers {
-
-    private static final Set<Location> blockSet = new HashSet<>();
     private static final HashMap<Location, Set<Player>> blocksViewers = new HashMap<>();
+    private static final HashMap<Pair<Player, Block>, ScheduledTask> removeSchedulers = new HashMap<>();
 
     public static Set<Player> getBlockViewers(Block block) {
         return getBlockViewers(block.getLocation());
@@ -72,16 +76,6 @@ public class ChestableViewers {
 
         return blocksViewers.get(blockLocation);
     }
-
-//    public static Set<Player> getBlockViewersOfPlayerCurrentBlock(Player player) {
-//        for (Location loc : blocksViewers.keySet()) {
-//            Set<Player> blockViewers = blocksViewers.get(loc);
-//
-//            if (blockViewers.contains(player)) return blockViewers;
-//        }
-//
-//        return Set.of();
-//    }
 
     public static Set<Block> getAllViewedBlocksOfType(Material type) {
         Set<Block> blocks = new HashSet<>();
@@ -95,35 +89,60 @@ public class ChestableViewers {
         return blocks;
     }
 
-    public static boolean addViewer(Player player, Block block) {
-        Location loc = block.getLocation();
+    public static void addViewer(Block block, Player player) {
+        block = ChestableUtils.getDoubleChestBlock(block);
 
-        blockSet.add(loc);
-        if (!blocksViewers.containsKey(loc)) blocksViewers.put(loc, new HashSet<>());
-        Set<Player> blockViewers = blocksViewers.get(loc);
+        Iterator<Pair<Player, Block>> it = removeSchedulers.keySet().iterator();
+        while (it.hasNext()) {
+            Pair<Player, Block> scheduled = it.next();
 
-        return blockViewers.add(player);
+            if (!scheduled.getLeft().equals(player)) continue;
+            if (!scheduled.getRight().equals(block)) continue;
+
+            removeSchedulers.get(scheduled).cancel();
+            removeSchedulers.remove(scheduled);
+            break;
+        }
+
+        for (Location location : ChestableUtils.getLocationsOfChestable(block)) {
+            addViewer(location, player);
+        }
     }
 
-//    public static void removeViewer(Player player) {
-//        Set<Location> keySet = blocksViewers.keySet();
-//        for (Location loc : keySet) {
-//            Set<Player> viewers = blocksViewers.get(loc);
-//            viewers.remove(player);
-//
-//            if (viewers.isEmpty()) blocksViewers.remove(loc);
-//        }
-//    }
+    private static void addViewer(Location location, Player player) {
+        if (!blocksViewers.containsKey(location)) blocksViewers.put(location, new HashSet<>());
+        Set<Player> blockViewers = blocksViewers.get(location);
+
+        blockViewers.add(player);
+    }
 
     public static void removeViewer(Block block, Player player) {
-        Location loc = block.getLocation();
-        Set<Player> viewers = blocksViewers.get(loc);
+        if (getBlockViewers(block).size() > 1) {
+            for (Location location : ChestableUtils.getLocationsOfChestable(block)) {
+                removeViewer(location, player);
+            }
+
+            return;
+        }
+
+        Pair<Player, Block> key = Pair.of(player, ChestableUtils.getDoubleChestBlock(block));
+
+        ScheduledTask task = Bukkit.getGlobalRegionScheduler().runDelayed(YVanish.getInstance(), (t) -> {
+            for (Location location : ChestableUtils.getLocationsOfChestable(block)) {
+                removeViewer(location, player);
+            }
+
+            removeSchedulers.remove(key);
+        }, 10);
+
+        removeSchedulers.put(key, task);
+    }
+
+    private static void removeViewer(Location location, Player player) {
+        Set<Player> viewers = blocksViewers.get(location);
         if (viewers == null) return;
 
         viewers.remove(player);
-//        boolean removed = viewers.remove(player);
-//        YLogger.debug("Removed result: " + removed);
-
-        if (viewers.isEmpty()) blocksViewers.remove(loc);
+        if (viewers.isEmpty()) blocksViewers.remove(location);
     }
 }

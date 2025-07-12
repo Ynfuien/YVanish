@@ -87,7 +87,6 @@ public final class YVanish extends JavaPlugin {
         setupCommands();
         registerListeners();
 
-        // Vanish functionalities
         Hooks.load(this);
 
         ChestableUtils.setupCatDetection(this);

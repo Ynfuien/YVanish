@@ -17,6 +17,7 @@ import org.bukkit.block.data.type.Barrel;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.BlockInventoryHolder;
 import org.bukkit.inventory.DoubleChestInventory;
+import pl.ynfuien.yvanish.YVanish;
 import pl.ynfuien.yvanish.hooks.packetevents.PacketEventsHook;
 
 import java.util.ArrayList;
@@ -34,9 +35,12 @@ public class FakeOpenClose {
 
         Location loc = block.getLocation().toCenterLocation();
         for (Player p : loc.getNearbyPlayers(BLOCK_ACTION_DISTANCE)) {
-            if (!PacketEventsHook.canSeeBlockChange(p, block)) continue;
+            if (p.hasPermission(YVanish.Permissions.VANISH_SEE.get())) {
+                players.add(p);
+                continue;
+            }
 
-            players.add(p);
+            if (PacketEventsHook.canSeeBlockChange(p, block)) players.add(p);
         }
 
         return players;
@@ -59,14 +63,17 @@ public class FakeOpenClose {
             return;
         }
 
-        sendChestAction(player, block, 0);
-
-        // Send block action for the other side of a double chest
-        if (!ChestableUtils.isBlockDoubleChest(block)) return;
+        if (!ChestableUtils.isBlockDoubleChest(block)) {
+            sendChestAction(player, block, 0);
+            return;
+        }
 
         DoubleChestInventory doubleChest = ChestableUtils.getDoubleChestInventory(block);
-        BlockInventoryHolder holder = (BlockInventoryHolder) doubleChest.getRightSide().getHolder();
-        sendChestAction(player, holder.getBlock(), 0);
+        BlockInventoryHolder left = (BlockInventoryHolder) doubleChest.getLeftSide().getHolder();
+        BlockInventoryHolder right = (BlockInventoryHolder) doubleChest.getRightSide().getHolder();
+
+        sendChestAction(player, left.getBlock(), 0);
+        sendChestAction(player, right.getBlock(), 0);
     }
 
     public static void sendBarrelState(Player player, Block block, boolean open) {

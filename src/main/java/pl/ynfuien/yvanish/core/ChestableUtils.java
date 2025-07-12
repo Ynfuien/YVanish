@@ -1,10 +1,12 @@
 package pl.ynfuien.yvanish.core;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.*;
 import org.bukkit.block.data.Directional;
+import org.bukkit.block.data.type.Barrel;
 import org.bukkit.block.data.type.Chest;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -15,11 +17,10 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.BlockInventoryHolder;
 import org.bukkit.inventory.DoubleChestInventory;
 import org.bukkit.util.BoundingBox;
+import org.bukkit.util.Vector;
 import pl.ynfuien.yvanish.YVanish;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class ChestableUtils {
     private static final HashMap<World, Boolean> catDetectionByWorld = new HashMap<>();
@@ -91,6 +92,41 @@ public class ChestableUtils {
     public static DoubleChestInventory getDoubleChestInventory(Block block) {
         Container container = (Container) block.getState();
         return (DoubleChestInventory) container.getInventory();
+    }
+
+    public static Set<Location> getLocationsOfChestable(Block block) {
+        Set<Location> locations = new HashSet<>();
+        // Put left and right side of a double chest
+        if (ChestableUtils.isBlockDoubleChest(block)) {
+            DoubleChestInventory doubleChest = ChestableUtils.getDoubleChestInventory(block);
+
+            locations.add(doubleChest.getLeftSide().getLocation());
+            locations.add(doubleChest.getRightSide().getLocation());
+            return locations;
+        }
+
+        // Put barrel block location but also an offset location,
+        // that for some forsaken reason is used in the sound packet
+        if (block.getType().equals(Material.BARREL)) {
+            Location location = block.getLocation();
+            locations.add(location);
+
+            org.bukkit.block.data.type.Barrel barrel = (Barrel) block.getBlockData();
+
+            BlockFace facing = barrel.getFacing();
+            Vector direction = facing.getDirection();
+
+            direction.multiply(0.5);
+            Location center = location.toCenterLocation();
+            center.add(direction);
+
+            locations.add(center);
+            return locations;
+        }
+
+        // Just a block location
+        locations.add(block.getLocation());
+        return locations;
     }
 
 

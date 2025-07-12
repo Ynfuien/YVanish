@@ -43,19 +43,16 @@ public class PlayerInteractChestableListener implements Listener {
         if (!ChestableUtils.isMaterialChestable(type)) return;
         if (!type.equals(Material.BARREL) && !ChestableUtils.isChestOpenable(block)) return;
 
-        block = ChestableUtils.getDoubleChestBlock(block);
 
+        List<Player> canSeeBefore = FakeOpenClose.getNearPlayersThatCanSeeBlockChange(block);
+        ChestableViewers.addViewer(block, p);
 
-        List<Player> canSeeBefore = ChestableViewers.getBlockViewers(block).isEmpty() ? List.of() : FakeOpenClose.getNearPlayersThatCanSeeBlockChange(block);
+        if (vanishManager.isNoOneVanished()) return;
+        if (ChestableViewers.getBlockViewers(block).size() == 1) return;
 
-        ChestableViewers.addViewer(p, block);
-        PacketEventsHook.addLocationToBlock(block);
+        List<Player> playersToPlaySound = FakeOpenClose.getNearPlayersThatCanSeeBlockChange(block);
+        playersToPlaySound.removeAll(canSeeBefore);
 
-        List<Player> playersToFakeOpen = FakeOpenClose.getNearPlayersThatCanSeeBlockChange(block);
-        playersToFakeOpen.removeAll(canSeeBefore);
-
-        for (Player player : playersToFakeOpen) {
-            FakeOpenClose.fakeOpen(player, block);
-        }
+        for (Player player : playersToPlaySound) FakeOpenClose.fakeOpen(player, block);
     }
 }

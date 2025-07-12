@@ -46,55 +46,21 @@ public class PacketSoundEffectListener implements PacketListener {
         if (receiver.hasPermission(YVanish.Permissions.VANISH_SEE.get())) return;
 
 
-//        YLogger.debug("<green>===== SOUND_EFFECT =====");
         WrapperPlayServerSoundEffect packet = new WrapperPlayServerSoundEffect(event);
         SoundCategory soundCategory = packet.getSoundCategory();
         if (soundCategory == null) return;
 
-//        YLogger.debug("<green>Sound category: " + soundCategory.name());
-
-        if (!soundCategory.equals(SoundCategory.BLOCK) && !soundCategory.equals(SoundCategory.NEUTRAL)) return;
-
+        if (!soundCategory.equals(SoundCategory.BLOCK)) return;
 
         Sound sound = packet.getSound();
-//        YLogger.debug("<green>Sound id: " + sound.getSoundId());
         if (!EXPECTED_SOUND_EFFECTS.contains(sound)) return;
-//        YLogger.debug("<green>Sound name: " + sound.getName());
-
-//        float volume = packet.getVolume();
-//        YLogger.debug("<green>Volume: " + volume);
 
 
         Vector3i pos = packet.getEffectPosition();
         Location loc = new Location(receiver.getWorld(), (double) pos.x / 8, (double) pos.y / 8, (double) pos.z / 8);
-//        YLogger.debug("<green>Loc: " + formatLocation(loc));
-//        YLogger.debug("<green>Block loc: " + formatLocation(loc.toBlockLocation()));
 
-        if (sound.equals(Sounds.BLOCK_BARREL_CLOSE) || sound.equals(Sounds.BLOCK_BARREL_OPEN)) {
-            if (!PacketEventsHook.isLocationBlocked(loc)) return;
-        } else if (!PacketEventsHook.isLocationBlocked(loc.toBlockLocation())) return;
+        if (!sound.equals(Sounds.BLOCK_BARREL_CLOSE) && !sound.equals(Sounds.BLOCK_BARREL_OPEN)) loc = loc.toBlockLocation();
 
-//        YLogger.debug("<green>Cancel!");
-        event.setCancelled(true);
-
-//        float pitch = packet.getPitch();
-//        long seed = packet.getSeed();
-//        Bukkit.getGlobalRegionScheduler().run(instance, (task) -> {
-//            Location loc = new Location(receiver.getWorld(), (double) pos.x / 8, (double) pos.y / 8, (double) pos.z / 8);
-//            YLogger.debug("<green>OG Location: " + formatLocation(loc));
-//            if (sound.equals(Sounds.BLOCK_BARREL_CLOSE) || sound.equals(Sounds.BLOCK_BARREL_OPEN)) loc = getBarrelLocation(loc);
-//            YLogger.debug("<green>Corrected: " + formatLocation(loc));
-//            Block block = loc.getBlock();
-//
-//            YLogger.debug("<green>Found block: " + block.getType().name());
-//            block = ChestableUtils.getDoubleChestBlock(block);
-//            if (!PacketEventsHook.canSeeBlockChange(receiver, block)) return;
-//
-//            YLogger.debug("<green>Send packet duplicate");
-//            WrapperPlayServerSoundEffect packetDuplicate = new WrapperPlayServerSoundEffect(sound, soundCategory, pos, volume, pitch, seed);
-//            PacketEvents.getAPI().getPlayerManager().sendPacketSilently(receiver, packetDuplicate);
-//        });
-
-
+        if (!PacketEventsHook.canSeeBlockChange(receiver, loc)) event.setCancelled(true);
     }
 }
