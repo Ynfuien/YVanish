@@ -89,6 +89,10 @@ public class ChestableViewers {
         return blocks;
     }
 
+    public static Set<Location> getViewedLocations() {
+        return blocksViewers.keySet();
+    }
+
     public static void addViewer(Block block, Player player) {
         block = ChestableUtils.getDoubleChestBlock(block);
 
