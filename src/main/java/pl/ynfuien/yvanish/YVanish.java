@@ -29,8 +29,8 @@ import pl.ynfuien.yvanish.data.Storage;
 import pl.ynfuien.yvanish.hooks.Hooks;
 import pl.ynfuien.yvanish.hooks.packetevents.PacketEventsHook;
 import pl.ynfuien.yvanish.listeners.fakejoin.VanishToggleListener;
+import pl.ynfuien.yvanish.listeners.joinquit.PlayerConnectionValidateLoginListener;
 import pl.ynfuien.yvanish.listeners.joinquit.PlayerJoinListener;
-import pl.ynfuien.yvanish.listeners.joinquit.PlayerLoginListener;
 import pl.ynfuien.yvanish.listeners.joinquit.PlayerQuitListener;
 import pl.ynfuien.yvanish.listeners.nomobs.EntityTargetLivingEntityListener;
 import pl.ynfuien.yvanish.listeners.nopickup.EntityPickupItemListener;
@@ -135,7 +135,7 @@ public final class YVanish extends JavaPlugin {
         Listener[] listeners = new Listener[] {
                 // Join/quit
                 new PlayerJoinListener(this),
-                new PlayerLoginListener(this),
+                new PlayerConnectionValidateLoginListener(this),
                 new PlayerQuitListener(this),
                 // Silent chests
                 new InventoryCloseListener(this),

@@ -18,7 +18,7 @@ import java.util.UUID;
 public class PacketPlayerInfoRemoveListener implements PacketListener {
     private final YVanish instance;
     private final VanishManager vanishManager;
-    private final Set<Player> freshlyJoined = PlayerJoinListener.getFreshlyJoined();
+    private final Set<UUID> freshlyJoined = PlayerJoinListener.getFreshlyJoined();
 
     public PacketPlayerInfoRemoveListener(YVanish instance) {
         this.instance = instance;
@@ -49,7 +49,7 @@ public class PacketPlayerInfoRemoveListener implements PacketListener {
             if (p.equals(receiver)) continue;
 
             if (!vanishManager.isVanished(p)) continue;
-            if (!freshlyJoined.contains(receiver)) continue;
+            if (!freshlyJoined.contains(receiver.getUniqueId())) continue;
 
             uuidList.remove(i);
             changed = true;

@@ -20,7 +20,7 @@ import java.util.UUID;
 public class PlayerJoinListener implements Listener {
     private final YVanish instance;
     private final VanishManager vanishManager;
-    private final static Set<Player> freshlyJoined = new HashSet<>();
+    private final static Set<UUID> freshlyJoined = new HashSet<>();
 
     public PlayerJoinListener(YVanish instance) {
         this.instance = instance;
@@ -40,23 +40,23 @@ public class PlayerJoinListener implements Listener {
 
         if (!PluginConfig.onJoinEnabled) return;
 
-        if (!p.hasPermission(YVanish.Permissions.VANISH_ON_JOIN.get())) {
-            freshlyJoined.add(p);
-            vanishManager.refresh();
+        Bukkit.getGlobalRegionScheduler().runDelayed(instance, (task) -> {
+            freshlyJoined.remove(uuid);
+        }, 2);
 
-            Bukkit.getGlobalRegionScheduler().runDelayed(instance, (task) -> {
-                freshlyJoined.remove(p);
-            }, 1);
+        if (!p.hasPermission(YVanish.Permissions.VANISH_ON_JOIN.get())) {
+            vanishManager.refresh();
             return;
         }
 
         if (PluginConfig.onJoinSilent) event.joinMessage(null);
 
+        vanishManager.vanish(p);
         Lang.Message.VANISH_ON_JOIN.send(p);
         ActionAndBossBars.updateForPlayer(p);
     }
 
-    public static Set<Player> getFreshlyJoined() {
+    public static Set<UUID> getFreshlyJoined() {
         return freshlyJoined;
     }
 }

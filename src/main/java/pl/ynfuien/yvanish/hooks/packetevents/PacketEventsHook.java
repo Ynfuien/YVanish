@@ -31,7 +31,8 @@ public class PacketEventsHook {
                 new PacketPlayerInfoRemoveListener(instance),
                 new PacketBlockActionListener(instance),
                 new PacketBlockChangeListener(instance),
-                new PacketSoundEffectListener(instance)
+                new PacketSoundEffectListener(instance),
+                new PacketWaypointListener(instance)
         };
 
         for (PacketListener listener : listeners) {
