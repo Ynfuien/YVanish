@@ -2,6 +2,7 @@ package pl.ynfuien.yvanish.core;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
 import pl.ynfuien.yvanish.YVanish;
 import pl.ynfuien.yvanish.commands.vanishoptions.NoMobsOption;
 import pl.ynfuien.yvanish.config.PluginConfig;
@@ -32,6 +33,7 @@ public class VanishManager {
 
         if (PluginConfig.ignoreSleep) player.setSleepingIgnored(true);
         vanishedPlayers.add(player);
+        player.setMetadata("vanished", new FixedMetadataValue(instance, true));
         refresh();
 
         NoMobsOption.clearMobsTarget(player);
@@ -48,6 +50,7 @@ public class VanishManager {
 
         if (PluginConfig.ignoreSleep) player.setSleepingIgnored(false);
         vanishedPlayers.remove(player);
+        player.removeMetadata("vanished", instance);
         for (Player p : Bukkit.getOnlinePlayers()) {
             p.showPlayer(instance, player);
         }

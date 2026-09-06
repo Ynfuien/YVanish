@@ -31,6 +31,7 @@ public class PlayerQuitListener implements Listener {
         Storage.removeUserFromCache(uuid);
 
         if (!vanishManager.isVanished(p)) return;
+        p.removeMetadata("vanished", instance);
 
         if (PluginConfig.silentQuit) event.quitMessage(null);
         vanishManager.removeFromCache(p);
