@@ -1,5 +1,6 @@
 package pl.ynfuien.yvanish.listeners.fakejoin;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -35,12 +36,8 @@ public class VanishToggleListener implements Listener {
             placeholders.put("uuid", p.getUniqueId());
             placeholders.put("display-name", ColorFormatter.SERIALIZER.serialize(p.displayName()));
 
-            if (event.getVanish()) {
-                Bukkit.broadcast(Lang.Message.FAKE_QUIT.getComponent(p, placeholders));
-                return;
-            }
-
-            Bukkit.broadcast(Lang.Message.FAKE_JOIN.getComponent(p, placeholders));
+            Component message = event.getVanish() ? Lang.Message.FAKE_QUIT.getComponent(p, placeholders) : Lang.Message.FAKE_JOIN.getComponent(p, placeholders);
+            for (Player player : Bukkit.getOnlinePlayers()) player.sendMessage(message);
         });
     }
 }
