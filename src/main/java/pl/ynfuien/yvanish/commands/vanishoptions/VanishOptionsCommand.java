@@ -103,13 +103,17 @@ public class VanishOptionsCommand extends YCommand {
         placeholders.put("option-alias", option.getAlias());
         placeholders.put("option-description", option.getDescription().get());
 
-        if (args.length == 0 || !sender.hasPermission(PERMISSION_OTHERS)) {
+        boolean silentOutput = args.length != 0 && args[args.length - 1].equalsIgnoreCase("-s");
+
+        if (args.length == 0 || !sender.hasPermission(PERMISSION_OTHERS) || (args.length == 1 && silentOutput)) {
             if (!(sender instanceof Player p)) {
                 Lang.Message.COMMAND_VANISHOPTIONS_USAGE_OTHERS.send(sender, placeholders);
                 return;
             }
 
             boolean result = option.toggle(p);
+            if (silentOutput) return;
+
             if (result) Lang.Message.COMMAND_VANISHOPTIONS_SUCCESS_ENABLE.send(sender, placeholders);
             else Lang.Message.COMMAND_VANISHOPTIONS_SUCCESS_DISABLE.send(sender, placeholders);
             return;
@@ -128,6 +132,8 @@ public class VanishOptionsCommand extends YCommand {
         YCommand.addPlayerPlaceholders(placeholders, p);
 
         boolean result = option.toggle(p);
+        if (silentOutput) return;
+
         if (result) Lang.Message.COMMAND_VANISHOPTIONS_SUCCESS_ENABLE_OTHER.send(sender, placeholders);
         else Lang.Message.COMMAND_VANISHOPTIONS_SUCCESS_DISABLE_OTHER.send(sender, placeholders);
     }
