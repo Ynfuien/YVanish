@@ -21,13 +21,13 @@ public class ActionBarOption extends VanishOption {
         if (user.getActionBar()) {
             user.setActionBar(false);
             Storage.updateUser(uuid, user);
-            ActionAndBossBars.sendEmptyActionBar(player);
+            ActionAndBossBars.updateForPlayer(player);
             return false;
         }
 
         user.setActionBar(true);
         Storage.updateUser(uuid, user);
-        ActionAndBossBars.sendActionBar(player);
+        ActionAndBossBars.updateForPlayer(player);
         return true;
     }
 
