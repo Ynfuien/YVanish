@@ -21,7 +21,7 @@ public class ActionBarOption extends VanishOption {
         if (user.getActionBar()) {
             user.setActionBar(false);
             Storage.updateUser(uuid, user);
-            ActionAndBossBars.updateForPlayer(player);
+            ActionAndBossBars.sendEmptyActionBar(player);
             return false;
         }
 
