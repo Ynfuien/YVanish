@@ -30,6 +30,7 @@ public class VanishOptionsCommand extends YCommand {
             new SilentMessagesOption(permissionBase),
             new NoPickupOption(permissionBase),
             new NoMobsOption(permissionBase),
+            new NoStepOption(permissionBase),
             new ActionBarOption(permissionBase),
             new BossBarOption(permissionBase),
             new FakeJoinOption(permissionBase)

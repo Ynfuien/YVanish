@@ -35,6 +35,7 @@ import pl.ynfuien.yvanish.listeners.joinquit.PlayerQuitListener;
 import pl.ynfuien.yvanish.listeners.nomobs.EntityTargetLivingEntityListener;
 import pl.ynfuien.yvanish.listeners.nopickup.EntityPickupItemListener;
 import pl.ynfuien.yvanish.listeners.nopickup.PlayerPickupExperienceListener;
+import pl.ynfuien.yvanish.listeners.nostep.PlayerInteractListener;
 import pl.ynfuien.yvanish.listeners.pvp.EntityDamageByEntityListener;
 import pl.ynfuien.yvanish.listeners.serverlist.PaperServerListPingListener;
 import pl.ynfuien.yvanish.listeners.silentchests.InventoryCloseListener;
@@ -152,6 +153,8 @@ public final class YVanish extends JavaPlugin {
                 new PlayerPickupExperienceListener(this),
                 // No mobs
                 new EntityTargetLivingEntityListener(this),
+                // No step
+                new PlayerInteractListener(this),
                 // Vanish pvp
                 new EntityDamageByEntityListener(this),
                 // Server list ping

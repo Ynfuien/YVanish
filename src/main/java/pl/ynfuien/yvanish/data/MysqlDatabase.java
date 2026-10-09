@@ -38,7 +38,7 @@ public class MysqlDatabase extends Database {
 
     @Override
     public boolean createUsersTable() {
-        String query = String.format("CREATE TABLE IF NOT EXISTS `%s` (`id` INT NOT NULL AUTO_INCREMENT, `uuid` VARCHAR(36) NOT NULL, `silent_chests` TINYINT DEFAULT -1, `silent_sculk` TINYINT DEFAULT -1, `silent_messages` TINYINT DEFAULT -1, `no_pickup` TINYINT DEFAULT -1, `no_mobs` TINYINT DEFAULT -1, `action_bar` TINYINT DEFAULT -1, `boss_bar` TINYINT DEFAULT -1, `fake_join` TINYINT DEFAULT -1, PRIMARY KEY (`id`)) ENGINE = InnoDB;", usersTableName);
+        String query = String.format("CREATE TABLE IF NOT EXISTS `%s` (`id` INT NOT NULL AUTO_INCREMENT, `uuid` VARCHAR(36) NOT NULL, `silent_chests` TINYINT DEFAULT -1, `silent_sculk` TINYINT DEFAULT -1, `silent_messages` TINYINT DEFAULT -1, `no_pickup` TINYINT DEFAULT -1, `no_mobs` TINYINT DEFAULT -1, `no_step` TINYINT DEFAULT -1, `action_bar` TINYINT DEFAULT -1, `boss_bar` TINYINT DEFAULT -1, `fake_join` TINYINT DEFAULT -1, PRIMARY KEY (`id`)) ENGINE = InnoDB;", usersTableName);
 
         try (Connection conn = dbSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.execute();
@@ -53,16 +53,24 @@ public class MysqlDatabase extends Database {
 
     @Override
     public boolean updateUsersTable() {
-        String query = String.format("ALTER TABLE `%s` ADD COLUMN IF NOT EXISTS `fake_join` TINYINT DEFAULT -1", usersTableName);
+        String[] queries = new String[] {
+                String.format("ALTER TABLE `%s` ADD COLUMN IF NOT EXISTS `fake_join` TINYINT DEFAULT -1", usersTableName),
+                String.format("ALTER TABLE `%s` ADD COLUMN IF NOT EXISTS `no_step` TINYINT DEFAULT -1", usersTableName)
+        };
 
-        try (Connection conn = dbSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.execute();
-        } catch (SQLException e) {
-            YLogger.error(String.format("Couldn't update table '%s' in database '%s' with a new column 'fake_join'", usersTableName, dbName));
-            e.printStackTrace();
-            return false;
+        boolean result = true;
+        for (String query : queries) {
+            try (Connection conn = dbSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.execute();
+            } catch (SQLException e) {
+                YLogger.error(String.format("Couldn't update table '%s' in database '%s' with a new column.", usersTableName, dbName));
+                YLogger.error(String.format("(%s)", query));
+
+                e.printStackTrace();
+                result = false;
+            }
         }
 
-        return true;
+        return result;
     }
 }

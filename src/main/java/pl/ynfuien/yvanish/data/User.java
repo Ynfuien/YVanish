@@ -28,6 +28,8 @@ public class User {
     @Nullable
     public Boolean noMobs = null;
     @Nullable
+    public Boolean noStep = null;
+    @Nullable
     public Boolean actionBar = null;
     @Nullable
     public Boolean bossBar = null;
@@ -45,12 +47,13 @@ public class User {
      * <p>It's used in database get user methods,
      * to convert from byte values, to Boolean objects.</p>
      */
-    public User(byte silentChests, byte silentSculk, byte silentMessages, byte noPickup, byte noMobs, byte actionBar, byte bossBar, byte fakeJoin) {
+    public User(byte silentChests, byte silentSculk, byte silentMessages, byte noPickup, byte noMobs, byte noStep, byte actionBar, byte bossBar, byte fakeJoin) {
         this.silentChests = sqlToBool(silentChests);
         this.silentSculk = sqlToBool(silentSculk);
         this.silentMessages = sqlToBool(silentMessages);
         this.noPickup = sqlToBool(noPickup);
         this.noMobs = sqlToBool(noMobs);
+        this.noStep = sqlToBool(noStep);
         this.actionBar = sqlToBool(actionBar);
         this.bossBar = sqlToBool(bossBar);
         this.fakeJoin = sqlToBool(fakeJoin);
@@ -95,6 +98,11 @@ public class User {
     @NotNull
     public Boolean getNoMobs() {
         return noMobs != null ? noMobs : PluginConfig.noMobs;
+    }
+
+    @NotNull
+    public Boolean getNoStep() {
+        return noStep != null ? noStep : PluginConfig.noStep;
     }
 
     @NotNull
@@ -151,6 +159,14 @@ public class User {
      */
     public void setNoMobs(@Nullable Boolean noMobs) {
         this.noMobs = noMobs;
+    }
+
+    /**
+     * <p>Sets no-step option for this user.</p>
+     * <p>Set null to make the player use default value from the config.</p>
+     */
+    public void setNoStep(@Nullable Boolean noStep) {
+        this.noStep = noStep;
     }
 
     /**

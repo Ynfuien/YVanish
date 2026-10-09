@@ -24,6 +24,7 @@ public class PluginConfig {
     public static boolean silentMessages = true;
     public static boolean noPickup = false;
     public static boolean noMobs = false;
+    public static boolean noStep = false;
 
     public static boolean actionBarEnabled = false;
     public static int actionBarRefreshRate = 5;
@@ -69,6 +70,7 @@ public class PluginConfig {
         silentMessages = defaultOptions.getBoolean("silent-messages");
         noPickup = defaultOptions.getBoolean("no-pickup");
         noMobs = defaultOptions.getBoolean("no-mobs");
+        noStep = defaultOptions.getBoolean("no-step");
 
         // Action bar
         actionBarEnabled = defaultOptions.getBoolean("action-bar.enabled");
