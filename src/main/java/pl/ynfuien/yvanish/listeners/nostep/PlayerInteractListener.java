@@ -33,7 +33,10 @@ public class PlayerInteractListener implements Listener {
         if (b == null) return;
 
         Material type = b.getType();
-        if (!type.equals(Material.TRIPWIRE) && !type.equals(Material.FARMLAND) && !Tag.PRESSURE_PLATES.isTagged(type)) return;
+        if (!type.equals(Material.TRIPWIRE) &&
+                !type.equals(Material.FARMLAND) &&
+                !type.equals(Material.BIG_DRIPLEAF) &&
+                !Tag.PRESSURE_PLATES.isTagged(type)) return;
 
         Player p = event.getPlayer();
 

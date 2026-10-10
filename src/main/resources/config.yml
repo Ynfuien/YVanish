@@ -98,7 +98,7 @@ vanish:
     # This will prevent monsters from targeting a vanished player.
     no-mobs: true
 
-    # Prevents from activating pressure plates, tripwires and trampling crops.
+    # Prevents from activating pressure plates, tripwires, tilting dripleaves and trampling crops.
     no-step: true
 
     # Action bar message that does nothing except being there.
