@@ -49,6 +49,7 @@ public class PlayerPlaceholders implements Placeholder {
         if (id.equalsIgnoreCase("silent-messages")) return user.getSilentMessages();
         if (id.equalsIgnoreCase("no-pickup")) return user.getNoPickup();
         if (id.equalsIgnoreCase("no-mobs")) return user.getNoMobs();
+        if (id.equalsIgnoreCase("no-step")) return user.getNoStep();
         if (id.equalsIgnoreCase("action-bar")) return user.getActionBar();
         if (id.equalsIgnoreCase("boss-bar")) return user.getBossBar();
         if (id.equalsIgnoreCase("fake-join")) return user.getFakeJoin();
