@@ -12,13 +12,13 @@ import java.util.Set;
 
 public class PluginConfig {
     public static ConfigurationSection database = null;
-    public static boolean onJoinEnabled = false;
-    public static boolean onJoinSilent = true;
+    public static boolean silentJoin = true;
     public static boolean silentQuit = true;
     public static boolean ignoreSleep = true;
     public static PacketListenerPriority packetListenersPriority = null;
     public static boolean mobsNoStaring = true;
     public static boolean hooksEssentialsX = true;
+    public static boolean onJoin = true;
     public static boolean silentChests = true;
     public static boolean silentSculk = true;
     public static boolean silentMessages = true;
@@ -44,8 +44,7 @@ public class PluginConfig {
         database = config.getConfigurationSection("database");
 
         ConfigurationSection vanish = config.getConfigurationSection("vanish");
-        onJoinEnabled = vanish.getBoolean("on-join.enabled");
-        onJoinSilent = vanish.getBoolean("on-join.silent");
+        silentJoin = vanish.getBoolean("silent-join");
         silentQuit = vanish.getBoolean("silent-quit");
         ignoreSleep = vanish.getBoolean("ignore-sleep");
 
@@ -65,6 +64,7 @@ public class PluginConfig {
         hooksEssentialsX = hooks.getBoolean("essentials-x");
 
         ConfigurationSection defaultOptions = vanish.getConfigurationSection("default-options");
+        onJoin = defaultOptions.getBoolean("on-join");
         silentChests = defaultOptions.getBoolean("silent-chests");
         silentSculk = defaultOptions.getBoolean("silent-sculk");
         silentMessages = defaultOptions.getBoolean("silent-messages");

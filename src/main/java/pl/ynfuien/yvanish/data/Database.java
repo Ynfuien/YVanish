@@ -38,7 +38,7 @@ public abstract class Database {
     }
 
     public User getUser(UUID uuid) {
-        String query = String.format("SELECT silent_chests, silent_sculk, silent_messages, no_pickup, no_mobs, no_step, action_bar, boss_bar, fake_join FROM `%s` WHERE uuid=? LIMIT 1", usersTableName);
+        String query = String.format("SELECT silent_chests, silent_sculk, silent_messages, no_pickup, no_mobs, no_step, action_bar, boss_bar, fake_join, on_join, vanished FROM `%s` WHERE uuid=? LIMIT 1", usersTableName);
 
         try (Connection conn = dbSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, uuid.toString());
@@ -53,7 +53,9 @@ public abstract class Database {
                     resultSet.getByte("no_step"),
                     resultSet.getByte("action_bar"),
                     resultSet.getByte("boss_bar"),
-                    resultSet.getByte("fake_join"));
+                    resultSet.getByte("fake_join"),
+                    resultSet.getByte("on_join"),
+                    resultSet.getByte("vanished"));
             return null;
         } catch (SQLException e) {
             YLogger.warn(String.format("Couldn't retrieve data from table '%s'.", usersTableName));
@@ -63,10 +65,10 @@ public abstract class Database {
     }
 
     public boolean setUser(UUID uuid, User user) {
-        String query = String.format("UPDATE `%s` SET silent_chests=?, silent_sculk=?, silent_messages=?, no_pickup=?, no_mobs=?, no_step=?, action_bar=?, boss_bar=?, fake_join=? WHERE uuid=?", usersTableName);
+        String query = String.format("UPDATE `%s` SET silent_chests=?, silent_sculk=?, silent_messages=?, no_pickup=?, no_mobs=?, no_step=?, action_bar=?, boss_bar=?, fake_join=?, on_join=?, vanished=? WHERE uuid=?", usersTableName);
 
         if (!userExists(uuid)) {
-            query = String.format("INSERT INTO `%s`(silent_chests, silent_sculk, silent_messages, no_pickup, no_mobs, no_step, action_bar, boss_bar, fake_join, uuid) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", usersTableName);
+            query = String.format("INSERT INTO `%s`(silent_chests, silent_sculk, silent_messages, no_pickup, no_mobs, no_step, action_bar, boss_bar, fake_join, on_join, vanished, uuid) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", usersTableName);
         }
 
         try (Connection conn = dbSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -79,8 +81,10 @@ public abstract class Database {
             stmt.setByte(7, boolToSqlValue(user.actionBar));
             stmt.setByte(8, boolToSqlValue(user.bossBar));
             stmt.setByte(9, boolToSqlValue(user.fakeJoin));
+            stmt.setByte(10, boolToSqlValue(user.onJoin));
+            stmt.setByte(11, boolToSqlValue(user.vanished));
 
-            stmt.setString(10, uuid.toString());
+            stmt.setString(12, uuid.toString());
 
             stmt.execute();
 

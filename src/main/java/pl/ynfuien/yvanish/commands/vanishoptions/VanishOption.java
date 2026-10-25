@@ -18,6 +18,13 @@ public abstract class VanishOption {
         this.description = description;
     }
 
+    public VanishOption(String name, String permission, String alias, Lang.Message description) {
+        this.name = name;
+        this.permission = permission;
+        this.alias = alias;
+        this.description = description;
+    }
+
     abstract public boolean toggle(Player player);
 
     abstract public boolean getState(User user);

@@ -224,7 +224,7 @@ public final class YVanish extends JavaPlugin {
 
     public enum Permissions {
         VANISH_OTHERS("yvanish.vanish.others"),
-        VANISH_ON_JOIN("yvanish.vanish.on-join"),
+        OPTIONS_ON_JOIN("yvanish.options.onjoin"),
         VANISH_SEE("yvanish.vanish.see"),
         VANISH_PVP("yvanish.vanish.pvp");
 

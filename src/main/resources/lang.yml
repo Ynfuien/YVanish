@@ -73,6 +73,7 @@ command-vanishoptions-description-no-step: 'Disables stepping on pressure plates
 command-vanishoptions-description-action-bar: 'Shows action bar while vanished'
 command-vanishoptions-description-boss-bar: 'Shows boss bar while vanished'
 command-vanishoptions-description-fake-join: 'Fakes join/quit message on vanish toggle'
+command-vanishoptions-description-on-join: 'Vanishes you automatically when you join'
 command-vanishoptions-fail-player-isnt-online: '{prefix} <red>Provided player isn''t online!'
 command-vanishoptions-success-enable: '{prefix} <aqua><green>Enabled</green> option <dark_aqua>{option-name}</dark_aqua>!</aqua>'
 command-vanishoptions-success-disable: '{prefix} <aqua><red>Disabled</red> option <dark_aqua>{option-name}</dark_aqua>!</aqua>'

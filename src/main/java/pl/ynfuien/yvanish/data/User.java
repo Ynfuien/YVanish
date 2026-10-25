@@ -35,6 +35,10 @@ public class User {
     public Boolean bossBar = null;
     @Nullable
     public Boolean fakeJoin = null;
+    @Nullable
+    public Boolean onJoin = null;
+    @Nullable
+    public Boolean vanished = null;
 
     /**
      * <b>Constructor for internal use only!</b>
@@ -47,7 +51,8 @@ public class User {
      * <p>It's used in database get user methods,
      * to convert from byte values, to Boolean objects.</p>
      */
-    public User(byte silentChests, byte silentSculk, byte silentMessages, byte noPickup, byte noMobs, byte noStep, byte actionBar, byte bossBar, byte fakeJoin) {
+    public User(byte silentChests, byte silentSculk, byte silentMessages, byte noPickup, byte noMobs, byte noStep, byte actionBar, byte bossBar, byte fakeJoin, byte onJoin, byte vanished) {
+        this.onJoin = sqlToBool(onJoin);
         this.silentChests = sqlToBool(silentChests);
         this.silentSculk = sqlToBool(silentSculk);
         this.silentMessages = sqlToBool(silentMessages);
@@ -57,6 +62,7 @@ public class User {
         this.actionBar = sqlToBool(actionBar);
         this.bossBar = sqlToBool(bossBar);
         this.fakeJoin = sqlToBool(fakeJoin);
+        this.vanished = sqlToBool(vanished);
     }
 
     /**
@@ -118,6 +124,13 @@ public class User {
     @NotNull
     public Boolean getFakeJoin() {
         return fakeJoin != null ? fakeJoin : PluginConfig.fakeJoin;
+    }
+
+    @NotNull
+    public Boolean getOnJoin() { return onJoin != null ? onJoin : PluginConfig.onJoin; }
+
+    public Boolean getVanished() {
+        return vanished != null && vanished;
     }
 
 
@@ -191,5 +204,13 @@ public class User {
      */
     public void setFakeJoin(@Nullable Boolean fakeJoin) {
         this.fakeJoin = fakeJoin;
+    }
+
+    public void setOnJoin(@Nullable Boolean onJoin) {
+        this.onJoin = onJoin;
+    }
+
+    public void setVanished(boolean vanished) {
+        this.vanished = vanished;
     }
 }

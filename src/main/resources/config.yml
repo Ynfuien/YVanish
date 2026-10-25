@@ -26,13 +26,8 @@ database:
 
 vanish:
 
-  on-join:
-    # Whether to vanish players on join.
-    # Requires permission yvanish.vanish.on-join
-    enabled: true
-    # Whether to remove join message, if player
-    # was vanished on join.
-    silent: true
+  # If you want to remove join message for players with on-join enabled.
+  silent-join: true
 
   # If you want to remove quit message for vanished players.
   silent-quit: true
@@ -67,6 +62,10 @@ vanish:
   # Options that will be enabled by default for vanished players,
   # until they turn them on/off for themselves using /vanishoptions.
   default-options:
+
+    # Players will be vanished automatically when joining.
+    on-join: true
+
     # Chests (normal, trapped, ender), shulker boxes
     # and barrels will be dead quiet for normal players
     # when a vanished player opens them. No sound, no open

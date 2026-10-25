@@ -34,7 +34,7 @@ public class SqliteDatabase extends Database {
 
     @Override
     public boolean createUsersTable() {
-        String query = String.format("CREATE TABLE IF NOT EXISTS `%s` (uuid TEXT NOT NULL, silent_chests BYTE DEFAULT -1, silent_sculk BYTE DEFAULT -1, silent_messages BYTE DEFAULT -1, no_pickup BYTE DEFAULT -1, no_mobs BYTE DEFAULT -1, no_step BYTE DEFAULT -1, action_bar BYTE DEFAULT -1, boss_bar BYTE DEFAULT -1, fake_join BYTE DEFAULT -1, UNIQUE (uuid))", usersTableName);
+        String query = String.format("CREATE TABLE IF NOT EXISTS `%s` (uuid TEXT NOT NULL, silent_chests BYTE DEFAULT -1, silent_sculk BYTE DEFAULT -1, silent_messages BYTE DEFAULT -1, no_pickup BYTE DEFAULT -1, no_mobs BYTE DEFAULT -1, no_step BYTE DEFAULT -1, action_bar BYTE DEFAULT -1, boss_bar BYTE DEFAULT -1, fake_join BYTE DEFAULT -1, on_join BYTE DEFAULT -1, vanished BYTE DEFAULT -1, UNIQUE (uuid))", usersTableName);
 
         try (Connection conn = dbSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.execute();
@@ -51,7 +51,9 @@ public class SqliteDatabase extends Database {
     public boolean updateUsersTable() {
         String[] queries = new String[] {
                 String.format("ALTER TABLE `%s` ADD COLUMN `fake_join` BYTE DEFAULT -1", usersTableName),
-                String.format("ALTER TABLE `%s` ADD COLUMN `no_step` BYTE DEFAULT -1", usersTableName)
+                String.format("ALTER TABLE `%s` ADD COLUMN `no_step` BYTE DEFAULT -1", usersTableName),
+                String.format("ALTER TABLE `%s` ADD COLUMN `on_join` BYTE DEFAULT -1", usersTableName),
+                String.format("ALTER TABLE `%s` ADD COLUMN `vanished` BYTE DEFAULT -1", usersTableName)
         };
 
         boolean result = true;

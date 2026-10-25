@@ -25,6 +25,7 @@ public class VanishOptionsCommand extends YCommand {
     private static final Lang.Message STATE_DISABLED = Lang.Message.COMMAND_VANISHOPTIONS_LIST_ENTRY_STATE_DISABLED;
 
     private final VanishOption[] vanishOptions = new VanishOption[] {
+            new OnJoinOption(permissionBase),
             new SilentChestsOption(permissionBase),
             new SilentSculkOption(permissionBase),
             new SilentMessagesOption(permissionBase),

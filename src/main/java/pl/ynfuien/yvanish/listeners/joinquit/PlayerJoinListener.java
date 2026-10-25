@@ -11,6 +11,7 @@ import pl.ynfuien.yvanish.config.PluginConfig;
 import pl.ynfuien.yvanish.core.ActionAndBossBars;
 import pl.ynfuien.yvanish.core.VanishManager;
 import pl.ynfuien.yvanish.data.Storage;
+import pl.ynfuien.yvanish.data.User;
 import pl.ynfuien.yvanish.utils.Lang;
 
 import java.util.HashSet;
@@ -33,23 +34,22 @@ public class PlayerJoinListener implements Listener {
         Player p = event.getPlayer();
 
         UUID uuid = p.getUniqueId();
-        Bukkit.getScheduler().runTaskAsynchronously(instance, () -> {
-            Storage.getUser(uuid);
-        });
-
-
-        if (!PluginConfig.onJoinEnabled) return;
 
         Bukkit.getGlobalRegionScheduler().runDelayed(instance, (task) -> {
             freshlyJoined.remove(uuid);
         }, 2);
 
-        if (!p.hasPermission(YVanish.Permissions.VANISH_ON_JOIN.get())) {
+        User user = Storage.getUser(uuid);
+
+        boolean hasOnJoinPermission = p.hasPermission(YVanish.Permissions.OPTIONS_ON_JOIN.get());
+        boolean shouldVanish = hasOnJoinPermission && (user.getOnJoin() || user.getVanished());
+
+        if (!shouldVanish) {
             vanishManager.refresh();
             return;
         }
 
-        if (PluginConfig.onJoinSilent) event.joinMessage(null);
+        if (PluginConfig.silentJoin) event.joinMessage(null);
 
         vanishManager.vanish(p);
         Lang.Message.VANISH_ON_JOIN.send(p);

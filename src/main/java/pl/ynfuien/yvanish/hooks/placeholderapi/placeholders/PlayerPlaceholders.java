@@ -53,6 +53,7 @@ public class PlayerPlaceholders implements Placeholder {
         if (id.equalsIgnoreCase("action-bar")) return user.getActionBar();
         if (id.equalsIgnoreCase("boss-bar")) return user.getBossBar();
         if (id.equalsIgnoreCase("fake-join")) return user.getFakeJoin();
+        if (id.equalsIgnoreCase("on-join")) return user.getOnJoin();
 
         return null;
     }
